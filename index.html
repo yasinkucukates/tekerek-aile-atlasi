@@ -1946,6 +1946,75 @@ dialog.doc-lightbox::backdrop {
 .tag-pill.ok { background: #E4EFE8; color: #1E4231; }
 .tag-pill.warn { background: #F4EAE4; color: #7A3528; }
 
+/* Archive Guide & Offset Warnings (v2.3) */
+.guide-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.guide-col {
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid #DDD7CA;
+  background: #FAF8F2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.guide-col-h {
+  margin: 0;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 600;
+  color: #1F2421;
+}
+.guide-ol {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14.5px;
+  line-height: 23px;
+  color: #2B302C;
+}
+.offset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.offset-card {
+  padding: 16px 18px;
+  border-radius: 13px;
+  border: 1px solid #DFC5B8;
+  border-left: 4px solid #8E3F2C;
+  background: #FCF7F3;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.offset-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 10px;
+}
+.offset-code {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1F2421;
+}
+.offset-tag {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  background: #F4E2D8;
+  color: #7A3528;
+}
+
 /* Responsive Breakpoints */
 @media (max-width: 980px) {
   .plate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
@@ -1956,7 +2025,7 @@ dialog.doc-lightbox::backdrop {
   .tree-col-heads, .gen-row { grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1.15fr) 48px minmax(0, 1fr); }
   .p-name { font-size: 18px; line-height: 22px; }
   .stat-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .ev-grid, .lit-grid { grid-template-columns: minmax(0, 1fr); }
+  .ev-grid, .lit-grid, .guide-cols, .offset-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 720px) {
   .app-shell { padding: 12px 14px 36px; }
@@ -2538,7 +2607,7 @@ dialog.doc-lightbox::backdrop {
         return;
       }
       STATE.openLitId = null;
-      if (sub === 'bulgular' || sub === 'kaynaklar' || sub === 'literatur' || sub === 'rapor' || sub === 'liste') {
+      if (sub === 'bulgular' || sub === 'kaynaklar' || sub === 'literatur' || sub === 'rapor' || sub === 'rehber' || sub === 'liste') {
         STATE.resSub = sub;
       } else {
         STATE.resSub = 'bulgular';
@@ -3111,13 +3180,14 @@ dialog.doc-lightbox::backdrop {
     );
   }
 
-  /* TAB 4: ARASTIRMA (4 QUIET SUB-VIEWS + LIT PAGE READER + DEEP RESEARCH REPORT) */
+  /* TAB 4: ARASTIRMA (5 QUIET SUB-VIEWS + LIT PAGE READER + DEEP RESEARCH REPORT) */
   function renderResearchSubNav() {
     var cur = STATE.resSub || 'bulgular';
     var items = [
       ['bulgular', 'Bulgular'],
       ['kaynaklar', 'Kaynak Belgeler'],
       ['literatur', 'Literatür'],
+      ['rehber', 'Arşiv Rehberi'],
       ['liste', 'Araştırma Listesi']
     ];
     return (
@@ -3470,10 +3540,126 @@ dialog.doc-lightbox::backdrop {
     );
   }
 
+  function renderResearchGuide(res) {
+    var gd = res.archiveGuide || {};
+    var dipHtml = (gd.diplomaticBlocks || []).map(function (db) {
+      return (
+        '<article class="guide-col">' +
+          '<h3 class="guide-col-h serif">' + fmtInline(db.title) + '</h3>' +
+          '<p class="read-body prose" style="margin:0;">' + fmtProse(db.body) + '</p>' +
+        '</article>'
+      );
+    }).join('');
+
+    var fundRows = (gd.fundMap || []).map(function (f) {
+      var isDes = String(f.indexType || '').indexOf('DES') >= 0 || String(f.indexType || '').indexOf('0 sonuç') >= 0;
+      return (
+        '<tr>' +
+          '<td style="font-weight:600;color:#2F5D46;">' + fmtInline(f.code) + '</td>' +
+          '<td><span class="tag-pill' + (isDes ? ' warn' : ' ok') + '">' + esc(f.indexType) + '</span></td>' +
+          '<td style="white-space:nowrap;">' + esc(f.years) + '</td>' +
+          '<td class="prose">' + fmtProse(f.role) + '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    var rulesHtml = (gd.tenGoldenRules || []).map(function (r) {
+      return '<li class="prose">' + fmtProse(r) + '</li>';
+    }).join('');
+
+    var glossRows = (gd.variantGlossary || []).map(function (v) {
+      return (
+        '<tr>' +
+          '<td style="font-weight:600;color:#1F2421;">' + fmtInline(v.canonical) + '</td>' +
+          '<td style="font-size:12.5px;color:#2F5D46;">' + fmtInline(v.variants) + '</td>' +
+          '<td class="prose">' + fmtProse(v.note) + '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    var nonDabRows = (gd.nonDabBoundaries || []).map(function (nd) {
+      return (
+        '<tr>' +
+          '<td style="font-weight:600;color:#1F2421;">' + esc(nd.inst) + '</td>' +
+          '<td style="font-size:12.5px;color:#2F5D46;">' + fmtInline(nd.series) + '</td>' +
+          '<td class="prose">' + fmtProse(nd.why) + '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    var srcList = gd.verifiedSources || [];
+    var srcRows = srcList.map(function (s) {
+      var mainLink = s.url
+        ? '<a class="ext-link" href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(s.domain || 'Bağlantı') + ' ↗</a>'
+        : '';
+      var extraLink = s.extraUrl
+        ? ' <a class="ext-link" href="' + esc(s.extraUrl) + '" target="_blank" rel="noopener noreferrer" style="margin-left:8px;">Ek ↗</a>'
+        : '';
+      return (
+        '<tr>' +
+          '<td style="color:#7C7769;white-space:nowrap;">' + esc(s.id) + '</td>' +
+          '<td><b>' + esc(s.title) + '</b>' + (s.author ? '<br><span style="font-size:12px;color:#5E6158;">' + esc(s.author) + (s.year ? ' (' + esc(s.year) + ')' : '') + '</span>' : '') + '</td>' +
+          '<td style="white-space:nowrap;font-size:12px;color:#5E6158;">' + esc(s.kind) + '</td>' +
+          '<td style="white-space:nowrap;">' + mainLink + extraLink + '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    return (
+      '<section class="hero-block">' +
+        '<h1 class="hero-h1 serif">' + esc(gd.heading || 'Arşiv Rehberi') + '</h1>' +
+        '<p class="hero-lead prose">' + fmtProse(gd.lead || '') + '</p>' +
+      '</section>' +
+      renderResearchSubNav() +
+      (gd.transparencyNotice ? '<div class="notice-box prose">' + fmtProse(gd.transparencyNotice) + '</div>' : '') +
+      '<section style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">Diplomatik Kural: Lakaplı ve Lakapsız Belgeler</h2></div>' +
+        '<div class="guide-cols">' + dipHtml + '</div>' +
+      '</section>' +
+      '<section style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">Fon Haritası: Analitik ve Dosya Envanter (DES) Ayrımı</h2></div>' +
+        '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Fon Kodu</th><th>Dizinleme Türü</th><th>Dönem</th><th>Araştırmadaki İşlevi</th></tr></thead><tbody>' + fundRows + '</tbody></table></div>' +
+      '</section>' +
+      (gd.temettuatNotice
+        ? '<section style="display:flex;flex-direction:column;gap:14px;">' +
+            '<div class="sec-bar"><h2 class="sec-h2 serif">Temettuat ve Nüfus Defterleri Bölgesel Sınırı</h2></div>' +
+            '<div class="quote-sheet prose">' + fmtProse(gd.temettuatNotice) + '</div>' +
+          '</section>'
+        : '') +
+      '<section style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">Katalog Tarama Motorunun 10 Altın Kuralı</h2></div>' +
+        '<div class="quote-sheet"><ol class="guide-ol">' + rulesHtml + '</ol></div>' +
+      '</section>' +
+      '<section style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">İmlâ ve Transkripsiyon Varyant Sözlüğü</h2></div>' +
+        '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Kanonik Ad / Kurum</th><th>Katalog Varyantları</th><th>Açıklama ve Uyarı</th></tr></thead><tbody>' + glossRows + '</tbody></table></div>' +
+      '</section>' +
+      '<section style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">Merkez Arşiv Dışı Kurum Sınırları (VGMA, İMMEŞ, DİB, İTO, NVİ)</h2></div>' +
+        '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Arşiv Kurumu</th><th>Temel Defter ve Seriler</th><th>Neden Bu Kurumda?</th></tr></thead><tbody>' + nonDabRows + '</tbody></table></div>' +
+      '</section>' +
+      '<section id="guideSourcesSec" style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">Doğrulanmış Rehber Kaynakçası (' + srcList.length + ' Kaynak)</h2></div>' +
+        '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>No</th><th>Kaynak Başlığı ve Kurum</th><th>Tür</th><th>Açık Erişim</th></tr></thead><tbody>' + srcRows + '</tbody></table></div>' +
+      '</section>'
+    );
+  }
+
   function renderResearchHandoff(res) {
     var ho = res.handoff || {};
     var doneHtml = (ho.completedScans || []).map(function (s) {
       return '<li class="prose">' + fmtProse(s) + '</li>';
+    }).join('');
+    var offsetHtml = (ho.carbonOffsets || []).map(function (co) {
+      return (
+        '<article class="offset-card">' +
+          '<div class="offset-head">' +
+            '<span class="offset-code">' + fmtInline(co.code) + '</span>' +
+            '<span class="offset-tag">' + fmtInline(co.severity) + '</span>' +
+          '</div>' +
+          '<p class="read-body prose" style="margin:0;font-size:14px;line-height:22px;">' + fmtProse(co.summary) + '</p>' +
+        '</article>'
+      );
     }).join('');
     var varRows = (ho.workingVariants || []).map(function (v) {
       return '<tr><td style="font-weight:600;color:#2F5D46;">' + fmtInline(v.term) + '</td><td class="prose">' + fmtProse(v.note) + '</td></tr>';
@@ -3481,19 +3667,23 @@ dialog.doc-lightbox::backdrop {
     var w3Rows = (ho.wave3DabTargets || []).map(function (t) {
       return '<tr><td style="font-weight:600;color:#1F2421;">' + fmtInline(t.code) + '</td><td style="font-size:12.5px;color:#2F5D46;">' + fmtInline(t.scope) + '</td><td class="prose">' + fmtProse(t.why) + '</td></tr>';
     }).join('');
-    var d4Html = (ho.dalga4ByLineage || []).map(function (grp) {
-      var rHtml = (grp.rows || []).map(function (r) {
-        return '<tr><td style="font-weight:600;color:#2F5D46;">' + fmtInline(r.code) + '</td><td style="white-space:nowrap;">' + esc(r.date) + '</td><td style="white-space:nowrap;font-size:12.5px;color:#5E6158;">' + esc(r.pages) + '</td><td class="prose">' + fmtProse(r.note) + '</td></tr>';
+    function renderWaveGroups(groups) {
+      return (groups || []).map(function (grp) {
+        var rHtml = (grp.rows || []).map(function (r) {
+          return '<tr><td style="font-weight:600;color:#2F5D46;">' + fmtInline(r.code) + '</td><td style="white-space:nowrap;">' + esc(r.date) + '</td><td style="white-space:nowrap;font-size:12.5px;color:#5E6158;">' + esc(r.pages) + '</td><td class="prose">' + fmtProse(r.note) + '</td></tr>';
+        }).join('');
+        return (
+          '<details class="quiet-det"' + (grp.open ? ' open' : '') + '>' +
+            '<summary>' + fmtInline(grp.title) + '</summary>' +
+            '<div class="quiet-body" style="padding:0;">' +
+              '<div class="src-table-wrap" style="border:0;border-radius:0;"><table class="src-table"><thead><tr><th>Arşiv Kodu</th><th>Tarih</th><th>Poz ve Bedel</th><th>Kuşak ve Araştırma Notu</th></tr></thead><tbody>' + rHtml + '</tbody></table></div>' +
+            '</div>' +
+          '</details>'
+        );
       }).join('');
-      return (
-        '<details class="quiet-det"' + (grp.open ? ' open' : '') + '>' +
-          '<summary>' + fmtInline(grp.title) + '</summary>' +
-          '<div class="quiet-body" style="padding:0;">' +
-            '<div class="src-table-wrap" style="border:0;border-radius:0;"><table class="src-table"><thead><tr><th>Arşiv Kodu</th><th>Tarih</th><th>Poz ve Bedel</th><th>Kuşak ve Araştırma Notu</th></tr></thead><tbody>' + rHtml + '</tbody></table></div>' +
-          '</div>' +
-        '</details>'
-      );
-    }).join('');
+    }
+    var d5Html = renderWaveGroups(ho.dalga5And5BPackages);
+    var d4Html = renderWaveGroups(ho.dalga4ByLineage);
     var instRows = (ho.institutionalTargets || []).map(function (it) {
       return '<tr><td style="font-weight:600;color:#1F2421;">' + esc(it.inst) + '</td><td style="font-size:12.5px;color:#2F5D46;">' + fmtInline(it.ref) + '</td><td class="prose">' + fmtProse(it.goal) + '</td></tr>';
     }).join('');
@@ -3505,9 +3695,15 @@ dialog.doc-lightbox::backdrop {
       '</section>' +
       renderResearchSubNav() +
       '<section style="display:flex;flex-direction:column;gap:14px;">' +
-        '<div class="sec-bar"><h2 class="sec-h2 serif">Tamamlanan Taramalar ve Çıkmaz Yollar</h2></div>' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">Tamamlanan Taramalar ve Negatif Sınırlar</h2></div>' +
         '<div class="quote-sheet"><ul class="branch-list">' + doneHtml + '</ul></div>' +
       '</section>' +
+      (offsetHtml
+        ? '<section style="display:flex;flex-direction:column;gap:14px;">' +
+            '<div class="sec-bar"><h2 class="sec-h2 serif">Alım Öncesi Önizleme Sayfa Ofset Kılavuzu (Aday Okuma)</h2></div>' +
+            '<div class="offset-grid">' + offsetHtml + '</div>' +
+          '</section>'
+        : '') +
       '<section style="display:flex;flex-direction:column;gap:14px;">' +
         '<div class="sec-bar"><h2 class="sec-h2 serif">Osmanlıca Katalogda Çalışan Yazımlar</h2></div>' +
         '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Arama Yazımı</th><th>Neden ve Nerede Çalışır?</th></tr></thead><tbody>' + varRows + '</tbody></table></div>' +
@@ -3516,14 +3712,20 @@ dialog.doc-lightbox::backdrop {
         '<div class="sec-bar"><h2 class="sec-h2 serif">Öncelikli Nokta Atışı Devlet Arşivleri (DAB) Hedefleri</h2></div>' +
         '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Arşiv Künyesi</th><th>Sayfa ve Tahmini Bedel</th><th>Beklenen Katkı</th></tr></thead><tbody>' + w3Rows + '</tbody></table></div>' +
       '</section>' +
+      (d5Html
+        ? '<section style="display:flex;flex-direction:column;gap:14px;">' +
+            '<div class="sec-bar"><h2 class="sec-h2 serif">' + fmtInline('Dalga 5 ve 5B Geniş Tarama Paketleri (73 Yeni Satışa Açık Hedef)') + '</h2></div>' +
+            '<div class="quiet-stack">' + d5Html + '</div>' +
+          '</section>'
+        : '') +
       (d4Html
         ? '<section style="display:flex;flex-direction:column;gap:14px;">' +
-            '<div class="sec-bar"><h2 class="sec-h2 serif">' + fmtInline('Ata Kuşaklarına Göre Hazır Alım Listesi (31 Kompakt Belge  |  78 Poz)') + '</h2></div>' +
+            '<div class="sec-bar"><h2 class="sec-h2 serif">' + fmtInline('Dalga 4 Ata Kuşaklarına Göre Hazır Alım Listesi (31 Kompakt Belge  |  78 Poz)') + '</h2></div>' +
             '<div class="quiet-stack">' + d4Html + '</div>' +
           '</section>'
         : '') +
       '<section style="display:flex;flex-direction:column;gap:14px;">' +
-        '<div class="sec-bar"><h2 class="sec-h2 serif">DAB Dışı Kurum Hedefleri (İMMEŞ, VGMA, BOA Salon, NVİ, İBB)</h2></div>' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">DAB Dışı Kurum Hedefleri (VGMA, İMMEŞ, BOA Salon, NVİ, DİB, İBB)</h2></div>' +
         '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Kurum</th><th>Dosya ve Defter Kaydı</th><th>Çözeceği Soru</th></tr></thead><tbody>' + instRows + '</tbody></table></div>' +
       '</section>'
     );
@@ -3540,6 +3742,7 @@ dialog.doc-lightbox::backdrop {
     if (sub === 'kaynaklar') return renderResearchSources(res);
     if (sub === 'literatur') return renderResearchLiterature(res);
     if (sub === 'rapor') return renderDeepReport(res);
+    if (sub === 'rehber') return renderResearchGuide(res);
     if (sub === 'liste') return renderResearchHandoff(res);
     return renderResearchBranches(res);
   }
