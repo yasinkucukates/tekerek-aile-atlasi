@@ -810,16 +810,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
 }
 .viewer-stage {
   position: relative;
   width: 100%;
   height: 640px;
-  border-radius: 14px;
-  background: #24221E;
+  border-radius: 16px;
+  background: #1E1C19;
   overflow: hidden;
-  cursor: grab;
-  touch-action: none;
+  cursor: zoom-in;
+  touch-action: pan-y;
   user-select: none;
   -webkit-user-select: none;
   display: flex;
@@ -827,14 +828,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   justify-content: center;
   box-shadow: 0 12px 32px rgba(31, 36, 33, 0.14);
 }
-.viewer-stage.dragging { cursor: grabbing; }
+.viewer-stage.is-zoomed { cursor: grab; touch-action: none; }
+.viewer-stage.dragging { cursor: grabbing; touch-action: none; }
 .doc-img {
   max-width: none;
   max-height: none;
   transform-origin: center center;
   display: block;
   pointer-events: none;
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
+  -webkit-user-drag: none;
+  user-select: none;
+  will-change: transform;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.48);
+}
+.doc-img.v-anim {
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .viewer-status {
   position: absolute;
@@ -842,57 +850,159 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(36, 34, 30, 0.86);
+  background: rgba(30, 28, 25, 0.86);
   color: #F6F3EC;
   font-size: 13.5px;
   padding: 20px;
   text-align: center;
-  z-index: 4;
+  z-index: 6;
 }
 .viewer-status.hidden { display: none; }
 
-/* Single Quiet Control Row (<= 4 Controls) */
-.viewer-ctrl-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px 14px;
-  padding: 6px 12px;
-  border-radius: 12px;
-  background: #FAF8F2;
-  border: 1px solid #DDD7CA;
+/* Floating Berlin-Style Circular Arrows & Translucent HUD Controls */
+.v-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  background: rgba(251, 250, 246, 0.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: #1F2421;
+  font-size: 24px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.28);
+  transition: opacity 0.16s, transform 0.16s, background 0.16s;
 }
-.vc-group {
+.v-arrow:hover { background: #FFFFFF; transform: translateY(-50%) scale(1.05); }
+.v-arrow.v-prev { left: 12px; }
+.v-arrow.v-next { right: 12px; }
+.v-arrow:disabled { opacity: 0; pointer-events: none; }
+
+.v-counter {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 4;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(24, 22, 19, 0.78);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #F6F3EC;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.v-hud-pill {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  z-index: 5;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: rgba(24, 22, 19, 0.82);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.34);
+  max-width: calc(100% - 20px);
 }
-.vc-btn {
-  min-height: 44px;
-  min-width: 44px;
-  padding: 0 12px;
+.v-hud-btn {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 10px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 999px;
   background: transparent;
+  color: #F6F3EC;
   font-size: 15px;
   font-weight: 500;
-  color: #1F2421;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 5px;
+  white-space: nowrap;
+  transition: background 0.14s;
 }
-.vc-btn:hover { background: #EDE8DC; }
-.vc-btn:disabled { opacity: 0.35; cursor: default; }
-.vc-btn:disabled:hover { background: transparent; }
-.vc-pg {
+.v-hud-btn:hover { background: rgba(255, 255, 255, 0.16); }
+.v-hud-pct {
+  min-width: 52px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #E8E2D4;
+  padding: 0 6px;
+}
+.v-hud-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.18);
+  margin: 0 2px;
+  flex: none;
+}
+.v-hud-full {
+  font-size: 13px;
+  padding: 0 12px;
+}
+
+/* Horizontal Scrollable Page Strip below Stage & in Lightbox */
+.v-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 2px 2px 4px;
+}
+.v-strip::-webkit-scrollbar { display: none; }
+.v-pg-chip {
+  flex: none;
+  min-width: 40px;
+  min-height: 38px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid #D3CDBE;
+  background: #FAF8F2;
+  color: #363A35;
   font-size: 13px;
   font-weight: 500;
-  color: #5E6158;
-  padding: 0 6px;
-  min-width: 54px;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: border-color 0.14s, background 0.14s, color 0.14s;
 }
+.v-pg-chip:hover { border-color: #2F5D46; color: #1E4231; }
+.v-pg-chip.active {
+  background: #2F5D46;
+  border-color: #2F5D46;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+.v-pg-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2F5D46;
+  flex: none;
+}
+.v-pg-chip.active .v-pg-dot { background: #E4EFE8; }
 
 /* Right Reading Column (Book Typography, Hairlines, No Nested Card Noise) */
 .reader-col {
@@ -1227,40 +1337,115 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 }
 .fam-link-btn:hover { border-color: #2F5D46; color: #1E4231; }
 
-/* Fullscreen Lightbox */
-.lb-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 120;
-  background: rgba(24, 23, 20, 0.95);
+/* Modern Native <dialog> Fullscreen Lightbox (Berlin-Inspired 100dvh Safe-Area) */
+dialog.doc-lightbox {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #141311;
+  color: #F6F3EC;
+  overflow: hidden;
+}
+dialog.doc-lightbox[open] {
+  display: flex;
   flex-direction: column;
 }
-.lb-modal.open { display: flex; }
+dialog.doc-lightbox::backdrop {
+  background: rgba(12, 11, 10, 0.94);
+}
 .lb-bar {
-  padding: 10px 18px;
-  background: rgba(36, 34, 30, 0.96);
+  padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
+  background: rgba(24, 22, 19, 0.88);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   color: #F6F3EC;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
+  flex: none;
+  z-index: 6;
 }
-.lb-bar .vc-btn { color: #F6F3EC; }
-.lb-bar .vc-btn:hover { background: rgba(255, 255, 255, 0.12); }
+.lb-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.lb-title-text {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lb-counter-badge {
+  flex: none;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #E8E2D4;
+  font-size: 12px;
+  font-weight: 600;
+}
+.lb-top-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+}
+.lb-top-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #F6F3EC;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.lb-top-btn:hover { background: rgba(255, 255, 255, 0.18); }
 .lb-stage {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   position: relative;
   overflow: hidden;
-  cursor: grab;
+  cursor: zoom-in;
   touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+.lb-stage.is-zoomed { cursor: grab; }
 .lb-stage.dragging { cursor: grabbing; }
+.lb-stage:focus { outline: none; }
+.lb-foot {
+  flex: none;
+  padding: 8px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: rgba(24, 22, 19, 0.88);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.lb-foot[hidden] { display: none; }
+.lb-foot .v-pg-chip {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #E8E2D4;
+}
+.lb-foot .v-pg-chip:hover { background: rgba(255, 255, 255, 0.18); color: #FFFFFF; }
+.lb-foot .v-pg-chip.active { background: #2F5D46; border-color: #4D8669; color: #FFFFFF; }
 
 /* Quiet Footer */
 .app-foot {
@@ -1306,6 +1491,360 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 }
 .aux-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
+/* Reader Top Bar with Copy Link Action */
+.reader-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+.copy-link-btn {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid #D3CDBE;
+  background: #FAF8F2;
+  font-size: 13px;
+  font-weight: 500;
+  color: #363A35;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: border-color 0.14s, background 0.14s, color 0.14s;
+}
+.copy-link-btn:hover { border-color: #2F5D46; color: #1E4231; background: #FFFFFF; }
+.copy-link-btn.copied { border-color: #2F5D46; background: #EAF2ED; color: #1E4231; }
+
+/* Tab 4: Arastirma (Quiet Museum Research Surface) */
+.sub-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #DDD7CA;
+}
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.stat-cell {
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid #DDD7CA;
+  background: #FAF8F2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stat-val {
+  font-size: 30px;
+  line-height: 34px;
+  font-weight: 600;
+  color: #2F5D46;
+}
+.stat-lbl {
+  font-size: 12.5px;
+  color: #5E6158;
+}
+.lineage-card {
+  padding: 22px 24px;
+  border-radius: 14px;
+  border: 1px solid #DDD7CA;
+  border-left: 4px solid #2f5242;
+  background: #FAF8F2;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.lineage-card.br-babaanne { border-left-color: #9a5534; }
+.lineage-card.br-anne { border-left-color: #2e5b6e; }
+.lineage-status {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #2F5D46;
+}
+.lineage-card.br-babaanne .lineage-status { color: #9a5534; }
+.lineage-card.br-anne .lineage-status { color: #2e5b6e; }
+.lineage-h2 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 31px;
+  font-weight: 600;
+  color: #1F2421;
+}
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.q-chip {
+  min-height: 44px;
+  padding: 0 13px;
+  border-radius: 10px;
+  border: 1px solid #D3CDBE;
+  background: #FFFFFF;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2F5D46;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.q-chip:hover { border-color: #2F5D46; background: #F4F7F5; }
+
+/* Triple-Lock Evidence Cards (Excerpt + Encrypted Page Thumb + Open External Link) */
+.ev-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.ev-card {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #E2DCCE;
+  background: #FFFFFF;
+  align-items: start;
+}
+.ev-thumb-btn {
+  width: 92px;
+  height: 118px;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid #DFD9CC;
+  background: #E8E2D4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: border-color 0.14s, transform 0.14s;
+}
+.ev-thumb-btn:hover { border-color: #2F5D46; transform: translateY(-1px); }
+.ev-thumb-btn img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 2px 8px rgba(31, 36, 33, 0.18);
+}
+.ev-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.ev-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: #2F5D46;
+  letter-spacing: 0.02em;
+}
+.ev-title {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #1F2421;
+}
+.ev-page {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6B675B;
+}
+.ev-quote {
+  margin: 0;
+  font-size: 13px;
+  line-height: 19px;
+  color: #363A35;
+}
+.ev-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin-top: 2px;
+}
+.ev-action-btn {
+  min-height: 36px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2F5D46;
+  display: inline-flex;
+  align-items: center;
+}
+.ev-action-btn:hover { color: #1E4231; text-decoration: underline; }
+.ext-link {
+  min-height: 36px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4D5148;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.ext-link:hover { color: #1E4231; text-decoration: underline; }
+.ext-link-btn {
+  min-height: 44px;
+  padding: 0 15px;
+  border-radius: 10px;
+  border: 1px solid #2F5D46;
+  background: #FAF8F2;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2F5D46;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+.ext-link-btn:hover { background: #2F5D46; color: #FFFFFF; text-decoration: none; }
+
+/* Literature Catalog Cards */
+.lit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.lit-card {
+  display: grid;
+  grid-template-columns: 122px minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #DFD9CC;
+  background: #FAF8F2;
+  align-items: start;
+}
+.lit-card:hover { border-color: #B4C8BC; }
+.lit-thumb-btn {
+  width: 122px;
+  height: 164px;
+  padding: 7px;
+  border-radius: 9px;
+  border: 1px solid #DDD7CA;
+  background: #E8E2D4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.lit-thumb-btn:hover { border-color: #2F5D46; }
+.lit-thumb-btn img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 3px 10px rgba(31, 36, 33, 0.2);
+}
+
+/* Full Report Banner & Prose Table */
+.report-banner {
+  width: 100%;
+  padding: 20px 22px;
+  border-radius: 14px;
+  border: 1px solid #C8D6CD;
+  background: #F6F9F7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  text-align: left;
+}
+.report-banner:hover { border-color: #2F5D46; }
+.notice-box {
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid #D9D1BF;
+  border-left: 3.5px solid #9a5534;
+  background: #FAF8F2;
+  font-size: 13.5px;
+  line-height: 21px;
+  color: #363A35;
+}
+.toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid #DDD7CA;
+  background: #FAF8F2;
+}
+.toc-btn {
+  min-height: 36px;
+  border: 0;
+  background: transparent;
+  padding: 4px 0;
+  text-align: left;
+  font-size: 14px;
+  color: #2F5D46;
+}
+.toc-btn:hover { text-decoration: underline; }
+.toc-btn.sub { padding-left: 16px; font-size: 13px; color: #5E6158; }
+
+/* Compact Single-Line Source Index Table */
+.src-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #DDD7CA;
+  border-radius: 14px;
+  background: #FAF8F2;
+}
+.src-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.src-table th, .src-table td {
+  padding: 10px 13px;
+  border-bottom: 1px solid #E9E3D6;
+  text-align: left;
+  vertical-align: middle;
+}
+.src-table th {
+  background: #F3EFE6;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5E6158;
+}
+.src-table tr:last-child td { border-bottom: 0; }
+.src-table.src-index { table-layout: fixed; width: 100%; min-width: 760px; }
+.src-table.src-index th:nth-child(1), .src-table.src-index td:nth-child(1) { width: 17%; overflow-wrap: break-word; }
+.src-table.src-index th:nth-child(2), .src-table.src-index td:nth-child(2) { width: 41%; }
+.src-table.src-index th:nth-child(3), .src-table.src-index td:nth-child(3) { width: 15%; }
+.src-table.src-index th:nth-child(4), .src-table.src-index td:nth-child(4) { width: 13%; }
+.src-table.src-index th:nth-child(5), .src-table.src-index td:nth-child(5) { width: 14%; }
+.src-row-btn {
+  min-height: 38px;
+  border: 0;
+  background: transparent;
+  padding: 2px 0;
+  text-align: left;
+  font-weight: 500;
+  color: #1F2421;
+}
+.src-row-btn:hover { color: #2F5D46; text-decoration: underline; }
+.tag-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  background: #EDE8DC;
+  color: #4D5148;
+  white-space: nowrap;
+}
+.tag-pill.ok { background: #E4EFE8; color: #1E4231; }
+.tag-pill.warn { background: #F4EAE4; color: #7A3528; }
+
 /* Responsive Breakpoints */
 @media (max-width: 980px) {
   .plate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
@@ -1315,14 +1854,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   .viewer-stage { height: 480px; }
   .tree-col-heads, .gen-row { grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1.15fr) 48px minmax(0, 1fr); }
   .p-name { font-size: 18px; line-height: 22px; }
+  .stat-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ev-grid, .lit-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 720px) {
   .app-shell { padding: 12px 14px 36px; }
   .app-inner { gap: 28px; }
   .top-nav { position: static; flex-wrap: wrap; padding: 10px 12px; gap: 8px; }
   .brand-name { font-size: 19px; }
-  .nav-tabs { order: 3; width: 100%; justify-content: space-between; border-top: 1px solid #E4DEC9; padding-top: 8px; }
-  .nav-tab { flex: 1; padding: 0 8px; text-align: center; }
+  .nav-tabs { order: 3; width: 100%; justify-content: space-between; border-top: 1px solid #E4DEC9; padding-top: 8px; gap: 2px; }
+  .nav-tab { flex: 1; padding: 0 5px; font-size: 13px; text-align: center; }
   .hero-h1 { font-size: 36px; line-height: 40px; }
   .sec-h2 { font-size: 27px; line-height: 31px; }
   .reader-h1 { font-size: 29px; line-height: 34px; }
@@ -1338,10 +1879,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   .gen-left-slot { order: 2; padding-left: 14px; border-left: 2px solid #DDD7CA; }
   .gen-right-slot { order: 3; padding-left: 14px; border-left: 2px solid #DDD7CA; }
   .gen-conn, .spine-arrow { display: none; }
-  .viewer-stage { height: 340px; }
+  .reader-h1 { font-size: 25px; line-height: 29px; }
+  .viewer-stage { height: clamp(295px, 44svh, 380px); min-height: 295px; max-height: 390px; border-radius: 14px; }
+  .v-arrow { width: 42px; height: 42px; font-size: 22px; }
+  .v-arrow.v-prev { left: 8px; }
+  .v-arrow.v-next { right: 8px; }
+  .v-hud-btn { min-width: 38px; min-height: 38px; padding: 0 8px; font-size: 14px; }
+  .v-hud-full-lbl { display: none; }
+  .lb-copy-lbl { display: none; }
+  .lb-bar { padding: calc(8px + env(safe-area-inset-top, 0px)) 12px 8px; }
   .drawer-dialog { padding: 20px 18px 24px; }
   .drawer-docs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .quote-sheet { padding: 18px; }
+  .lineage-card { padding: 18px 16px; }
+  .ev-card, .lit-card { grid-template-columns: minmax(0, 1fr); }
+  .ev-thumb-btn, .lit-thumb-btn { width: 100%; height: 180px; }
   .prose { text-align: left; hyphens: none; -webkit-hyphens: none; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1386,6 +1938,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
         <button class="nav-tab active" type="button" role="tab" data-tab="soyagaci" aria-selected="true">Soyağacı</button>
         <button class="nav-tab" type="button" role="tab" data-tab="belgeler" aria-selected="false">Belgeler</button>
         <button class="nav-tab" type="button" role="tab" data-tab="tarihce" aria-selected="false">Tarihçe</button>
+        <button class="nav-tab" type="button" role="tab" data-tab="arastirma" aria-selected="false">Araştırma</button>
       </div>
       <button id="lockBtn" class="lock-link" type="button">Kilitle</button>
     </nav>
@@ -1403,23 +1956,33 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   <div id="drawerDialog" class="drawer-dialog" role="dialog" aria-modal="true" aria-label="Kişi bilgisi" tabindex="-1"></div>
 </div>
 
-<div id="lbModal" class="lb-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Tam ekran belge görüntüleyici">
+<dialog id="lbModal" class="doc-lightbox" aria-label="Tam ekran belge görüntüleyici">
   <div class="lb-bar">
-    <div id="lbTitle" style="font-weight:500;font-size:14px;"></div>
-    <div class="vc-group">
-      <button id="lbPrev" class="vc-btn" type="button" aria-label="Önceki sayfa">‹</button>
-      <span id="lbPageLbl" class="vc-pg" style="color:#E4DEC9;"></span>
-      <button id="lbNext" class="vc-btn" type="button" aria-label="Sonraki sayfa">›</button>
-      <button id="lbZoomOut" class="vc-btn" type="button" aria-label="Küçült">−</button>
-      <button id="lbZoomIn" class="vc-btn" type="button" aria-label="Büyüt">+</button>
-      <button id="lbRotR" class="vc-btn" type="button" aria-label="90 derece döndür">↻</button>
-      <button id="lbClose" class="vc-btn" type="button" style="margin-left:6px;background:rgba(255,255,255,0.14);">Kapat</button>
+    <div class="lb-title-wrap">
+      <span id="lbTitle" class="lb-title-text"></span>
+      <span id="lbPageLbl" class="lb-counter-badge"></span>
+    </div>
+    <div class="lb-top-actions">
+      <button id="lbCopyBtn" class="lb-top-btn" type="button" aria-label="Bağlantıyı kopyala"><span aria-hidden="true">⧉</span><span class="lb-copy-lbl">Bağlantıyı kopyala</span></button>
+      <button id="lbClose" class="lb-top-btn" type="button" aria-label="Tam ekranı kapat" style="background:rgba(255,255,255,0.16);">× Kapat</button>
     </div>
   </div>
-  <div id="lbStage" class="lb-stage">
+  <div id="lbStage" class="lb-stage" tabindex="-1">
     <img id="lbImg" class="doc-img" alt="Orijinal belge görüntüsü">
+    <button id="lbPrev" class="v-arrow v-prev" type="button" aria-label="Önceki sayfa">‹</button>
+    <button id="lbNext" class="v-arrow v-next" type="button" aria-label="Sonraki sayfa">›</button>
+    <div class="v-hud-pill" role="toolbar" aria-label="Yakınlaştırma denetimleri">
+      <button id="lbZoomOut" class="v-hud-btn" type="button" aria-label="Uzaklaştır">−</button>
+      <button id="lbZoomPct" class="v-hud-btn v-hud-pct" type="button" aria-label="Yakınlaştırmayı sıfırla">%100</button>
+      <button id="lbZoomIn" class="v-hud-btn" type="button" aria-label="Yakınlaştır">+</button>
+      <span class="v-hud-sep" aria-hidden="true"></span>
+      <button id="lbRotR" class="v-hud-btn" type="button" aria-label="90 derece döndür">↻</button>
+    </div>
   </div>
-</div>
+  <div id="lbFoot" class="lb-foot" hidden>
+    <div id="lbStrip" class="v-strip" role="navigation" aria-label="Sayfa seçimi"></div>
+  </div>
+</dialog>
 
 <script>
 (function () {
@@ -1433,12 +1996,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   var DOC_BLOB_ORDER = [];
   var MAX_BLOB_CACHE = 14;
 
+  var INITIAL_HASH = window.location.hash || '';
+  var EXPECTED_HASH = '';
+
   var STATE = {
     tab: 'soyagaci',
     docsFilter: 'all',
     docQuery: '',
     openDocId: null,
     openPageNum: 1,
+    resSub: 'bulgular',
+    resSrcQuery: '',
+    resSrcWave: 'all',
+    resLitQuery: '',
+    openLitId: null,
+    openLitPage: 1,
     drawerPerson: null,
     lastFocusEl: null,
     viewerZoom: 1,
@@ -1666,6 +2238,86 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     return null;
   }
 
+  function getLitById(id) {
+    if (!ATLAS || !ATLAS.v2Research || !ATLAS.v2Research.literature) return null;
+    var items = ATLAS.v2Research.literature.items || [];
+    for (var i = 0; i < items.length; i += 1) {
+      if (items[i].id === id) return items[i];
+    }
+    return null;
+  }
+
+  function buildCurrentHash() {
+    if (STATE.drawerPerson) return '#kisi/' + encodeURIComponent(STATE.drawerPerson);
+    if (STATE.tab === 'belgeler') {
+      if (STATE.openDocId) {
+        var d = getDocById(STATE.openDocId);
+        if (d && d.hasImages && d.pages && d.pages.length > 0) {
+          return '#belge/' + encodeURIComponent(STATE.openDocId) + '/' + (STATE.openPageNum || 1);
+        }
+        return '#belge/' + encodeURIComponent(STATE.openDocId);
+      }
+      return '#belgeler';
+    }
+    if (STATE.tab === 'tarihce') return '#tarihce';
+    if (STATE.tab === 'arastirma') {
+      if (STATE.openLitId) {
+        return '#arastirma/evrak/' + encodeURIComponent(STATE.openLitId) + '/' + (STATE.openLitPage || 1);
+      }
+      return '#arastirma/' + (STATE.resSub || 'bulgular');
+    }
+    return '#soyagaci';
+  }
+
+  function syncRouteHash() {
+    if (!ATLAS) return;
+    var target = buildCurrentHash();
+    if (window.location.hash !== target) {
+      EXPECTED_HASH = target;
+      window.location.hash = target;
+    }
+  }
+
+  function copyCurrentLink(btnEl) {
+    var href = window.location.href;
+    function done() {
+      if (!btnEl) return;
+      btnEl.classList.add('copied');
+      btnEl.textContent = 'Kopyalandı';
+      setTimeout(function () {
+        if (!btnEl.isConnected) return;
+        btnEl.classList.remove('copied');
+        btnEl.textContent = 'Bağlantıyı kopyala';
+      }, 1500);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(href).then(done).catch(function () {
+        fallbackCopy(href, done);
+      });
+    } else {
+      fallbackCopy(href, done);
+    }
+  }
+
+  function fallbackCopy(text, cb) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    } catch (e) {}
+    cb();
+  }
+
+  function renderCopyBtnHtml() {
+    return '<button type="button" id="copyLinkBtn" class="copy-link-btn">Bağlantıyı kopyala</button>';
+  }
+
   function syncNavTabs() {
     var tabs = document.querySelectorAll('.nav-tab');
     for (var i = 0; i < tabs.length; i += 1) {
@@ -1675,44 +2327,167 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     }
   }
 
-  function openDocumentReader(docId, pageNum) {
+  function openDocumentReader(docId, pageNum, skipHash) {
     var d = getDocById(docId);
     if (!d) return;
     STATE.drawerPerson = null;
     updateDrawer();
     STATE.tab = 'belgeler';
     STATE.openDocId = d.id;
+    STATE.openLitId = null;
     STATE.openPageNum = pageNum || d.defaultPage || 1;
     syncNavTabs();
     renderCurrentTab();
+    if (!skipHash) syncRouteHash();
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
-  function openPersonDrawer(pid) {
+  function openLitReader(litId, pageNum, skipHash) {
+    var it = getLitById(litId);
+    if (!it) return;
+    STATE.drawerPerson = null;
+    updateDrawer();
+    STATE.tab = 'arastirma';
+    STATE.resSub = 'literatur';
+    STATE.openDocId = null;
+    STATE.openLitId = it.id;
+    STATE.openLitPage = Math.max(1, Math.min(it.pages.length, pageNum || 1));
+    syncNavTabs();
+    renderCurrentTab();
+    if (!skipHash) syncRouteHash();
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  function openPersonDrawer(pid, skipHash) {
     if (!ATLAS || !ATLAS.graph || !ATLAS.graph.people[pid]) return;
     if (!STATE.drawerPerson) STATE.lastFocusEl = document.activeElement;
     STATE.drawerPerson = pid;
     updateDrawer();
+    if (!skipHash) syncRouteHash();
   }
 
-  function closeDrawer() {
+  function closeDrawer(skipHash) {
     var prevEl = STATE.lastFocusEl;
     STATE.drawerPerson = null;
     STATE.lastFocusEl = null;
     updateDrawer();
+    if (!skipHash && ATLAS) syncRouteHash();
     if (prevEl && prevEl.isConnected) {
       try { prevEl.focus(); } catch (e) {}
     }
   }
 
+  function applyHashRoute(rawHash, scrollTop) {
+    if (!ATLAS) return;
+    var h = String(rawHash || '').replace(/^#/, '').trim();
+    var parts = h ? h.split('/').map(function (s) {
+      try { return decodeURIComponent(s); } catch (e) { return s; }
+    }) : [];
+    var head = parts[0] || 'soyagaci';
+
+    STATE.lbOpen = false;
+    closeLightbox();
+
+    if (head === 'kisi' && parts[1] && ATLAS.graph && ATLAS.graph.people[parts[1]]) {
+      STATE.tab = 'soyagaci';
+      STATE.openDocId = null;
+      STATE.openLitId = null;
+      syncNavTabs();
+      renderCurrentTab();
+      openPersonDrawer(parts[1], true);
+      return;
+    }
+
+    STATE.drawerPerson = null;
+    updateDrawer();
+
+    if (head === 'belge' && parts[1] && getDocById(parts[1])) {
+      var pNum = parts[2] ? parseInt(parts[2], 10) : 0;
+      openDocumentReader(parts[1], isNaN(pNum) || pNum < 1 ? 0 : pNum, true);
+      return;
+    }
+
+    if (head === 'belgeler') {
+      STATE.tab = 'belgeler';
+      STATE.openDocId = null;
+      STATE.openLitId = null;
+      syncNavTabs();
+      renderCurrentTab();
+      if (scrollTop !== false) window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+
+    if (head === 'tarihce') {
+      STATE.tab = 'tarihce';
+      STATE.openDocId = null;
+      STATE.openLitId = null;
+      syncNavTabs();
+      renderCurrentTab();
+      if (scrollTop !== false) window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+
+    if (head === 'arastirma') {
+      STATE.tab = 'arastirma';
+      STATE.openDocId = null;
+      var sub = parts[1] || 'bulgular';
+      if (sub === 'evrak' && parts[2] && getLitById(parts[2])) {
+        var lp = parts[3] ? parseInt(parts[3], 10) : 1;
+        openLitReader(parts[2], isNaN(lp) || lp < 1 ? 1 : lp, true);
+        return;
+      }
+      STATE.openLitId = null;
+      if (sub === 'bulgular' || sub === 'kaynaklar' || sub === 'literatur' || sub === 'rapor' || sub === 'liste') {
+        STATE.resSub = sub;
+      } else {
+        STATE.resSub = 'bulgular';
+      }
+      syncNavTabs();
+      renderCurrentTab();
+      if (scrollTop !== false) window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+
+    STATE.tab = 'soyagaci';
+    STATE.openDocId = null;
+    STATE.openLitId = null;
+    syncNavTabs();
+    renderCurrentTab();
+    if (scrollTop !== false) window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
   function shortSentence(text, maxLen) {
-    var s = String(text || '').trim();
+    var s = String(text || '').trim().replace(/\s+/g, ' ');
     if (s.length <= maxLen) return s;
     var cut = s.slice(0, maxLen);
-    var dot = cut.lastIndexOf('.');
-    if (dot >= Math.floor(maxLen * 0.55)) return cut.slice(0, dot + 1);
+    var bestEnd = -1;
+    var re = /([.!?])\s+/g;
+    var m;
+    while ((m = re.exec(cut)) !== null) {
+      var pos = m.index;
+      if (pos < Math.floor(maxLen * 0.45)) continue;
+      var before = cut.slice(0, pos);
+      var prevCh = before.slice(-1);
+      if (/\d/.test(prevCh)) continue;
+      var tokMatch = before.match(/([A-Za-zÇĞİÖŞÜçğıöşüÂÎÛâîû.]+)$/);
+      var tok = tokMatch ? tokMatch[1] : '';
+      if (tok.length <= 3 || tok.indexOf('.') >= 0) continue;
+      var opens = (before.match(/\(/g) || []).length;
+      var closes = (before.match(/\)/g) || []).length;
+      if (opens > closes) continue;
+      bestEnd = pos + 1;
+    }
+    if (bestEnd > 0) return cut.slice(0, bestEnd).trim();
     var sp = cut.lastIndexOf(' ');
-    return (sp > 20 ? cut.slice(0, sp) : cut) + '...';
+    var res = (sp > 20 ? cut.slice(0, sp) : cut).trim();
+    var o2 = (res.match(/\(/g) || []).length;
+    var c2 = (res.match(/\)/g) || []).length;
+    if (o2 > c2) {
+      var lp = res.lastIndexOf('(');
+      if (lp > 20) res = res.slice(0, lp).trim();
+    }
+    res = res.replace(/[,:;.\-(\s]+$/, '');
+    return res + '...';
   }
 
   /* TAB 1: SOYAGACI (OPENING SCREEN) */
@@ -1864,6 +2639,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     if (hay.indexOf(qLow) >= 0) return true;
     if (d.pages && d.pages.length) {
       for (var i = 0; i < d.pages.length; i += 1) {
+        var sd = d.pages[i].sade;
+        if (sd && (trLower(sd.metin || '').indexOf(qLow) >= 0 || trLower(sd.isaret || '').indexOf(qLow) >= 0)) return true;
         var rd = d.pages[i].reading;
         if (!rd || !rd.kayitlar) continue;
         for (var j = 0; j < rd.kayitlar.length; j += 1) {
@@ -1880,6 +2657,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     var hiSet = {};
     (ATLAS.v15.highlightDocIds || []).forEach(function (id) { hiSet[id] = true; });
     var qLow = trLower((STATE.docQuery || '').trim());
+
+    var allMainCount = ATLAS.docs.filter(function (d) {
+      return d.status !== 'elendi_adas' && d.status !== 'icmal' && d.status !== 'hedef';
+    }).length;
 
     var mainDocs = ATLAS.docs.filter(function (d) {
       if (d.status === 'elendi_adas' || d.status === 'icmal' || d.status === 'hedef') return false;
@@ -1920,7 +2701,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
             '<div class="aux-thumb">' + (thumb ? '<img src="' + thumb + '" alt="' + esc(d.code) + '">' : '') + '</div>' +
             '<div style="min-width:0;">' +
               '<div style="font-weight:600;font-size:14px;color:#1F2421;">' + esc(d.title) + '</div>' +
-              '<div style="font-size:12.5px;color:#5E6158;">' + esc(d.code) + '  |  ' + esc(d.dateLabel) + '  |  ' + esc(d.statusLabel) + '</div>' +
+              '<div style="font-size:12.5px;color:#5E6158;">' + fmtInline(d.code + '  |  ' + d.dateLabel + '  |  ' + d.statusLabel) + '</div>' +
             '</div>' +
           '</div>' +
           '<span style="font-size:13px;color:#2F5D46;flex:none;">İncele →</span>' +
@@ -1945,16 +2726,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
         '</div>' +
         '<div class="mode-pair" role="group" aria-label="Belge görünümü">' +
           '<button type="button" class="mode-btn' + (STATE.docsFilter === 'featured' ? ' active' : '') + '" data-doc-mode="featured">Öne Çıkanlar</button>' +
-          '<button type="button" class="mode-btn' + (STATE.docsFilter === 'all' ? ' active' : '') + '" data-doc-mode="all">Tümü (' + m.totalDabDocs + ')</button>' +
+          '<button type="button" class="mode-btn' + (STATE.docsFilter === 'all' ? ' active' : '') + '" data-doc-mode="all">Tümü (' + allMainCount + ')</button>' +
         '</div>' +
       '</div>' +
 
       '<div class="plate-grid">' + gridHtml + '</div>' +
 
       '<details class="quiet-det">' +
-        '<summary>Diğer kayıtlar: elenen 3 adaş, 2 nüfus icmal defteri ve sonraki arşiv hedefleri</summary>' +
+        '<summary>Diğer kayıtlar: ' + auxAcquired.length + ' adaş ve icmal defteri ile ' + auxTargets.length + ' sonraki arşiv hedefi</summary>' +
         '<div class="quiet-body">' +
-          '<p class="prose" style="margin:0;color:#5E6158;">' + fmtProse('Ana galeriyi sade tutmak için adaş olduğu anlaşılan 3 belge ile mahalle ölçekli 2 nüfus icmal defteri burada ayrılmıştır; tıklayarak orijinal taramalarını inceleyebilirsiniz.') + '</p>' +
+          '<p class="prose" style="margin:0;color:#5E6158;">' + fmtProse('Ana galeriyi sade tutmak için adaş olduğu anlaşılan belgeler ile mahalle ölçekli nüfus icmal defterleri burada ayrılmıştır; tıklayarak orijinal taramalarını inceleyebilirsiniz.') + '</p>' +
           '<div class="aux-list">' + auxAcqHtml + '</div>' +
           '<div style="padding-top:8px;border-top:1px solid #E4DEC9;">' +
             '<div class="read-h" style="margin-bottom:8px;">Sonraki Arşiv Hedefleri (Henüz Edinilmemiş Katalog Kayıtları)</div>' +
@@ -1962,6 +2743,53 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
           '</div>' +
         '</div>' +
       '</details>'
+    );
+  }
+
+  function renderPageStripHtml(item, curPageNum, attrName) {
+    if (!item || !item.pages || item.pages.length <= 1) return '';
+    return item.pages.map(function (p) {
+      var isAct = p.num === curPageNum;
+      var hasHi = !!(p.highlight || p.pdfPage);
+      var lbl = p.pdfPage ? ('s. ' + p.pdfPage) : String(p.num);
+      return (
+        '<button type="button" class="v-pg-chip' + (isAct ? ' active' : '') + '" ' + attrName + '="' + p.num + '" aria-label="Sayfa ' + p.num + '"' + (isAct ? ' aria-current="page"' : '') + '>' +
+          (hasHi && !p.pdfPage ? '<span class="v-pg-dot" aria-hidden="true"></span>' : '') +
+          '<span>' + esc(lbl) + '</span>' +
+        '</button>'
+      );
+    }).join('');
+  }
+
+  function renderModernVisualCol(item, pageObj, loadingText) {
+    var total = item.pages ? item.pages.length : 0;
+    var multiPage = total > 1;
+    var arrowsHtml = multiPage
+      ? '<button type="button" id="vPrevPg" class="v-arrow v-prev" aria-label="Önceki sayfa"' + (pageObj.num <= 1 ? ' disabled' : '') + '>‹</button>' +
+        '<button type="button" id="vNextPg" class="v-arrow v-next" aria-label="Sonraki sayfa"' + (pageObj.num >= total ? ' disabled' : '') + '>›</button>' +
+        '<span class="v-counter" aria-hidden="true">' + pageObj.num + ' / ' + total + '</span>'
+      : '';
+    var stripHtml = multiPage
+      ? '<div id="vPageStrip" class="v-strip" role="navigation" aria-label="Sayfa seçimi">' + renderPageStripHtml(item, pageObj.num, 'data-v-page') + '</div>'
+      : '';
+
+    return (
+      '<div class="reader-visual">' +
+        '<div id="viewerStage" class="viewer-stage">' +
+          '<div id="viewerStatus" class="viewer-status"><span>' + esc(loadingText) + '</span></div>' +
+          '<img id="viewerImg" class="doc-img" alt="' + esc(item.title) + '">' +
+          arrowsHtml +
+          '<div class="v-hud-pill" role="toolbar" aria-label="Belge görüntüleme denetimleri">' +
+            '<button type="button" id="vZoomOut" class="v-hud-btn" aria-label="Uzaklaştır">−</button>' +
+            '<button type="button" id="vZoomPct" class="v-hud-btn v-hud-pct" aria-label="Yakınlaştırmayı sıfırla">%100</button>' +
+            '<button type="button" id="vZoomIn" class="v-hud-btn" aria-label="Yakınlaştır">+</button>' +
+            '<span class="v-hud-sep" aria-hidden="true"></span>' +
+            '<button type="button" id="vRotR" class="v-hud-btn" aria-label="90 derece döndür" title="Döndür">↻</button>' +
+            '<button type="button" id="vFull" class="v-hud-btn v-hud-full" aria-label="Tam ekran aç" title="Tam ekran"><span aria-hidden="true">⤢</span><span class="v-hud-full-lbl">Tam ekran</span></button>' +
+          '</div>' +
+        '</div>' +
+        stripHtml +
+      '</div>'
     );
   }
 
@@ -1988,7 +2816,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 
       return (
         '<div class="reader-top">' +
-          '<button type="button" id="backToGallery" class="back-link">← Tüm belgelere dön</button>' +
+          '<div class="reader-actions-bar">' +
+            '<button type="button" id="backToGallery" class="back-link">← Tüm belgelere dön</button>' +
+            renderCopyBtnHtml() +
+          '</div>' +
           '<h1 class="reader-h1 serif">' + esc(doc.title) + '</h1>' +
           '<div class="reader-meta">' +
             '<span><b>Tarih:</b> ' + fmtInline(doc.dateDetail || doc.dateLabel) + '</span>' +
@@ -2001,30 +2832,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     }
 
     var multiPage = doc.pages && doc.pages.length > 1;
-    var pagerCtrl = multiPage
-      ? '<div class="vc-group">' +
-          '<button type="button" id="vPrevPg" class="vc-btn" aria-label="Önceki sayfa"' + (pageObj.num <= 1 ? ' disabled' : '') + '>‹</button>' +
-          '<span class="vc-pg">' + pageObj.num + ' / ' + doc.pages.length + '</span>' +
-          '<button type="button" id="vNextPg" class="vc-btn" aria-label="Sonraki sayfa"' + (pageObj.num >= doc.pages.length ? ' disabled' : '') + '>›</button>' +
-        '</div>'
-      : '<div></div>';
-
-    var visualCol =
-      '<div class="reader-visual">' +
-        '<div id="viewerStage" class="viewer-stage">' +
-          '<div id="viewerStatus" class="viewer-status"><span>Orijinal belge hazırlanıyor...</span></div>' +
-          '<img id="viewerImg" class="doc-img" alt="' + esc(doc.title) + '">' +
-        '</div>' +
-        '<div class="viewer-ctrl-row">' +
-          pagerCtrl +
-          '<div class="vc-group">' +
-            '<button type="button" id="vZoomOut" class="vc-btn" aria-label="Küçült">−</button>' +
-            '<button type="button" id="vZoomIn" class="vc-btn" aria-label="Büyüt">+</button>' +
-            '<button type="button" id="vRotR" class="vc-btn" aria-label="90 derece döndür" title="Döndür">↻</button>' +
-            '<button type="button" id="vFull" class="vc-btn">Tam ekran</button>' +
-          '</div>' +
-        '</div>' +
-      '</div>';
+    var visualCol = renderModernVisualCol(doc, pageObj, 'Orijinal belge hazırlanıyor...');
 
     var readingCol = '';
     if (doc.specialSecere) {
@@ -2132,12 +2940,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
       if (sadePg && sadePg.metin) {
         primaryReadHtml =
           '<section class="read-sec">' +
-            '<h2 class="read-h">Günümüz Türkçesiyle' + (multiPage ? ' (Sayfa ' + pageObj.num + ')' : '') + '</h2>' +
+            '<h2 class="read-h">Günümüz Türkçesiyle Anlamı' + (multiPage ? ' (Sayfa ' + pageObj.num + ')' : '') + '</h2>' +
             '<div class="read-body">' + fmtProseParas(sadePg.metin) + '</div>' +
           '</section>';
         extraTransDet =
           '<details class="quiet-det" id="detLatin">' +
-            '<summary>Latin harfli özgün çeviriyazıyı göster</summary>' +
+            '<summary>Osmanlıca Latin harfli çeviriyazıyı göster</summary>' +
             '<div class="quiet-body"><div class="entry-list">' + latinHtml + '</div></div>' +
           '</details>';
       } else {
@@ -2182,7 +2990,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 
     return (
       '<div class="reader-top">' +
-        '<button type="button" id="backToGallery" class="back-link">← Tüm belgelere dön</button>' +
+        '<div class="reader-actions-bar">' +
+          '<button type="button" id="backToGallery" class="back-link">← Tüm belgelere dön</button>' +
+          renderCopyBtnHtml() +
+        '</div>' +
         '<h1 class="reader-h1 serif">' + esc(doc.title) + '</h1>' +
         '<div class="reader-meta">' +
           '<span><b>Tarih:</b> ' + fmtInline(cleanHuman(doc.dateDetail || doc.dateLabel)) + '</span>' +
@@ -2194,6 +3005,439 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
         readingCol +
       '</div>'
     );
+  }
+
+  /* TAB 4: ARASTIRMA (4 QUIET SUB-VIEWS + LIT PAGE READER + DEEP RESEARCH REPORT) */
+  function renderResearchSubNav() {
+    var cur = STATE.resSub || 'bulgular';
+    var items = [
+      ['bulgular', 'Bulgular'],
+      ['kaynaklar', 'Kaynak Belgeler'],
+      ['literatur', 'Literatür'],
+      ['liste', 'Araştırma Listesi']
+    ];
+    return (
+      '<div class="sub-nav" role="tablist" aria-label="Araştırma alt bölümleri">' +
+        items.map(function (it) {
+          var isAct = cur === it[0] || (cur === 'rapor' && it[0] === 'literatur');
+          return '<button type="button" role="tab" class="mode-btn' + (isAct ? ' active' : '') + '" data-res-sub="' + esc(it[0]) + '" aria-selected="' + (isAct ? 'true' : 'false') + '">' + esc(it[1]) + '</button>';
+        }).join('') +
+      '</div>'
+    );
+  }
+
+  function renderEvidenceCardsHtml(cards) {
+    if (!cards || !cards.length) return '';
+    return (
+      '<div style="display:flex;flex-direction:column;gap:8px;padding-top:6px;border-top:1px solid #E4DEC9;">' +
+        '<div class="read-h">İlgili Akademik ve Defter Kesitleri (Sayfa Görüntüsü + Dış Kaynak)</div>' +
+        '<div class="ev-grid">' +
+          cards.map(function (c) {
+            var th = THUMB_URLS[c.litId] || '';
+            var extHtml = c.externalUrl
+              ? '<a class="ext-link" href="' + esc(c.externalUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(c.externalLabel || 'Dış kaynak') + ' ↗</a>'
+              : '';
+            return (
+              '<div class="ev-card">' +
+                '<button type="button" class="ev-thumb-btn" data-open-lit="' + esc(c.litId) + '" data-open-lit-page="' + esc(c.pageNum || 1) + '" aria-label="Sayfa görüntüsünü aç">' +
+                  (th ? '<img src="' + th + '" alt="' + esc(c.title) + '">' : '<span style="font-size:12px;color:#5E6158;">' + esc(c.litId) + '</span>') +
+                '</button>' +
+                '<div class="ev-body">' +
+                  '<span class="ev-tag">' + fmtInline(c.epistemic) + '</span>' +
+                  '<span class="ev-title">' + esc(c.title) + '</span>' +
+                  '<span class="ev-page">' + fmtInline(c.pageRef) + '</span>' +
+                  '<p class="ev-quote prose">' + fmtProse(c.excerpt) + '</p>' +
+                  '<div class="ev-actions">' +
+                    '<button type="button" class="ev-action-btn" data-open-lit="' + esc(c.litId) + '" data-open-lit-page="' + esc(c.pageNum || 1) + '">Sayfayı büyüt →</button>' +
+                    extHtml +
+                  '</div>' +
+                '</div>' +
+              '</div>'
+            );
+          }).join('') +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderResearchBranches(res) {
+    var br = res.branches;
+    var statsHtml = (br.stats || []).map(function (st) {
+      return '<div class="stat-cell"><span class="stat-val serif">' + esc(st.val) + '</span><span class="stat-lbl">' + esc(st.lbl) + '</span></div>';
+    }).join('');
+
+    var linHtml = (br.lineages || []).map(function (ln) {
+      var hlHtml = (ln.highlights || []).map(function (h) {
+        return '<li class="prose">' + fmtProse(h) + '</li>';
+      }).join('');
+      var lkHtml = (ln.links || []).map(function (lk) {
+        if (lk.type === 'lit') {
+          return '<button type="button" class="q-chip" data-open-lit="' + esc(lk.id) + '">' + esc(lk.label) + ' →</button>';
+        }
+        return '<button type="button" class="q-chip" data-open-doc="' + esc(lk.id) + '">' + esc(lk.label) + ' →</button>';
+      }).join('');
+      return (
+        '<article class="lineage-card br-' + esc(ln.branch || 'baba') + '">' +
+          '<div>' +
+            '<div class="lineage-status">' + fmtInline(ln.status) + '</div>' +
+            '<h2 class="lineage-h2 serif" style="margin-top:4px;">' + fmtInline(ln.title) + '</h2>' +
+          '</div>' +
+          '<p class="read-body prose" style="margin:0;">' + fmtProse(ln.summary) + '</p>' +
+          '<ul class="branch-list">' + hlHtml + '</ul>' +
+          '<div class="meta-note-box prose"><b>Açık Sorular:</b> ' + fmtProse(ln.openQuestions) + '</div>' +
+          (lkHtml ? '<div class="quick-links">' + lkHtml + '</div>' : '') +
+          renderEvidenceCardsHtml(ln.evidenceCards) +
+        '</article>'
+      );
+    }).join('');
+
+    var elimHtml = (br.eliminations || []).map(function (el) {
+      var btn = el.docId ? ' <button type="button" class="sec-link" data-open-doc="' + esc(el.docId) + '" style="min-height:32px;font-size:13px;">Belgeyi gör →</button>' : '';
+      return '<li><b>' + fmtInline(el.code) + ':</b> <span class="prose">' + fmtProse(el.note) + '</span>' + btn + '</li>';
+    }).join('');
+
+    return (
+      '<section class="hero-block">' +
+        '<h1 class="hero-h1 serif">Araştırma</h1>' +
+        '<p class="hero-lead prose">' + fmtProse(br.lead) + '</p>' +
+      '</section>' +
+      renderResearchSubNav() +
+      '<div class="stat-strip">' + statsHtml + '</div>' +
+      '<div style="display:flex;flex-direction:column;gap:22px;">' + linHtml + '</div>' +
+      '<details class="quiet-det">' +
+        '<summary>Şeffaf elemeler: adaş kayıtlar ve elenen defterler (' + (br.eliminations || []).length + ' kayıt)</summary>' +
+        '<div class="quiet-body"><ul class="branch-list">' + elimHtml + '</ul></div>' +
+      '</details>'
+    );
+  }
+
+  function renderResearchSources(res) {
+    var rows = res.sourceIndex || [];
+    var qLow = trLower((STATE.resSrcQuery || '').trim());
+    var wf = STATE.resSrcWave || 'all';
+    var filtered = rows.filter(function (r) {
+      if (wf !== 'all' && r.wave !== wf) return false;
+      if (!qLow) return true;
+      var hay = trLower(r.code + ' ' + r.title + ' ' + r.date + ' ' + r.theme + ' ' + r.wave + ' ' + r.statusLabel);
+      return hay.indexOf(qLow) >= 0;
+    });
+
+    var waves = [
+      ['all', 'Tümü (' + rows.length + ')'],
+      ['Dalga 1', 'Dalga 1'],
+      ['Dalga 2', 'Dalga 2'],
+      ['Şecere / NVİ', 'Şecere / NVİ'],
+      ['Sonraki Hedef', 'Sonraki Hedef']
+    ];
+
+    var tbody = filtered.map(function (r) {
+      var pillCls = r.status === 'elendi_adas' ? ' warn' : (r.status === 'birincil_aday' || r.status === 'secere' || r.status === 'edevlet' ? ' ok' : '');
+      var titleCell = r.clickable
+        ? '<button type="button" class="src-row-btn" data-open-doc="' + esc(r.id) + '">' + esc(r.title) + '</button>'
+        : '<span style="color:#4D5148;">' + esc(r.title) + '</span>';
+      return (
+        '<tr>' +
+          '<td style="font-weight:600;color:#2F5D46;">' + esc(r.code) + '</td>' +
+          '<td>' + titleCell + '</td>' +
+          '<td>' + esc(r.date) + '</td>' +
+          '<td>' + fmtInline(r.wave + (r.pages ? '  |  ' + r.pages + '\u00a0s.' : '')) + '</td>' +
+          '<td><span class="tag-pill' + pillCls + '">' + esc(r.statusLabel) + '</span></td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    return (
+      '<section class="hero-block">' +
+        '<h1 class="hero-h1 serif">Kaynak Belgeler Dizini</h1>' +
+        '<p class="hero-lead prose">' + fmtProse('Edinilen tüm Osmanlıca ve Cumhuriyet arşivi belgeleri, aile şeceresi, resmî nüfus kaydı ve sıradaki nokta atışı arşiv hedefleri tek dizinde. Herhangi bir edinilmiş belgeye tıklayarak okuyucuyu açabilirsiniz.') + '</p>' +
+      '</section>' +
+      renderResearchSubNav() +
+      '<div class="docs-toolbar">' +
+        '<div class="search-line">' +
+          '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#7C7769" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5L14 14"></path></svg>' +
+          '<input id="resSrcSearch" type="search" value="' + esc(STATE.resSrcQuery) + '" placeholder="Künye, konu veya yıl ara..." aria-label="Kaynak dizininde ara">' +
+        '</div>' +
+        '<div class="mode-pair" style="flex-wrap:wrap;" role="group" aria-label="Kaynak grubu">' +
+          waves.map(function (w) {
+            return '<button type="button" class="mode-btn' + (wf === w[0] ? ' active' : '') + '" data-res-wave="' + esc(w[0]) + '">' + esc(w[1]) + '</button>';
+          }).join('') +
+        '</div>' +
+      '</div>' +
+      '<div class="src-table-wrap"><table class="src-table src-index"><thead><tr><th>Arşiv Kodu</th><th>Belge Başlığı</th><th>Tarih</th><th>Grup</th><th>Durum</th></tr></thead><tbody>' +
+        (tbody || '<tr><td colspan="5" style="text-align:center;color:#5E6158;padding:24px;">Eşleşen kaynak bulunamadı.</td></tr>') +
+      '</tbody></table></div>'
+    );
+  }
+
+  function renderResearchLiterature(res) {
+    var lit = res.literature || {};
+    var rep = res.deepReport || {};
+    var items = lit.items || [];
+    var extCat = lit.externalCatalog || [];
+    var qLow = trLower((STATE.resLitQuery || '').trim());
+
+    var filtered = items.filter(function (it) {
+      if (!qLow) return true;
+      var hay = trLower(it.code + ' ' + it.title + ' ' + it.author + ' ' + it.branch + ' ' + it.excerpt + ' ' + it.summary + ' ' + it.pageRef);
+      return hay.indexOf(qLow) >= 0;
+    });
+
+    var cardsHtml = filtered.map(function (it) {
+      var th = THUMB_URLS[it.id] || '';
+      var extHtml = it.externalUrl
+        ? '<a class="ext-link" href="' + esc(it.externalUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(it.externalLabel || 'Dış kaynak') + ' ↗</a>'
+        : '';
+      return (
+        '<article class="lit-card">' +
+          '<button type="button" class="lit-thumb-btn" data-open-lit="' + esc(it.id) + '" data-open-lit-page="1" aria-label="' + esc(it.title) + ' sayfa görüntüsü">' +
+            (th ? '<img src="' + th + '" alt="' + esc(it.title) + '">' : '<span style="font-size:12px;color:#5E6158;">' + esc(it.id) + '</span>') +
+          '</button>' +
+          '<div class="ev-body">' +
+            '<span class="ev-tag">' + fmtInline(it.epistemic + '  |  ' + it.year) + '</span>' +
+            '<span class="serif" style="font-size:21px;line-height:25px;font-weight:600;color:#1F2421;">' + esc(it.title) + '</span>' +
+            '<span class="ev-page">' + fmtInline(it.author + '  |  ' + it.pageRef) + '</span>' +
+            '<p class="ev-quote prose">' + fmtProse(it.excerpt) + '</p>' +
+            '<div class="ev-actions">' +
+              '<button type="button" class="ev-action-btn" data-open-lit="' + esc(it.id) + '" data-open-lit-page="1">Şifreli sayfayı aç (' + it.pageCount + ' s.) →</button>' +
+              extHtml +
+            '</div>' +
+          '</div>' +
+        '</article>'
+      );
+    }).join('');
+
+    var extRowsHtml = extCat.map(function (x, idx) {
+      return (
+        '<tr>' +
+          '<td style="color:#7C7769;white-space:nowrap;">' + (idx + 1) + '</td>' +
+          '<td><b>' + esc(x.title) + '</b>' + (x.author ? '<br><span style="font-size:12px;color:#5E6158;">' + esc(x.author) + (x.year ? ' (' + esc(x.year) + ')' : '') + '</span>' : '') + '</td>' +
+          '<td style="white-space:nowrap;font-size:12.5px;color:#5E6158;">' + esc(x.group) + '</td>' +
+          '<td style="white-space:nowrap;"><a class="ext-link" href="' + esc(x.url) + '" target="_blank" rel="noopener noreferrer">' + esc(x.domain) + ' ↗</a></td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    return (
+      '<section class="hero-block">' +
+        '<h1 class="hero-h1 serif">' + esc(lit.heading || 'Literatür ve Derin Araştırma') + '</h1>' +
+        '<p class="hero-lead prose">' + fmtProse(lit.lead || '') + '</p>' +
+      '</section>' +
+      renderResearchSubNav() +
+      '<button type="button" id="openDeepReportBtn" class="report-banner">' +
+        '<div style="display:flex;flex-direction:column;gap:4px;max-width:740px;">' +
+          '<span class="plate-year">' + fmtInline('Derin Literatür Raporu  |  ' + (rep.statsLabel || '')) + '</span>' +
+          '<span class="serif" style="font-size:26px;line-height:30px;font-weight:600;color:#1F2421;">' + fmtInline(rep.title || '') + '</span>' +
+          '<span class="plate-cap">Tüm bölümler, epistemik katmanlaştırma ve 145 kaynaklı tıklanabilir bibliyografya.</span>' +
+        '</div>' +
+        '<span class="sec-link" style="font-weight:600;">Tam raporu oku →</span>' +
+      '</button>' +
+      '<div class="docs-toolbar">' +
+        '<div class="search-line">' +
+          '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#7C7769" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5L14 14"></path></svg>' +
+          '<input id="resLitSearch" type="search" value="' + esc(STATE.resLitQuery) + '" placeholder="Tez, yazar, sicil veya konu ara..." aria-label="Literatürde ara">' +
+        '</div>' +
+        '<span style="font-size:13px;color:#5E6158;">' + fmtInline(filtered.length + ' seçilmiş kaynak  |  ' + (lit.totalPages || 0) + ' şifreli sayfa') + '</span>' +
+      '</div>' +
+      '<div class="lit-grid">' + (cardsHtml || '<div style="padding:24px;color:#5E6158;">Eşleşen kaynak bulunamadı.</div>') + '</div>' +
+      '<details class="quiet-det" id="detAllExtSources">' +
+        '<summary>Tüm açık erişimli doktrin, tez ve makale bağlantıları (' + extCat.length + ' doğrudan link)</summary>' +
+        '<div class="quiet-body">' +
+          '<p class="prose" style="margin:0;color:#5E6158;">' + fmtProse('DergiPark, İSAM, YÖK Ulusal Tez Merkezi, Devlet Arşivleri, VGM, ATAM ve TDV İslâm Ansiklopedisi dahil taramada ulaşılan tüm açık erişimli dış bağlantılar yeni sekmede gizlilik korumasıyla açılır.') + '</p>' +
+          '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>#</th><th>Kaynak Adı ve Yazar</th><th>Tür</th><th>Açık Erişim Linki</th></tr></thead><tbody>' + extRowsHtml + '</tbody></table></div>' +
+        '</div>' +
+      '</details>'
+    );
+  }
+
+  function renderLitReader(item) {
+    var pnum = Math.max(1, Math.min(item.pages.length, STATE.openLitPage || 1));
+    STATE.openLitPage = pnum;
+    var pg = item.pages[pnum - 1];
+    var visualCol = renderModernVisualCol(item, pg, 'Literatür sayfası çözülüyor...');
+
+    var extBtnHtml = item.externalUrl
+      ? '<div><a class="ext-link-btn" href="' + esc(item.externalUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(item.externalLabel || 'Açık erişim kaynağını aç') + ' ↗</a></div>'
+      : '';
+
+    var readingCol =
+      '<div class="reader-col">' +
+        '<div class="locator-line"><b>Bu sayfada ne geçiyor? (PDF s. ' + esc(pg.pdfPage) + ')</b> ' + fmtInline(pg.caption) + '</div>' +
+        '<section class="read-sec">' +
+          '<h2 class="read-h">Birebir Kısa Bulgu ve Kesit</h2>' +
+          '<div class="read-body"><p class="prose">' + fmtProse(item.excerpt) + '</p></div>' +
+        '</section>' +
+        '<section class="read-sec">' +
+          '<h2 class="read-h">Özet ve Aile Araştırmasındaki Önemi</h2>' +
+          '<div class="read-body">' +
+            '<p class="prose">' + fmtProse(item.summary) + '</p>' +
+            '<p class="prose" style="color:#4D5148;">' + fmtProse(item.whyImportant) + '</p>' +
+          '</div>' +
+        '</section>' +
+        extBtnHtml +
+        '<div class="meta-note-box prose" style="padding-top:12px;border-top:1px solid #DDD7CA;">' +
+          '<b>Kanıt Katmanı:</b> ' + fmtInline(item.epistemic) + '<br>' +
+          '<b>Künye:</b> ' + fmtInline(item.citation) +
+        '</div>' +
+      '</div>';
+
+    return (
+      '<div class="reader-top">' +
+        '<div class="reader-actions-bar">' +
+          '<button type="button" id="backToLit" class="back-link">← Literatüre dön</button>' +
+          renderCopyBtnHtml() +
+        '</div>' +
+        '<h1 class="reader-h1 serif">' + esc(item.title) + '</h1>' +
+        '<div class="reader-meta">' +
+          '<span><b>Kaynak:</b> ' + fmtInline(item.code) + '</span>' +
+          '<span><b>Yazar ve Yıl:</b> ' + fmtInline(item.author + ' (' + item.year + ')') + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="reader-split">' + visualCol + readingCol + '</div>'
+    );
+  }
+
+  function renderDeepReport(res) {
+    var rep = res.deepReport || {};
+    var secs = rep.sections || [];
+    var srcs = rep.sources || [];
+
+    var tocHtml = secs.filter(function (s, idx) {
+      return !(idx === 0 && s.level <= 2);
+    }).map(function (s) {
+      var cls = s.level >= 4 ? 'toc-btn sub' : 'toc-btn';
+      return '<button type="button" class="' + cls + '" data-scroll-sec="' + esc(s.id) + '">' + fmtInline(s.title) + '</button>';
+    }).join('');
+
+    var bodyHtml = secs.map(function (s) {
+      var hTag = s.level <= 2 ? 'h2' : (s.level === 3 ? 'h2' : 'h3');
+      var hStyle = s.level >= 4 ? 'font-size:22px;line-height:28px;margin:4px 0 0;' : '';
+      var blocksHtml = (s.blocks || []).map(function (b) {
+        if (b.type === 'p') {
+          return '<p class="essay-p prose">' + fmtProse(b.text) + '</p>';
+        }
+        if (b.type === 'ul') {
+          return '<ul class="branch-list">' + (b.items || []).map(function (it) {
+            return '<li class="prose">' + fmtProse(it) + '</li>';
+          }).join('') + '</ul>';
+        }
+        if (b.type === 'table') {
+          var th = (b.headers || []).map(function (h) { return '<th>' + fmtInline(h) + '</th>'; }).join('');
+          var tb = (b.rows || []).map(function (rw) {
+            return '<tr>' + rw.map(function (c) { return '<td class="prose">' + fmtProse(c) + '</td>'; }).join('') + '</tr>';
+          }).join('');
+          return '<div class="src-table-wrap"><table class="src-table"><thead><tr>' + th + '</tr></thead><tbody>' + tb + '</tbody></table></div>';
+        }
+        return '';
+      }).join('');
+      return (
+        '<section id="' + esc(s.id) + '" class="essay-chapter">' +
+          '<' + hTag + ' class="essay-h2 serif" style="' + hStyle + '">' + fmtInline(s.title) + '</' + hTag + '>' +
+          blocksHtml +
+        '</section>'
+      );
+    }).join('');
+
+    var bibRows = srcs.map(function (s) {
+      var linkCell = s.url
+        ? '<a class="ext-link" href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(s.domain || 'Bağlantı') + ' ↗</a>'
+        : '<span style="color:#7C7769;">' + esc(s.domain || '') + '</span>';
+      return '<tr><td style="white-space:nowrap;color:#7C7769;">' + esc(s.no) + '</td><td>' + esc(s.title) + '</td><td style="white-space:nowrap;">' + linkCell + '</td></tr>';
+    }).join('');
+
+    return (
+      '<div class="essay-wrap" style="max-width:820px;">' +
+        '<div class="reader-actions-bar">' +
+          '<button type="button" id="backFromReport" class="back-link">← Literatüre dön</button>' +
+          renderCopyBtnHtml() +
+        '</div>' +
+        '<header class="hero-block" style="max-width:none;">' +
+          '<span class="essay-period">' + fmtInline(rep.statsLabel || '') + '</span>' +
+          '<h1 class="hero-h1 serif" style="font-size:40px;line-height:46px;">' + fmtInline(rep.title || '') + '</h1>' +
+        '</header>' +
+        '<div class="notice-box prose">' + fmtProse(rep.notice || '') + '</div>' +
+        '<div class="toc-list"><div class="read-h" style="margin-bottom:4px;">Bölümler</div>' + tocHtml + '</div>' +
+        bodyHtml +
+        '<section id="dr-bib" class="essay-chapter">' +
+          '<span class="essay-period">Tıklanabilir Kaynakça</span>' +
+          '<h2 class="essay-h2 serif">Raporda Kullanılan Açık Erişimli Kaynaklar (' + srcs.length + ')</h2>' +
+          '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>No</th><th>Kaynak Başlığı</th><th>Dış Bağlantı</th></tr></thead><tbody>' + bibRows + '</tbody></table></div>' +
+        '</section>' +
+      '</div>'
+    );
+  }
+
+  function renderResearchHandoff(res) {
+    var ho = res.handoff || {};
+    var doneHtml = (ho.completedScans || []).map(function (s) {
+      return '<li class="prose">' + fmtProse(s) + '</li>';
+    }).join('');
+    var varRows = (ho.workingVariants || []).map(function (v) {
+      return '<tr><td style="font-weight:600;color:#2F5D46;">' + fmtInline(v.term) + '</td><td class="prose">' + fmtProse(v.note) + '</td></tr>';
+    }).join('');
+    var w3Rows = (ho.wave3DabTargets || []).map(function (t) {
+      return '<tr><td style="font-weight:600;color:#1F2421;">' + fmtInline(t.code) + '</td><td style="font-size:12.5px;color:#2F5D46;">' + fmtInline(t.scope) + '</td><td class="prose">' + fmtProse(t.why) + '</td></tr>';
+    }).join('');
+    var d4Html = (ho.dalga4ByLineage || []).map(function (grp) {
+      var rHtml = (grp.rows || []).map(function (r) {
+        return '<tr><td style="font-weight:600;color:#2F5D46;">' + fmtInline(r.code) + '</td><td style="white-space:nowrap;">' + esc(r.date) + '</td><td style="white-space:nowrap;font-size:12.5px;color:#5E6158;">' + esc(r.pages) + '</td><td class="prose">' + fmtProse(r.note) + '</td></tr>';
+      }).join('');
+      return (
+        '<details class="quiet-det"' + (grp.open ? ' open' : '') + '>' +
+          '<summary>' + fmtInline(grp.title) + '</summary>' +
+          '<div class="quiet-body" style="padding:0;">' +
+            '<div class="src-table-wrap" style="border:0;border-radius:0;"><table class="src-table"><thead><tr><th>Arşiv Kodu</th><th>Tarih</th><th>Poz ve Bedel</th><th>Kuşak ve Araştırma Notu</th></tr></thead><tbody>' + rHtml + '</tbody></table></div>' +
+          '</div>' +
+        '</details>'
+      );
+    }).join('');
+    var instRows = (ho.institutionalTargets || []).map(function (it) {
+      return '<tr><td style="font-weight:600;color:#1F2421;">' + esc(it.inst) + '</td><td style="font-size:12.5px;color:#2F5D46;">' + fmtInline(it.ref) + '</td><td class="prose">' + fmtProse(it.goal) + '</td></tr>';
+    }).join('');
+
+    return (
+      '<section class="hero-block">' +
+        '<h1 class="hero-h1 serif">' + esc(ho.heading || 'Araştırma Listesi') + '</h1>' +
+        '<p class="hero-lead prose">' + fmtProse(ho.lead || '') + '</p>' +
+      '</section>' +
+      renderResearchSubNav() +
+      '<section style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">Tamamlanan Taramalar ve Çıkmaz Yollar</h2></div>' +
+        '<div class="quote-sheet"><ul class="branch-list">' + doneHtml + '</ul></div>' +
+      '</section>' +
+      '<section style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">Osmanlıca Katalogda Çalışan Yazımlar</h2></div>' +
+        '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Arama Yazımı</th><th>Neden ve Nerede Çalışır?</th></tr></thead><tbody>' + varRows + '</tbody></table></div>' +
+      '</section>' +
+      '<section style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">Öncelikli Nokta Atışı Devlet Arşivleri (DAB) Hedefleri</h2></div>' +
+        '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Arşiv Künyesi</th><th>Sayfa ve Tahmini Bedel</th><th>Beklenen Katkı</th></tr></thead><tbody>' + w3Rows + '</tbody></table></div>' +
+      '</section>' +
+      (d4Html
+        ? '<section style="display:flex;flex-direction:column;gap:14px;">' +
+            '<div class="sec-bar"><h2 class="sec-h2 serif">' + fmtInline('Ata Kuşaklarına Göre Hazır Alım Listesi (31 Kompakt Belge  |  78 Poz)') + '</h2></div>' +
+            '<div class="quiet-stack">' + d4Html + '</div>' +
+          '</section>'
+        : '') +
+      '<section style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">DAB Dışı Kurum Hedefleri (İMMEŞ, VGMA, BOA Salon, NVİ, İBB)</h2></div>' +
+        '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Kurum</th><th>Dosya ve Defter Kaydı</th><th>Çözeceği Soru</th></tr></thead><tbody>' + instRows + '</tbody></table></div>' +
+      '</section>'
+    );
+  }
+
+  function renderResearchTab() {
+    var res = ATLAS.v2Research;
+    if (!res) return '<div style="padding:24px;">Araştırma verisi bulunamadı.</div>';
+    if (STATE.openLitId) {
+      var litItem = getLitById(STATE.openLitId);
+      if (litItem) return renderLitReader(litItem);
+    }
+    var sub = STATE.resSub || 'bulgular';
+    if (sub === 'kaynaklar') return renderResearchSources(res);
+    if (sub === 'literatur') return renderResearchLiterature(res);
+    if (sub === 'rapor') return renderDeepReport(res);
+    if (sub === 'liste') return renderResearchHandoff(res);
+    return renderResearchBranches(res);
   }
 
   /* TAB 3: TARIHCE (SINGLE-COLUMN BOOK NARRATIVE + SHAJARA TREASURES) */
@@ -2211,7 +3455,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
           '<figure class="essay-fig">' +
             '<button type="button" class="essay-fig-btn" data-open-doc="' + esc(c.docId) + '">' +
               '<div class="essay-fig-frame"><img src="' + THUMB_URLS[c.docId] + '" alt="' + esc(c.docCaption || c.title) + '"></div>' +
-              '<figcaption class="essay-fig-cap">' + fmtInline(c.docCaption) + '  |  Büyütmek için dokunun</figcaption>' +
+              '<figcaption class="essay-fig-cap">' + fmtInline((c.docCaption || '') + '  |  Büyütmek için dokunun') + '</figcaption>' +
             '</button>' +
           '</figure>';
       }
@@ -2369,25 +3613,149 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     try { document.getElementById('drCloseBtn').focus(); } catch (e) {}
   }
 
-  /* VIEWER TRANSFORM & LIGHTBOX */
-  function applyViewerTransform(imgEl, stageEl) {
-    if (!imgEl || !stageEl) return;
-    var nw = STATE.viewerImgW || imgEl.naturalWidth || 1000;
-    var nh = STATE.viewerImgH || imgEl.naturalHeight || 1000;
+  /* MODERN VIEWER ENGINE (FOCAL PINCH-ZOOM, 1:1 SLIDING, SWIPE-DOWN LIGHTBOX) */
+  var REDUCED_MOTION_MQ = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  function prefersReducedMotion() {
+    return !!(REDUCED_MOTION_MQ && REDUCED_MOTION_MQ.matches);
+  }
+
+  function computeStageDims(imgEl, stageEl) {
+    var nw = STATE.viewerImgW || (imgEl && imgEl.naturalWidth) || 1000;
+    var nh = STATE.viewerImgH || (imgEl && imgEl.naturalHeight) || 1000;
     var rot = ((STATE.viewerRot % 360) + 360) % 360;
     var swapped = rot === 90 || rot === 270;
     var ew = swapped ? nh : nw;
     var eh = swapped ? nw : nh;
-    var sw = stageEl.clientWidth || 640;
-    var sh = stageEl.clientHeight || 520;
-    var baseScale = Math.min((sw - 24) / ew, (sh - 24) / eh);
-    var effScale = baseScale * STATE.viewerZoom;
-    imgEl.style.width = nw + 'px';
-    imgEl.style.height = nh + 'px';
+    var sw = (stageEl && stageEl.clientWidth) || 640;
+    var sh = (stageEl && stageEl.clientHeight) || 520;
+    var pad = sw < 500 ? 12 : 24;
+    var baseScale = Math.min((sw - pad) / ew, (sh - pad) / eh);
+    return { nw: nw, nh: nh, rot: rot, ew: ew, eh: eh, sw: sw, sh: sh, baseScale: baseScale };
+  }
+
+  function clampViewerPan(stageEl, imgEl, zoom, tx, ty) {
+    if (zoom <= 1.01) return { tx: 0, ty: 0 };
+    var d = computeStageDims(imgEl, stageEl);
+    var dispW = d.ew * d.baseScale * zoom;
+    var dispH = d.eh * d.baseScale * zoom;
+    var maxX = Math.max(0, (dispW - d.sw) / 2);
+    var maxY = Math.max(0, (dispH - d.sh) / 2);
+    return {
+      tx: Math.max(-maxX, Math.min(maxX, tx)),
+      ty: Math.max(-maxY, Math.min(maxY, ty))
+    };
+  }
+
+  function updateZoomBadges() {
+    var pct = '%' + Math.round(STATE.viewerZoom * 100);
+    var vPct = document.getElementById('vZoomPct');
+    var lPct = document.getElementById('lbZoomPct');
+    if (vPct) vPct.textContent = pct;
+    if (lPct) lPct.textContent = pct;
+    var vSt = document.getElementById('viewerStage');
+    var lSt = document.getElementById('lbStage');
+    var zoomed = STATE.viewerZoom > 1.02;
+    if (vSt) vSt.classList.toggle('is-zoomed', zoomed);
+    if (lSt) lSt.classList.toggle('is-zoomed', zoomed);
+  }
+
+  function applyViewerTransform(imgEl, stageEl, animate, extraX, extraY) {
+    if (!imgEl || !stageEl) return;
+    var d = computeStageDims(imgEl, stageEl);
+    var effScale = d.baseScale * STATE.viewerZoom;
+    var tx = STATE.viewerTx + (extraX || 0);
+    var ty = STATE.viewerTy + (extraY || 0);
+    if (animate && !prefersReducedMotion()) {
+      imgEl.classList.add('v-anim');
+    } else {
+      imgEl.classList.remove('v-anim');
+    }
+    imgEl.style.width = d.nw + 'px';
+    imgEl.style.height = d.nh + 'px';
     imgEl.style.transform =
-      'translate(' + STATE.viewerTx.toFixed(1) + 'px, ' + STATE.viewerTy.toFixed(1) + 'px) ' +
+      'translate3d(' + tx.toFixed(1) + 'px, ' + ty.toFixed(1) + 'px, 0) ' +
       'scale(' + effScale.toFixed(4) + ') ' +
-      'rotate(' + rot + 'deg)';
+      'rotate(' + d.rot + 'deg)';
+    updateZoomBadges();
+  }
+
+  function zoomAtFocal(stageEl, imgEl, clientX, clientY, targetZoom, animate) {
+    if (!stageEl || !imgEl) return;
+    var oldZoom = STATE.viewerZoom || 1;
+    var newZoom = Math.max(1, Math.min(5, targetZoom));
+    if (newZoom <= 1.02) {
+      STATE.viewerZoom = 1;
+      STATE.viewerTx = 0;
+      STATE.viewerTy = 0;
+      applyViewerTransform(imgEl, stageEl, animate);
+      return;
+    }
+    var rect = stageEl.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    var ox = (clientX != null ? clientX : cx) - cx;
+    var oy = (clientY != null ? clientY : cy) - cy;
+    var ratio = newZoom / oldZoom;
+    var rawTx = ox - (ox - STATE.viewerTx) * ratio;
+    var rawTy = oy - (oy - STATE.viewerTy) * ratio;
+    var clamped = clampViewerPan(stageEl, imgEl, newZoom, rawTx, rawTy);
+    STATE.viewerZoom = newZoom;
+    STATE.viewerTx = clamped.tx;
+    STATE.viewerTy = clamped.ty;
+    applyViewerTransform(imgEl, stageEl, animate);
+  }
+
+  function resetViewerZoom(stageEl, imgEl, animate) {
+    STATE.viewerZoom = 1;
+    STATE.viewerTx = 0;
+    STATE.viewerTy = 0;
+    applyViewerTransform(imgEl, stageEl, animate);
+  }
+
+  function getActiveMediaItem() {
+    if (STATE.tab === 'belgeler' && STATE.openDocId) {
+      var d = getDocById(STATE.openDocId);
+      if (d && d.hasImages && d.pages && d.pages.length) {
+        return { kind: 'doc', item: d, pageNum: STATE.openPageNum || 1 };
+      }
+    }
+    if (STATE.tab === 'arastirma' && STATE.openLitId) {
+      var lt = getLitById(STATE.openLitId);
+      if (lt && lt.pages && lt.pages.length) {
+        return { kind: 'lit', item: lt, pageNum: STATE.openLitPage || 1 };
+      }
+    }
+    return null;
+  }
+
+  function goToActivePage(targetPageNum) {
+    var active = getActiveMediaItem();
+    if (!active) return false;
+    var cl = Math.max(1, Math.min(active.item.pages.length, targetPageNum));
+    if (cl === active.pageNum) return false;
+    if (active.kind === 'lit') STATE.openLitPage = cl;
+    else STATE.openPageNum = cl;
+    renderCurrentTab();
+    syncRouteHash();
+    return true;
+  }
+
+  function stepActivePage(delta) {
+    var active = getActiveMediaItem();
+    if (!active) return false;
+    return goToActivePage(active.pageNum + delta);
+  }
+
+  function preloadAdjacentPages(item, pageNum) {
+    if (!item || !item.pages || item.pages.length <= 1) return;
+    [pageNum + 1, pageNum - 1].forEach(function (n) {
+      if (n >= 1 && n <= item.pages.length) {
+        var pg = item.pages[n - 1];
+        if (pg && pg.enc && !DOC_BLOB_CACHE.has(pg.enc)) {
+          decryptDocImage(pg.enc).catch(function () {});
+        }
+      }
+    });
   }
 
   function syncLightbox(doc, pg, objUrl) {
@@ -2397,6 +3765,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     var lbPg = document.getElementById('lbPageLbl');
     var lbPrev = document.getElementById('lbPrev');
     var lbNext = document.getElementById('lbNext');
+    var lbFoot = document.getElementById('lbFoot');
+    var lbStrip = document.getElementById('lbStrip');
     var multi = doc.pages.length > 1;
     if (lbTitle) lbTitle.textContent = doc.title;
     if (lbPg) {
@@ -2405,20 +3775,32 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     }
     if (lbPrev) { lbPrev.style.display = multi ? '' : 'none'; lbPrev.disabled = pg.num <= 1; }
     if (lbNext) { lbNext.style.display = multi ? '' : 'none'; lbNext.disabled = pg.num >= doc.pages.length; }
+    if (lbFoot && lbStrip) {
+      lbFoot.hidden = !multi;
+      if (multi) {
+        lbStrip.innerHTML = renderPageStripHtml(doc, pg.num, 'data-lb-page');
+        var actChip = lbStrip.querySelector('.v-pg-chip.active');
+        if (actChip && actChip.scrollIntoView) {
+          try { actChip.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'auto' }); } catch (e) {}
+        }
+      } else {
+        lbStrip.innerHTML = '';
+      }
+    }
     if (lbImg && objUrl) {
       lbImg.onload = function () {
         STATE.viewerImgW = lbImg.naturalWidth;
         STATE.viewerImgH = lbImg.naturalHeight;
-        applyViewerTransform(lbImg, lbStage);
+        applyViewerTransform(lbImg, lbStage, false);
       };
       lbImg.src = objUrl;
-      if (lbImg.complete && lbImg.naturalWidth > 0) applyViewerTransform(lbImg, lbStage);
+      if (lbImg.complete && lbImg.naturalWidth > 0) applyViewerTransform(lbImg, lbStage, false);
     }
   }
 
-  async function loadActiveViewerPage(doc) {
-    if (!doc || !doc.hasImages || !doc.pages.length) return;
-    var pg = doc.pages[Math.max(0, Math.min(doc.pages.length - 1, (STATE.openPageNum || 1) - 1))];
+  async function loadActiveViewerPage(item, pageNum) {
+    if (!item || !item.pages || !item.pages.length) return;
+    var pg = item.pages[Math.max(0, Math.min(item.pages.length - 1, (pageNum || 1) - 1))];
     var imgEl = document.getElementById('viewerImg');
     var stEl = document.getElementById('viewerStatus');
     var stageEl = document.getElementById('viewerStage');
@@ -2429,7 +3811,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     STATE.viewerTy = 0;
     STATE.viewerRot = pg.defaultRot || 0;
     stEl.classList.remove('hidden');
-    stEl.innerHTML = '<span>Orijinal belge hazırlanıyor...</span>';
+    stEl.innerHTML = '<span>Orijinal görüntü hazırlanıyor...</span>';
 
     try {
       var objUrl = await decryptDocImage(pg.enc);
@@ -2437,17 +3819,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
       imgEl.onload = function () {
         STATE.viewerImgW = imgEl.naturalWidth;
         STATE.viewerImgH = imgEl.naturalHeight;
-        applyViewerTransform(imgEl, stageEl);
+        applyViewerTransform(imgEl, stageEl, false);
         stEl.classList.add('hidden');
-        if (STATE.lbOpen) syncLightbox(doc, pg, objUrl);
+        if (STATE.lbOpen) syncLightbox(item, pg, objUrl);
+        preloadAdjacentPages(item, pg.num);
       };
       imgEl.src = objUrl;
       if (imgEl.complete && imgEl.naturalWidth > 0) {
         STATE.viewerImgW = imgEl.naturalWidth;
         STATE.viewerImgH = imgEl.naturalHeight;
-        applyViewerTransform(imgEl, stageEl);
+        applyViewerTransform(imgEl, stageEl, false);
         stEl.classList.add('hidden');
-        if (STATE.lbOpen) syncLightbox(doc, pg, objUrl);
+        if (STATE.lbOpen) syncLightbox(item, pg, objUrl);
+        preloadAdjacentPages(item, pg.num);
       }
     } catch (err) {
       stEl.classList.remove('hidden');
@@ -2456,55 +3840,360 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   }
 
   function openLightbox() {
-    var doc = getDocById(STATE.openDocId);
-    if (!doc || !doc.hasImages) return;
+    var active = getActiveMediaItem();
+    if (!active) return;
     STATE.lbOpen = true;
     var modal = document.getElementById('lbModal');
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-    var pg = doc.pages[Math.max(0, Math.min(doc.pages.length - 1, (STATE.openPageNum || 1) - 1))];
+    modal.style.background = '#141311';
+    if (typeof modal.showModal === 'function') {
+      if (!modal.open) {
+        try { modal.showModal(); } catch (e) { modal.setAttribute('open', ''); }
+      }
+    } else {
+      modal.setAttribute('open', '');
+    }
+    var st = document.getElementById('lbStage');
+    if (st) { try { st.focus({ preventScroll: true }); } catch (e) {} }
+    var pg = active.item.pages[Math.max(0, Math.min(active.item.pages.length - 1, active.pageNum - 1))];
     var cached = DOC_BLOB_CACHE.get(pg.enc);
-    if (cached) syncLightbox(doc, pg, cached);
-    else loadActiveViewerPage(doc);
+    if (cached) syncLightbox(active.item, pg, cached);
+    else loadActiveViewerPage(active.item, active.pageNum);
   }
 
   function closeLightbox() {
     STATE.lbOpen = false;
     var modal = document.getElementById('lbModal');
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
+    if (modal) {
+      modal.style.background = '#141311';
+      if (typeof modal.close === 'function' && modal.open) {
+        try { modal.close(); } catch (e) { modal.removeAttribute('open'); }
+      } else {
+        modal.removeAttribute('open');
+      }
+    }
+    var vImg = document.getElementById('viewerImg');
+    var vStage = document.getElementById('viewerStage');
+    if (vImg && vStage && vImg.naturalWidth > 0) {
+      applyViewerTransform(vImg, vStage, false);
+    }
   }
 
-  function attachPanZoom(stageEl, getImgEl) {
+  function attachInteractiveStage(stageEl, getImgEl, opts) {
     if (!stageEl) return;
-    var dragging = false;
-    var lx = 0;
-    var ly = 0;
-    stageEl.addEventListener('wheel', function (e) {
-      e.preventDefault();
-      var f = Math.exp(-e.deltaY * 0.0018);
-      STATE.viewerZoom = Math.max(0.5, Math.min(6, STATE.viewerZoom * f));
-      applyViewerTransform(getImgEl(), stageEl);
-    }, { passive: false });
-    stageEl.addEventListener('pointerdown', function (e) {
-      if (e.button && e.button !== 0) return;
-      dragging = true;
-      lx = e.clientX;
-      ly = e.clientY;
+    var isLb = !!(opts && opts.isLightbox);
+    var pointers = new Map();
+    var mode = 'none';
+    var startX = 0;
+    var startY = 0;
+    var startTx = 0;
+    var startTy = 0;
+    var startTime = 0;
+    var movedDist = 0;
+    var slideX = 0;
+    var dismissY = 0;
+    var lastTapTime = 0;
+    var lastTapX = 0;
+    var lastTapY = 0;
+    var wheelSlideCooldown = 0;
+    var pinchStartDist = 0;
+    var pinchStartZoom = 1;
+    var pinchStartTx = 0;
+    var pinchStartTy = 0;
+    var pinchStartMidX = 0;
+    var pinchStartMidY = 0;
+
+    function isUiTarget(target) {
+      return !!(target && target.closest && target.closest('button, a, .v-hud-pill, .v-arrow, .v-counter'));
+    }
+
+    function getTwoPts() {
+      var arr = [];
+      pointers.forEach(function (v) { arr.push(v); });
+      return arr;
+    }
+
+    function beginPinch() {
+      var pts = getTwoPts();
+      if (pts.length < 2) return;
+      mode = 'pinch';
+      var dx = pts[1].x - pts[0].x;
+      var dy = pts[1].y - pts[0].y;
+      pinchStartDist = Math.max(10, Math.hypot(dx, dy));
+      pinchStartZoom = STATE.viewerZoom || 1;
+      pinchStartTx = STATE.viewerTx || 0;
+      pinchStartTy = STATE.viewerTy || 0;
+      pinchStartMidX = (pts[0].x + pts[1].x) / 2;
+      pinchStartMidY = (pts[0].y + pts[1].y) / 2;
       stageEl.classList.add('dragging');
+    }
+
+    stageEl.addEventListener('touchstart', function (e) {
+      if (isUiTarget(e.target)) return;
+      if (e.touches && e.touches.length >= 2) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    stageEl.addEventListener('touchmove', function (e) {
+      if (isUiTarget(e.target)) return;
+      if ((e.touches && e.touches.length >= 2) || STATE.viewerZoom > 1.02 || mode === 'slide' || mode === 'dismiss' || mode === 'pinch') {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    stageEl.addEventListener('wheel', function (e) {
+      if (isUiTarget(e.target)) return;
+      var imgEl = getImgEl();
+      if (!imgEl) return;
+      var isPinchOrCtrl = e.ctrlKey || e.metaKey;
+      if (isLb || isPinchOrCtrl) {
+        if (!isPinchOrCtrl && Math.abs(e.deltaX) > 26 && Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.5 && STATE.viewerZoom <= 1.02) {
+          e.preventDefault();
+          var nowLb = Date.now();
+          if (nowLb - wheelSlideCooldown > 380) {
+            wheelSlideCooldown = nowLb;
+            stepActivePage(e.deltaX > 0 ? 1 : -1);
+          }
+          return;
+        }
+        e.preventDefault();
+        var mult = isPinchOrCtrl ? 0.008 : 0.0022;
+        var factor = Math.exp(-e.deltaY * mult);
+        zoomAtFocal(stageEl, imgEl, e.clientX, e.clientY, (STATE.viewerZoom || 1) * factor, false);
+        return;
+      }
+      if (Math.abs(e.deltaX) > 28 && Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.6 && STATE.viewerZoom <= 1.02) {
+        e.preventDefault();
+        var nowIn = Date.now();
+        if (nowIn - wheelSlideCooldown > 380) {
+          wheelSlideCooldown = nowIn;
+          stepActivePage(e.deltaX > 0 ? 1 : -1);
+        }
+      }
+    }, { passive: false });
+
+    stageEl.addEventListener('dblclick', function (e) {
+      if (isUiTarget(e.target)) return;
+      var imgEl = getImgEl();
+      if (!imgEl) return;
+      e.preventDefault();
+      if (STATE.viewerZoom > 1.08) {
+        resetViewerZoom(stageEl, imgEl, true);
+      } else {
+        zoomAtFocal(stageEl, imgEl, e.clientX, e.clientY, 2.5, true);
+      }
+    });
+
+    stageEl.addEventListener('pointerdown', function (e) {
+      if (isUiTarget(e.target)) return;
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, type: e.pointerType });
       try { stageEl.setPointerCapture(e.pointerId); } catch (err) {}
+
+      if (pointers.size === 2) {
+        beginPinch();
+        return;
+      }
+      if (pointers.size === 1) {
+        startX = e.clientX;
+        startY = e.clientY;
+        startTx = STATE.viewerTx;
+        startTy = STATE.viewerTy;
+        startTime = Date.now();
+        movedDist = 0;
+        slideX = 0;
+        dismissY = 0;
+        if (STATE.viewerZoom > 1.02) {
+          mode = 'pan';
+          stageEl.classList.add('dragging');
+        } else {
+          mode = 'decide';
+        }
+      }
     });
+
     stageEl.addEventListener('pointermove', function (e) {
-      if (!dragging) return;
-      STATE.viewerTx += e.clientX - lx;
-      STATE.viewerTy += e.clientY - ly;
-      lx = e.clientX;
-      ly = e.clientY;
-      applyViewerTransform(getImgEl(), stageEl);
+      if (!pointers.has(e.pointerId)) return;
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, type: e.pointerType });
+      var imgEl = getImgEl();
+      if (!imgEl) return;
+
+      if (pointers.size >= 2 && mode === 'pinch') {
+        var pts = getTwoPts();
+        var dist = Math.max(10, Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y));
+        var midX = (pts[0].x + pts[1].x) / 2;
+        var midY = (pts[0].y + pts[1].y) / 2;
+        var rawZoom = pinchStartZoom * (dist / pinchStartDist);
+        var clampedZoom = Math.max(0.84, Math.min(5.35, rawZoom));
+        var rect = stageEl.getBoundingClientRect();
+        var cx = rect.left + rect.width / 2;
+        var cy = rect.top + rect.height / 2;
+        var ox0 = pinchStartMidX - cx;
+        var oy0 = pinchStartMidY - cy;
+        var ox1 = midX - cx;
+        var oy1 = midY - cy;
+        var r = clampedZoom / pinchStartZoom;
+        var tx = ox1 - (ox0 - pinchStartTx) * r;
+        var ty = oy1 - (oy0 - pinchStartTy) * r;
+        STATE.viewerZoom = clampedZoom;
+        if (clampedZoom <= 1.01) {
+          STATE.viewerTx = (midX - pinchStartMidX) * 0.35;
+          STATE.viewerTy = (midY - pinchStartMidY) * 0.35;
+        } else {
+          var cPan = clampViewerPan(stageEl, imgEl, clampedZoom, tx, ty);
+          STATE.viewerTx = cPan.tx;
+          STATE.viewerTy = cPan.ty;
+        }
+        applyViewerTransform(imgEl, stageEl, false);
+        return;
+      }
+
+      if (pointers.size !== 1) return;
+      var dx = e.clientX - startX;
+      var dy = e.clientY - startY;
+      movedDist = Math.max(movedDist, Math.hypot(dx, dy));
+
+      if (mode === 'pan') {
+        var c = clampViewerPan(stageEl, imgEl, STATE.viewerZoom, startTx + dx, startTy + dy);
+        STATE.viewerTx = c.tx;
+        STATE.viewerTy = c.ty;
+        applyViewerTransform(imgEl, stageEl, false);
+        return;
+      }
+
+      if (mode === 'decide' && movedDist > 10) {
+        if (Math.abs(dx) > Math.abs(dy) * 1.2) {
+          mode = 'slide';
+          stageEl.classList.add('dragging');
+        } else if (isLb && dy > 14 && dy > Math.abs(dx) * 1.35) {
+          mode = 'dismiss';
+          stageEl.classList.add('dragging');
+        } else {
+          mode = 'scroll';
+        }
+      }
+
+      if (mode === 'slide') {
+        var active = getActiveMediaItem();
+        var atStart = !active || active.pageNum <= 1;
+        var atEnd = !active || active.pageNum >= active.item.pages.length;
+        var resist = (dx > 0 && atStart) || (dx < 0 && atEnd) ? 0.28 : 1;
+        slideX = dx * resist;
+        applyViewerTransform(imgEl, stageEl, false, slideX, 0);
+        return;
+      }
+
+      if (mode === 'dismiss' && isLb) {
+        dismissY = Math.max(0, dy);
+        var modal = document.getElementById('lbModal');
+        if (modal) {
+          var alpha = Math.max(0.42, 1 - dismissY / 420);
+          modal.style.background = 'rgba(20, 19, 17, ' + alpha.toFixed(2) + ')';
+        }
+        applyViewerTransform(imgEl, stageEl, false, dx * 0.22, dismissY);
+      }
     });
-    stageEl.addEventListener('pointerup', function () { dragging = false; stageEl.classList.remove('dragging'); });
-    stageEl.addEventListener('pointercancel', function () { dragging = false; stageEl.classList.remove('dragging'); });
+
+    function endPointer(e) {
+      var prev = pointers.get(e.pointerId);
+      pointers.delete(e.pointerId);
+      var imgEl = getImgEl();
+      stageEl.classList.remove('dragging');
+
+      if (mode === 'pinch') {
+        if (pointers.size < 2) {
+          mode = 'none';
+          if (STATE.viewerZoom < 1.03) {
+            resetViewerZoom(stageEl, imgEl, true);
+          } else if (STATE.viewerZoom > 5) {
+            STATE.viewerZoom = 5;
+            var cp = clampViewerPan(stageEl, imgEl, 5, STATE.viewerTx, STATE.viewerTy);
+            STATE.viewerTx = cp.tx;
+            STATE.viewerTy = cp.ty;
+            applyViewerTransform(imgEl, stageEl, true);
+          } else {
+            var cp2 = clampViewerPan(stageEl, imgEl, STATE.viewerZoom, STATE.viewerTx, STATE.viewerTy);
+            STATE.viewerTx = cp2.tx;
+            STATE.viewerTy = cp2.ty;
+            applyViewerTransform(imgEl, stageEl, true);
+          }
+        }
+        return;
+      }
+
+      if (mode === 'slide') {
+        var elapsed = Math.max(1, Date.now() - startTime);
+        var vx = Math.abs(slideX) / elapsed;
+        var threshold = Math.min(72, (stageEl.clientWidth || 360) * 0.2);
+        var active = getActiveMediaItem();
+        var canPrev = active && active.pageNum > 1;
+        var canNext = active && active.pageNum < active.item.pages.length;
+        mode = 'none';
+        if ((slideX < -threshold || (slideX < -24 && vx > 0.35)) && canNext) {
+          slideX = 0;
+          stepActivePage(1);
+          return;
+        }
+        if ((slideX > threshold || (slideX > 24 && vx > 0.35)) && canPrev) {
+          slideX = 0;
+          stepActivePage(-1);
+          return;
+        }
+        slideX = 0;
+        applyViewerTransform(imgEl, stageEl, true, 0, 0);
+        return;
+      }
+
+      if (mode === 'dismiss' && isLb) {
+        mode = 'none';
+        if (dismissY > 90) {
+          dismissY = 0;
+          closeLightbox();
+          return;
+        }
+        dismissY = 0;
+        var modal = document.getElementById('lbModal');
+        if (modal) modal.style.background = '#141311';
+        applyViewerTransform(imgEl, stageEl, true, 0, 0);
+        return;
+      }
+
+      var wasTap = movedDist < 12 && prev && prev.type !== 'mouse' && (Date.now() - startTime) < 280;
+      mode = 'none';
+      if (wasTap && imgEl) {
+        var nowT = Date.now();
+        var tapDist = Math.hypot(e.clientX - lastTapX, e.clientY - lastTapY);
+        if (nowT - lastTapTime < 290 && tapDist < 34) {
+          lastTapTime = 0;
+          if (STATE.viewerZoom > 1.08) {
+            resetViewerZoom(stageEl, imgEl, true);
+          } else {
+            zoomAtFocal(stageEl, imgEl, e.clientX, e.clientY, 2.5, true);
+          }
+        } else {
+          lastTapTime = nowT;
+          lastTapX = e.clientX;
+          lastTapY = e.clientY;
+        }
+      }
+    }
+
+    stageEl.addEventListener('pointerup', endPointer);
+    stageEl.addEventListener('pointercancel', endPointer);
   }
+
+  window.__VIEWER_STATE = function () {
+    var active = getActiveMediaItem();
+    return {
+      zoom: Number((STATE.viewerZoom || 1).toFixed(3)),
+      rot: STATE.viewerRot || 0,
+      tx: Number((STATE.viewerTx || 0).toFixed(1)),
+      ty: Number((STATE.viewerTy || 0).toFixed(1)),
+      lbOpen: !!STATE.lbOpen,
+      page: active ? active.pageNum : 0,
+      totalPages: active ? active.item.pages.length : 0
+    };
+  };
 
   function bindCommonClicks() {
     var docBtns = document.querySelectorAll('[data-open-doc]');
@@ -2519,6 +4208,69 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
         openPersonDrawer(ev.currentTarget.getAttribute('data-open-person'));
       });
     }
+    var litBtns = document.querySelectorAll('[data-open-lit]');
+    for (var k = 0; k < litBtns.length; k += 1) {
+      litBtns[k].addEventListener('click', function (ev) {
+        var lid = ev.currentTarget.getAttribute('data-open-lit');
+        var lpg = parseInt(ev.currentTarget.getAttribute('data-open-lit-page') || '1', 10);
+        openLitReader(lid, isNaN(lpg) || lpg < 1 ? 1 : lpg);
+      });
+    }
+    var copyBtn = document.getElementById('copyLinkBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        copyCurrentLink(copyBtn);
+      });
+    }
+  }
+
+  function bindMediaStageEvents(item, isLit) {
+    var pv = document.getElementById('vPrevPg');
+    var nx = document.getElementById('vNextPg');
+    if (pv) pv.addEventListener('click', function () { stepActivePage(-1); });
+    if (nx) nx.addEventListener('click', function () { stepActivePage(1); });
+
+    var strip = document.getElementById('vPageStrip');
+    if (strip) {
+      var chips = strip.querySelectorAll('[data-v-page]');
+      for (var ci = 0; ci < chips.length; ci += 1) {
+        chips[ci].addEventListener('click', function (ev) {
+          var np = parseInt(ev.currentTarget.getAttribute('data-v-page'), 10);
+          if (!isNaN(np)) goToActivePage(np);
+        });
+      }
+      var actC = strip.querySelector('.v-pg-chip.active');
+      if (actC && actC.scrollIntoView) {
+        try { actC.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'auto' }); } catch (e) {}
+      }
+    }
+
+    var stageEl = document.getElementById('viewerStage');
+    var getImg = function () { return document.getElementById('viewerImg'); };
+    attachInteractiveStage(stageEl, getImg, { isLightbox: false });
+
+    document.getElementById('vZoomIn').addEventListener('click', function () {
+      zoomAtFocal(stageEl, getImg(), null, null, (STATE.viewerZoom || 1) * 1.4, true);
+    });
+    document.getElementById('vZoomOut').addEventListener('click', function () {
+      zoomAtFocal(stageEl, getImg(), null, null, (STATE.viewerZoom || 1) / 1.4, true);
+    });
+    var vPct = document.getElementById('vZoomPct');
+    if (vPct) {
+      vPct.addEventListener('click', function () {
+        resetViewerZoom(stageEl, getImg(), true);
+      });
+    }
+    document.getElementById('vRotR').addEventListener('click', function () {
+      STATE.viewerRot = (STATE.viewerRot + 90) % 360;
+      var cp = clampViewerPan(stageEl, getImg(), STATE.viewerZoom, STATE.viewerTx, STATE.viewerTy);
+      STATE.viewerTx = cp.tx;
+      STATE.viewerTy = cp.ty;
+      applyViewerTransform(getImg(), stageEl, true);
+    });
+    document.getElementById('vFull').addEventListener('click', openLightbox);
+
+    loadActiveViewerPage(item, isLit ? STATE.openLitPage : STATE.openPageNum);
   }
 
   function bindCurrentTabEvents() {
@@ -2531,8 +4283,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
           STATE.tab = 'belgeler';
           STATE.docsFilter = 'all';
           STATE.openDocId = null;
+          STATE.openLitId = null;
           syncNavTabs();
           renderCurrentTab();
+          syncRouteHash();
           window.scrollTo({ top: 0, behavior: 'auto' });
         });
       }
@@ -2573,42 +4327,106 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
         back.addEventListener('click', function () {
           STATE.openDocId = null;
           renderCurrentTab();
+          syncRouteHash();
           window.scrollTo({ top: 0, behavior: 'auto' });
         });
       }
       var doc = getDocById(STATE.openDocId);
       if (!doc || !doc.hasImages) return;
+      bindMediaStageEvents(doc, false);
+      return;
+    }
 
-      function goPage(np) {
-        var cl = Math.max(1, Math.min(doc.pages.length, np));
-        if (cl === STATE.openPageNum) return;
-        STATE.openPageNum = cl;
-        renderCurrentTab();
+    if (STATE.tab === 'arastirma') {
+      var subBtns = document.querySelectorAll('[data-res-sub]');
+      for (var si = 0; si < subBtns.length; si += 1) {
+        subBtns[si].addEventListener('click', function (ev) {
+          STATE.openLitId = null;
+          STATE.resSub = ev.currentTarget.getAttribute('data-res-sub');
+          renderCurrentTab();
+          syncRouteHash();
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        });
       }
-      var pv = document.getElementById('vPrevPg');
-      var nx = document.getElementById('vNextPg');
-      if (pv) pv.addEventListener('click', function () { goPage(STATE.openPageNum - 1); });
-      if (nx) nx.addEventListener('click', function () { goPage(STATE.openPageNum + 1); });
 
-      var stageEl = document.getElementById('viewerStage');
-      var getImg = function () { return document.getElementById('viewerImg'); };
-      attachPanZoom(stageEl, getImg);
+      if (STATE.openLitId) {
+        var bLit = document.getElementById('backToLit');
+        if (bLit) {
+          bLit.addEventListener('click', function () {
+            STATE.openLitId = null;
+            STATE.resSub = 'literatur';
+            renderCurrentTab();
+            syncRouteHash();
+            window.scrollTo({ top: 0, behavior: 'auto' });
+          });
+        }
+        var litItem = getLitById(STATE.openLitId);
+        if (litItem) bindMediaStageEvents(litItem, true);
+        return;
+      }
 
-      document.getElementById('vZoomIn').addEventListener('click', function () {
-        STATE.viewerZoom = Math.min(6, STATE.viewerZoom * 1.3);
-        applyViewerTransform(getImg(), stageEl);
-      });
-      document.getElementById('vZoomOut').addEventListener('click', function () {
-        STATE.viewerZoom = Math.max(0.5, STATE.viewerZoom / 1.3);
-        applyViewerTransform(getImg(), stageEl);
-      });
-      document.getElementById('vRotR').addEventListener('click', function () {
-        STATE.viewerRot = (STATE.viewerRot + 90) % 360;
-        applyViewerTransform(getImg(), stageEl);
-      });
-      document.getElementById('vFull').addEventListener('click', openLightbox);
+      var openRep = document.getElementById('openDeepReportBtn');
+      if (openRep) {
+        openRep.addEventListener('click', function () {
+          STATE.resSub = 'rapor';
+          renderCurrentTab();
+          syncRouteHash();
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        });
+      }
+      var backRep = document.getElementById('backFromReport');
+      if (backRep) {
+        backRep.addEventListener('click', function () {
+          STATE.resSub = 'literatur';
+          renderCurrentTab();
+          syncRouteHash();
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        });
+      }
+      var tocBtns = document.querySelectorAll('[data-scroll-sec]');
+      for (var ti = 0; ti < tocBtns.length; ti += 1) {
+        tocBtns[ti].addEventListener('click', function (ev) {
+          var el = document.getElementById(ev.currentTarget.getAttribute('data-scroll-sec'));
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
 
-      loadActiveViewerPage(doc);
+      var srcDeb = null;
+      var srcInp = document.getElementById('resSrcSearch');
+      if (srcInp) {
+        srcInp.addEventListener('input', function (e) {
+          var val = e.target.value;
+          clearTimeout(srcDeb);
+          srcDeb = setTimeout(function () {
+            STATE.resSrcQuery = val;
+            renderCurrentTab();
+            var again = document.getElementById('resSrcSearch');
+            if (again) { again.focus(); again.setSelectionRange(val.length, val.length); }
+          }, 180);
+        });
+      }
+      var wBtns = document.querySelectorAll('[data-res-wave]');
+      for (var wi = 0; wi < wBtns.length; wi += 1) {
+        wBtns[wi].addEventListener('click', function (ev) {
+          STATE.resSrcWave = ev.currentTarget.getAttribute('data-res-wave');
+          renderCurrentTab();
+        });
+      }
+
+      var litDeb = null;
+      var litInp = document.getElementById('resLitSearch');
+      if (litInp) {
+        litInp.addEventListener('input', function (e) {
+          var val = e.target.value;
+          clearTimeout(litDeb);
+          litDeb = setTimeout(function () {
+            STATE.resLitQuery = val;
+            renderCurrentTab();
+            var again = document.getElementById('resLitSearch');
+            if (again) { again.focus(); again.setSelectionRange(val.length, val.length); }
+          }, 180);
+        });
+      }
     }
   }
 
@@ -2620,6 +4438,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     } else if (STATE.tab === 'belgeler') {
       var activeDoc = STATE.openDocId ? getDocById(STATE.openDocId) : null;
       root.innerHTML = activeDoc ? renderDocumentReader(activeDoc) : renderDocsGallery();
+    } else if (STATE.tab === 'arastirma') {
+      root.innerHTML = renderResearchTab();
     } else {
       root.innerHTML = renderHistoryTab();
     }
@@ -2631,13 +4451,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     STATE.docsFilter = 'all';
     STATE.docQuery = '';
     STATE.openDocId = null;
+    STATE.openLitId = null;
+    STATE.resSub = 'bulgular';
     STATE.drawerPerson = null;
     document.title = ATLAS.meta.siteTitle;
     document.getElementById('brandName').textContent = ATLAS.meta.siteTitle;
     document.getElementById('gateWrap').style.display = 'none';
     document.getElementById('appShell').classList.add('open');
-    syncNavTabs();
-    renderCurrentTab();
+    var targetHash = window.location.hash || INITIAL_HASH || '#soyagaci';
+    applyHashRoute(targetHash, false);
+    syncRouteHash();
   }
 
   function lockApp() {
@@ -2699,8 +4522,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     navTabs[ti].addEventListener('click', function (ev) {
       STATE.tab = ev.currentTarget.getAttribute('data-tab');
       if (STATE.tab === 'belgeler') STATE.openDocId = null;
+      if (STATE.tab === 'arastirma') STATE.openLitId = null;
       syncNavTabs();
       renderCurrentTab();
+      syncRouteHash();
       window.scrollTo({ top: 0, behavior: 'auto' });
     });
   }
@@ -2708,8 +4533,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   document.getElementById('brandBtn').addEventListener('click', function () {
     STATE.tab = 'soyagaci';
     STATE.openDocId = null;
+    STATE.openLitId = null;
     syncNavTabs();
     renderCurrentTab();
+    syncRouteHash();
     window.scrollTo({ top: 0, behavior: 'auto' });
   });
 
@@ -2719,41 +4546,83 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
     if (e.target === e.currentTarget) closeDrawer();
   });
 
-  /* Lightbox Controls */
+  /* Lightbox Controls (<dialog class="doc-lightbox">) */
+  var lbModal = document.getElementById('lbModal');
   var lbStage = document.getElementById('lbStage');
   var getLbImg = function () { return document.getElementById('lbImg'); };
-  attachPanZoom(lbStage, getLbImg);
+  attachInteractiveStage(lbStage, getLbImg, { isLightbox: true });
 
+  lbModal.addEventListener('cancel', function (e) {
+    e.preventDefault();
+    closeLightbox();
+  });
   document.getElementById('lbClose').addEventListener('click', closeLightbox);
   document.getElementById('lbZoomIn').addEventListener('click', function () {
-    STATE.viewerZoom = Math.min(6, STATE.viewerZoom * 1.3);
-    applyViewerTransform(getLbImg(), lbStage);
+    zoomAtFocal(lbStage, getLbImg(), null, null, (STATE.viewerZoom || 1) * 1.4, true);
   });
   document.getElementById('lbZoomOut').addEventListener('click', function () {
-    STATE.viewerZoom = Math.max(0.5, STATE.viewerZoom / 1.3);
-    applyViewerTransform(getLbImg(), lbStage);
+    zoomAtFocal(lbStage, getLbImg(), null, null, (STATE.viewerZoom || 1) / 1.4, true);
   });
-  document.getElementById('lbRotR').addEventListener('click', function () {
+  document.getElementById('lbZoomPct').addEventListener('click', function () {
+    resetViewerZoom(lbStage, getLbImg(), true);
+  });
+  function rotateLb() {
     STATE.viewerRot = (STATE.viewerRot + 90) % 360;
-    applyViewerTransform(getLbImg(), lbStage);
+    var cp = clampViewerPan(lbStage, getLbImg(), STATE.viewerZoom, STATE.viewerTx, STATE.viewerTy);
+    STATE.viewerTx = cp.tx;
+    STATE.viewerTy = cp.ty;
+    applyViewerTransform(getLbImg(), lbStage, true);
+  }
+  document.getElementById('lbRotR').addEventListener('click', rotateLb);
+  document.getElementById('lbCopyBtn').addEventListener('click', function (ev) {
+    copyCurrentLink(ev.currentTarget);
   });
-  document.getElementById('lbPrev').addEventListener('click', function () {
-    var doc = getDocById(STATE.openDocId);
-    if (!doc || STATE.openPageNum <= 1) return;
-    STATE.openPageNum -= 1;
-    renderCurrentTab();
+  document.getElementById('lbPrev').addEventListener('click', function () { stepActivePage(-1); });
+  document.getElementById('lbNext').addEventListener('click', function () { stepActivePage(1); });
+  document.getElementById('lbStrip').addEventListener('click', function (ev) {
+    var btn = ev.target && ev.target.closest ? ev.target.closest('[data-lb-page]') : null;
+    if (!btn) return;
+    var np = parseInt(btn.getAttribute('data-lb-page'), 10);
+    if (!isNaN(np)) goToActivePage(np);
   });
-  document.getElementById('lbNext').addEventListener('click', function () {
-    var doc = getDocById(STATE.openDocId);
-    if (!doc || STATE.openPageNum >= doc.pages.length) return;
-    STATE.openPageNum += 1;
-    renderCurrentTab();
+
+  window.addEventListener('hashchange', function () {
+    if (!ATLAS) {
+      INITIAL_HASH = window.location.hash || '';
+      return;
+    }
+    if (EXPECTED_HASH && window.location.hash === EXPECTED_HASH) {
+      EXPECTED_HASH = '';
+      return;
+    }
+    EXPECTED_HASH = '';
+    applyHashRoute(window.location.hash || '#soyagaci', true);
   });
 
   document.addEventListener('keydown', function (e) {
+    var tag = e.target && e.target.tagName ? e.target.tagName.toUpperCase() : '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
     if (e.key === 'Escape') {
       if (STATE.lbOpen) { closeLightbox(); return; }
       if (STATE.drawerPerson) { closeDrawer(); return; }
+    }
+    var active = getActiveMediaItem();
+    if (!active || STATE.drawerPerson) return;
+    var st = STATE.lbOpen ? lbStage : document.getElementById('viewerStage');
+    var im = STATE.lbOpen ? getLbImg() : document.getElementById('viewerImg');
+    if (e.key === 'ArrowLeft') { e.preventDefault(); stepActivePage(-1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); stepActivePage(1); }
+    else if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomAtFocal(st, im, null, null, (STATE.viewerZoom || 1) * 1.35, true); }
+    else if (e.key === '-' || e.key === '_') { e.preventDefault(); zoomAtFocal(st, im, null, null, (STATE.viewerZoom || 1) / 1.35, true); }
+    else if (e.key === '0') { e.preventDefault(); resetViewerZoom(st, im, true); }
+    else if (e.key === 'r' || e.key === 'R') {
+      e.preventDefault();
+      STATE.viewerRot = (STATE.viewerRot + 90) % 360;
+      applyViewerTransform(im, st, true);
+    } else if (e.key === 'f' || e.key === 'F') {
+      e.preventDefault();
+      if (STATE.lbOpen) closeLightbox();
+      else openLightbox();
     }
   });
 
