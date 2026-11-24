@@ -1273,6 +1273,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 }
 .drawer-path.babaanne { border-left-color: #9a5534; }
 .drawer-path.anne { border-left-color: #2e5b6e; }
+.drawer-note {
+  margin: 12px 0 0;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid #E2DCCE;
+  background: #F4F0E7;
+  font-size: 13px;
+  line-height: 20px;
+  color: #4D5148;
+}
 .locator-line {
   padding: 11px 14px;
   border-left: 3px solid #2f5242;
@@ -2998,6 +3008,9 @@ dialog.doc-lightbox::backdrop {
         '<div class="reader-meta">' +
           '<span><b>Tarih:</b> ' + fmtInline(cleanHuman(doc.dateDetail || doc.dateLabel)) + '</span>' +
           '<span><b>Yer:</b> ' + fmtInline(doc.place) + '</span>' +
+          ((doc.hasImages && !doc.specialSecere && doc.status === 'birincil_aday' && (!doc.peopleIds || !doc.peopleIds.length))
+            ? '<span><b>Kapsam:</b> Aynı Mahalle / Vakıf / Dünür Bağlamı</span>'
+            : '') +
         '</div>' +
       '</div>' +
       '<div class="reader-split">' +
@@ -3555,22 +3568,29 @@ dialog.doc-lightbox::backdrop {
       return '<span class="fam-link-btn" style="background:#F3EFE6;cursor:default;"><b>' + fmtInline(lbl) + ':</b> ' + fmtInline(nm) + '</span>';
     }).join('');
 
-    var docsHtml = docs.length
+    var archiveNoteHtml = p.archiveNote
+      ? '<p class="drawer-note prose">' + fmtProse(p.archiveNote) + '</p>'
+      : '';
+
+    var docsHtml = (docs.length || archiveNoteHtml)
       ? '<div>' +
-          '<div class="read-h" style="margin-bottom:10px;">İlgili Orijinal Belgeler</div>' +
-          '<div class="drawer-docs-grid">' +
-            docs.slice(0, 6).map(function (d) {
-              var th = THUMB_URLS[d.id] || '';
-              return (
-                '<button type="button" class="drawer-doc-thumb" data-dr-doc="' + esc(d.id) + '">' +
-                  '<div class="ddt-mat">' +
-                    (th ? '<img src="' + th + '" alt="' + esc(d.title) + '">' : '<span class="serif" style="font-size:16px;font-weight:600;color:#2F5D46;">' + esc(d.code) + '</span>') +
-                  '</div>' +
-                  '<div class="ddt-cap">' + esc(d.dateLabel) + '<br>' + esc(shortSentence(d.title, 42)) + '</div>' +
-                '</button>'
-              );
-            }).join('') +
-          '</div>' +
+          '<div class="read-h" style="margin-bottom:10px;">Doğrudan Bu Kişiyi Anan Belgeler</div>' +
+          (docs.length
+            ? '<div class="drawer-docs-grid">' +
+                docs.slice(0, 6).map(function (d) {
+                  var th = THUMB_URLS[d.id] || '';
+                  return (
+                    '<button type="button" class="drawer-doc-thumb" data-dr-doc="' + esc(d.id) + '">' +
+                      '<div class="ddt-mat">' +
+                        (th ? '<img src="' + th + '" alt="' + esc(d.title) + '">' : '<span class="serif" style="font-size:16px;font-weight:600;color:#2F5D46;">' + esc(d.code) + '</span>') +
+                      '</div>' +
+                      '<div class="ddt-cap">' + esc(d.dateLabel) + '<br>' + esc(shortSentence(d.title, 42)) + '</div>' +
+                    '</button>'
+                  );
+                }).join('') +
+              '</div>'
+            : '') +
+          archiveNoteHtml +
         '</div>'
       : '';
 
