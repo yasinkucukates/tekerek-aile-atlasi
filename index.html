@@ -1283,6 +1283,97 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   line-height: 20px;
   color: #4D5148;
 }
+.support-sec {
+  padding-top: 18px;
+  border-top: 1px solid #E4DEC9;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.support-sub {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 18px;
+  color: #6B675B;
+}
+.support-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.support-card {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #DFD9CC;
+  background: #F6F3EC;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  text-align: left;
+  transition: border-color 0.14s, background 0.14s;
+}
+.support-card:hover {
+  border-color: #2F5D46;
+  background: #FFFFFF;
+}
+.support-thumb {
+  width: 58px;
+  height: 74px;
+  padding: 4px;
+  border-radius: 7px;
+  border: 1px solid #DDD7CA;
+  background: #E8E2D4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.support-thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 2px 6px rgba(31, 36, 33, 0.16);
+}
+.support-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.support-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.support-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #E7E2D6;
+  color: #53564D;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.support-meta {
+  font-size: 11.5px;
+  color: #6E6A5E;
+}
+.support-title {
+  font-size: 13.5px;
+  line-height: 18px;
+  font-weight: 600;
+  color: #1F2421;
+}
+.support-why {
+  font-size: 12.5px;
+  line-height: 18px;
+  color: #4D5148;
+}
 .locator-line {
   padding: 11px 14px;
   border-left: 3px solid #2f5242;
@@ -3594,6 +3685,50 @@ dialog.doc-lightbox::backdrop {
         '</div>'
       : '';
 
+    var supItems = (p.supportingDocs || []).map(function (s) {
+      if (s.kind === 'lit') {
+        var lt = getLitById(s.id);
+        if (!lt) return null;
+        return { kind: 'lit', id: lt.id, title: lt.title, meta: lt.year + '  |  ' + lt.code, why: s.why || '' };
+      }
+      var dd = getDocById(s.id);
+      if (!dd) return null;
+      return { kind: 'doc', id: dd.id, title: dd.title, meta: dd.dateLabel + '  |  ' + dd.code, why: s.why || '' };
+    }).filter(Boolean);
+
+    var supportHtml = supItems.length
+      ? '<div class="support-sec">' +
+          '<div>' +
+            '<div class="read-h" style="margin-bottom:4px;">Yan Delil, Topluluk ve Çevre Bağlamı</div>' +
+            '<p class="support-sub">Üst soya doğrudan şahıs kanıtı değildir; aynı mahalle, vakıf, topluluk, dönem veya dünür çevresini gösterir.</p>' +
+          '</div>' +
+          '<div class="support-list">' +
+            supItems.map(function (it) {
+              var th = THUMB_URLS[it.id] || '';
+              var attr = it.kind === 'lit'
+                ? 'data-dr-support-lit="' + esc(it.id) + '"'
+                : 'data-dr-support-doc="' + esc(it.id) + '"';
+              var kindTag = it.kind === 'lit' ? 'Yan delil · Literatür' : 'Yan delil';
+              return (
+                '<button type="button" class="support-card" ' + attr + '>' +
+                  '<div class="support-thumb">' +
+                    (th ? '<img src="' + th + '" alt="' + esc(it.title) + '">' : '<span class="serif" style="font-size:13px;font-weight:600;color:#5E6158;">' + esc(it.id) + '</span>') +
+                  '</div>' +
+                  '<div class="support-body">' +
+                    '<div class="support-badge-row">' +
+                      '<span class="support-badge">' + esc(kindTag) + '</span>' +
+                      '<span class="support-meta">' + fmtInline(it.meta) + '</span>' +
+                    '</div>' +
+                    '<div class="support-title">' + esc(shortSentence(it.title, 76)) + '</div>' +
+                    '<div class="support-why">' + fmtInline(it.why) + '</div>' +
+                  '</div>' +
+                '</button>'
+              );
+            }).join('') +
+          '</div>' +
+        '</div>'
+      : '';
+
     var pp = (ATLAS.v15.personPaths || {})[p.id] || {};
     var br = pp.branch || 'baba';
     var whoText = pp.who || cleanHuman(p.story);
@@ -3612,7 +3747,8 @@ dialog.doc-lightbox::backdrop {
       (pp.path ? '<div class="drawer-path ' + esc(br) + '"><b>Kimin kimi?</b> ' + fmtInline(pp.path) + '</div>' : '') +
       '<div><div class="read-h" style="margin-bottom:6px;">Kimdir?</div><div class="read-body"><p class="prose">' + fmtProse(whoText) + '</p></div></div>' +
       (famBtns ? '<div><div class="read-h" style="margin-bottom:8px;">Yakın Aile</div><div class="fam-links">' + famBtns + '</div></div>' : '') +
-      docsHtml;
+      docsHtml +
+      supportHtml;
 
     bd.classList.add('open');
     bd.setAttribute('aria-hidden', 'false');
@@ -3628,6 +3764,18 @@ dialog.doc-lightbox::backdrop {
     for (var j = 0; j < dBtns.length; j += 1) {
       dBtns[j].addEventListener('click', function (ev) {
         openDocumentReader(ev.currentTarget.getAttribute('data-dr-doc'));
+      });
+    }
+    var sDocBtns = dlg.querySelectorAll('[data-dr-support-doc]');
+    for (var sd = 0; sd < sDocBtns.length; sd += 1) {
+      sDocBtns[sd].addEventListener('click', function (ev) {
+        openDocumentReader(ev.currentTarget.getAttribute('data-dr-support-doc'));
+      });
+    }
+    var sLitBtns = dlg.querySelectorAll('[data-dr-support-lit]');
+    for (var sl = 0; sl < sLitBtns.length; sl += 1) {
+      sLitBtns[sl].addEventListener('click', function (ev) {
+        openLitReader(ev.currentTarget.getAttribute('data-dr-support-lit'), 1);
       });
     }
     try { document.getElementById('drCloseBtn').focus(); } catch (e) {}
@@ -4542,7 +4690,7 @@ dialog.doc-lightbox::backdrop {
     navTabs[ti].addEventListener('click', function (ev) {
       STATE.tab = ev.currentTarget.getAttribute('data-tab');
       if (STATE.tab === 'belgeler') STATE.openDocId = null;
-      if (STATE.tab === 'arastirma') STATE.openLitId = null;
+      if (STATE.tab === 'arastirma') { STATE.openLitId = null; STATE.resSub = 'bulgular'; }
       syncNavTabs();
       renderCurrentTab();
       syncRouteHash();
