@@ -3391,6 +3391,19 @@ dialog.doc-lightbox::backdrop {
       );
     }).join('');
 
+    var dr2 = lit.desktopReport2 || null;
+    var dr2Html = dr2
+      ? '<article class="notice-box" id="desktopReport2Card" style="display:flex;flex-direction:column;gap:8px;border-left-color:#2F5D46;">' +
+          '<span class="plate-year" style="color:#2F5D46;">' + fmtInline(dr2.badge || '') + '</span>' +
+          '<div class="serif" style="font-size:23px;line-height:28px;font-weight:600;color:#1F2421;">' + fmtInline(dr2.title || '') + '</div>' +
+          '<p class="prose" style="margin:0;color:#363A35;">' + fmtProse(dr2.body || '') + '</p>' +
+          '<div class="ev-actions" style="margin-top:2px;">' +
+            '<button type="button" class="ev-action-btn" data-res-sub="rehber">' + esc(dr2.ctaGuide || '') + '</button>' +
+            '<button type="button" class="ev-action-btn" data-res-sub="liste">' + esc(dr2.ctaList || '') + '</button>' +
+          '</div>' +
+        '</article>'
+      : '';
+
     return (
       '<section class="hero-block">' +
         '<h1 class="hero-h1 serif">' + esc(lit.heading || 'Literatür ve Derin Araştırma') + '</h1>' +
@@ -3405,6 +3418,7 @@ dialog.doc-lightbox::backdrop {
         '</div>' +
         '<span class="sec-link" style="font-weight:600;">Tam raporu oku →</span>' +
       '</button>' +
+      dr2Html +
       '<div class="docs-toolbar">' +
         '<div class="search-line">' +
           '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#7C7769" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5L14 14"></path></svg>' +
@@ -3682,6 +3696,7 @@ dialog.doc-lightbox::backdrop {
         );
       }).join('');
     }
+    var d6Html = renderWaveGroups(ho.dalga6Packages);
     var d5Html = renderWaveGroups(ho.dalga5And5BPackages);
     var d4Html = renderWaveGroups(ho.dalga4ByLineage);
     var instRows = (ho.institutionalTargets || []).map(function (it) {
@@ -3712,6 +3727,12 @@ dialog.doc-lightbox::backdrop {
         '<div class="sec-bar"><h2 class="sec-h2 serif">Öncelikli Nokta Atışı Devlet Arşivleri (DAB) Hedefleri</h2></div>' +
         '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Arşiv Künyesi</th><th>Sayfa ve Tahmini Bedel</th><th>Beklenen Katkı</th></tr></thead><tbody>' + w3Rows + '</tbody></table></div>' +
       '</section>' +
+      (d6Html
+        ? '<section style="display:flex;flex-direction:column;gap:14px;">' +
+            '<div class="sec-bar"><h2 class="sec-h2 serif">' + fmtInline(ho.dalga6Heading || 'Son Tarama Paketleri') + '</h2></div>' +
+            '<div class="quiet-stack">' + d6Html + '</div>' +
+          '</section>'
+        : '') +
       (d5Html
         ? '<section style="display:flex;flex-direction:column;gap:14px;">' +
             '<div class="sec-bar"><h2 class="sec-h2 serif">' + fmtInline('Dalga 5 ve 5B Geniş Tarama Paketleri (73 Yeni Satışa Açık Hedef)') + '</h2></div>' +
@@ -3725,7 +3746,7 @@ dialog.doc-lightbox::backdrop {
           '</section>'
         : '') +
       '<section style="display:flex;flex-direction:column;gap:14px;">' +
-        '<div class="sec-bar"><h2 class="sec-h2 serif">DAB Dışı Kurum Hedefleri (VGMA, İMMEŞ, BOA Salon, NVİ, DİB, İBB)</h2></div>' +
+        '<div class="sec-bar"><h2 class="sec-h2 serif">' + fmtInline(ho.instHeading || 'Merkez Arşiv Dışı Kurum Hedefleri') + '</h2></div>' +
         '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>Kurum</th><th>Dosya ve Defter Kaydı</th><th>Çözeceği Soru</th></tr></thead><tbody>' + instRows + '</tbody></table></div>' +
       '</section>'
     );
