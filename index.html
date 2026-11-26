@@ -8,35 +8,44 @@
 <title>Özel Aile Arşivi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&display=swap">
 <style>
 *, *::before, *::after { box-sizing: border-box; }
 html, body {
   margin: 0;
   padding: 0;
-  background: #EDE8DC;
-  color: #1F2421;
+  background: #F3EFE6;
+  color: #161A17;
   font-family: Inter, -apple-system, 'SF Pro Text', system-ui, sans-serif;
-  font-size: 15px;
-  line-height: 24px;
+  font-size: 15.5px;
+  line-height: 25px;
   font-feature-settings: 'tnum';
-  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
-a { color: #2F5D46; text-decoration: none; }
-a:hover { color: #1E4231; text-decoration: underline; }
+a { color: #1F4F3A; text-decoration: none; }
+a:hover { color: #153829; text-decoration: underline; }
 button, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
-button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible {
-  outline: 2.5px solid #2F5D46;
+button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visible, .abbr-tip:focus-visible {
+  outline: 2.5px solid #1F4F3A;
   outline-offset: 2px;
 }
 .serif {
-  font-family: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+  font-family: 'Cormorant Garamond', 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-feature-settings: 'lnum', 'pnum';
+}
+.book-serif {
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
   font-feature-settings: 'lnum', 'pnum';
 }
 .prose {
-  text-align: left;
+  text-align: justify;
+  text-justify: inter-word;
+  text-align-last: left;
+  hyphens: manual;
+  -webkit-hyphens: manual;
   overflow-wrap: break-word;
 }
 .rtl-ott {
@@ -44,17 +53,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   unicode-bidi: isolate;
   text-align: right;
   font-family: 'Amiri', 'Geeza Pro', 'Traditional Arabic', Georgia, serif;
-  font-size: 20px;
-  line-height: 36px;
+  font-size: 21px;
+  line-height: 38px;
   white-space: pre-wrap;
-  color: #1F2421;
+  color: #161A17;
 }
 .glass {
-  background: rgba(251, 250, 246, 0.78);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  backdrop-filter: blur(18px) saturate(1.4);
-  border: 1px solid rgba(255, 255, 255, 0.88);
-  box-shadow: 0 1px 2px rgba(31, 36, 33, 0.05), 0 8px 24px rgba(31, 36, 33, 0.06);
+  background: rgba(252, 251, 247, 0.86);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+  backdrop-filter: blur(18px) saturate(1.35);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 1px 2px rgba(22, 26, 23, 0.05), 0 8px 24px rgba(22, 26, 23, 0.06);
 }
 
 /* Lock Gate */
@@ -64,18 +73,18 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
-  background: radial-gradient(ellipse at 50% 18%, rgba(255, 252, 244, 0.75) 0%, #EDE8DC 70%);
+  background: radial-gradient(ellipse at 50% 18%, rgba(255, 253, 248, 0.82) 0%, #F3EFE6 70%);
 }
 .gate-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 430px;
   border-radius: 20px;
   padding: 36px 32px 30px;
-  background: rgba(251, 250, 246, 0.92);
+  background: rgba(252, 251, 247, 0.96);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
-  border: 1px solid #DDD7CA;
-  box-shadow: 0 16px 42px rgba(31, 36, 33, 0.08);
+  border: 1px solid #DCD5C7;
+  box-shadow: 0 16px 42px rgba(22, 26, 23, 0.08);
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -89,9 +98,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 }
 .gate-sub {
   margin: 8px 0 0;
-  font-size: 14px;
-  line-height: 22px;
-  color: #5E6158;
+  font-size: 14.5px;
+  line-height: 23px;
+  color: #454A42;
 }
 .gate-form {
   display: flex;
@@ -100,9 +109,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 }
 .gate-label {
   display: block;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
-  color: #5E6158;
+  color: #3D423B;
   margin-bottom: 6px;
 }
 .pw-box {
@@ -115,14 +124,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   height: 46px;
   padding: 0 48px 0 14px;
   border-radius: 12px;
-  border: 1px solid #CBC4B3;
+  border: 1px solid #C8C0AF;
   background: #FFFFFF;
   font-size: 16px;
   outline: none;
 }
 .pw-input:focus {
-  border-color: #2F5D46;
-  box-shadow: 0 0 0 3px rgba(47, 93, 70, 0.14);
+  border-color: #1F4F3A;
+  box-shadow: 0 0 0 3px rgba(31, 79, 58, 0.14);
 }
 .pw-toggle {
   position: absolute;
@@ -132,16 +141,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   border: 0;
   border-radius: 9px;
   background: transparent;
-  color: #5E6158;
+  color: #454A42;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-.pw-toggle:hover { background: #F3EFE6; color: #1F2421; }
+.pw-toggle:hover { background: #F3EFE6; color: #161A17; }
 .gate-hint {
   margin: 0;
-  font-size: 12.5px;
-  color: #7C7769;
+  font-size: 13px;
+  color: #535850;
 }
 .gate-err {
   display: none;
@@ -150,46 +159,46 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   background: #F4E9E6;
   border: 1px solid #C9A59D;
   color: #7A3528;
-  font-size: 13px;
-  line-height: 19px;
+  font-size: 13.5px;
+  line-height: 20px;
 }
 .gate-err.show { display: block; }
 .gate-btn {
   height: 46px;
   border: 0;
   border-radius: 12px;
-  background: #2F5D46;
+  background: #1F4F3A;
   color: #FFFFFF;
   font-weight: 600;
   font-size: 15px;
 }
-.gate-btn:hover { background: #1E4231; }
+.gate-btn:hover { background: #153829; }
 .gate-btn:disabled { opacity: 0.65; cursor: wait; }
 .gate-foot {
   margin: 2px 0 0;
   padding-top: 14px;
   border-top: 1px solid #E4DEC9;
-  font-size: 12px;
-  line-height: 18px;
-  color: #7C7769;
+  font-size: 12.5px;
+  line-height: 19px;
+  color: #535850;
 }
 
 /* Main App Layout */
 .app-shell {
   display: none;
   min-height: 100vh;
-  padding: 20px 24px 56px;
+  padding: 20px 24px 60px;
 }
 .app-shell.open { display: block; }
 .app-inner {
-  max-width: 1120px;
+  max-width: 1240px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 36px;
 }
 
-/* Ultra-Quiet Top Nav (Brand + 3 Tabs + Lock Link) */
+/* Ultra-Quiet Top Nav (Brand + 4 Tabs + Lock Link) */
 .top-nav {
   position: sticky;
   top: 14px;
@@ -212,11 +221,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   flex: none;
 }
 .brand-name {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 22px;
-  line-height: 26px;
+  font-family: 'Cormorant Garamond', 'Source Serif 4', Georgia, serif;
+  font-size: 23px;
+  line-height: 27px;
   font-weight: 600;
-  color: #1F2421;
+  color: #161A17;
   white-space: nowrap;
 }
 .nav-tabs {
@@ -230,21 +239,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   border: 0;
   border-radius: 10px;
   background: transparent;
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 500;
-  color: #5E6158;
+  color: #454A42;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: background 0.14s, color 0.14s;
 }
-.nav-tab:hover { color: #1F2421; background: rgba(255, 255, 255, 0.55); }
+.nav-tab:hover { color: #161A17; background: rgba(255, 255, 255, 0.65); }
 .nav-tab.active {
   background: #FFFFFF;
-  color: #1F2421;
+  color: #161A17;
   font-weight: 600;
-  box-shadow: 0 1px 2px rgba(31, 36, 33, 0.08);
+  box-shadow: 0 1px 3px rgba(22, 26, 23, 0.09);
 }
 .lock-link {
   min-height: 44px;
@@ -253,12 +262,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   padding: 0 10px;
   font-size: 13.5px;
   font-weight: 500;
-  color: #6B675B;
+  color: #4D524A;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
 }
-.lock-link:hover { color: #1F2421; text-decoration: underline; }
+.lock-link:hover { color: #161A17; text-decoration: underline; }
 
 /* View Container */
 .view-stack {
@@ -269,25 +278,28 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 
 /* Editorial Hero */
 .hero-block {
-  max-width: 720px;
+  max-width: 780px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   padding-top: 6px;
 }
 .hero-h1 {
   margin: 0;
-  font-size: 52px;
-  line-height: 56px;
+  font-size: 50px;
+  line-height: 55px;
   font-weight: 600;
   letter-spacing: -0.015em;
-  color: #1F2421;
+  color: #151916;
 }
 .hero-lead {
   margin: 0;
-  font-size: 16px;
-  line-height: 26px;
-  color: #4D5148;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 17px;
+  line-height: 29px;
+  font-weight: 420;
+  color: #2B302C;
 }
 
 /* Section Headers */
@@ -298,14 +310,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   flex-wrap: wrap;
   gap: 8px 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #DDD7CA;
+  border-bottom: 1px solid #DCD5C7;
 }
 .sec-h2 {
   margin: 0;
   font-size: 32px;
-  line-height: 36px;
+  line-height: 37px;
   font-weight: 600;
-  color: #1F2421;
+  color: #151916;
 }
 .sec-link {
   min-height: 44px;
@@ -313,17 +325,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   background: transparent;
   padding: 0 4px;
   font-size: 14px;
-  font-weight: 500;
-  color: #2F5D46;
+  font-weight: 600;
+  color: #1F4F3A;
   display: inline-flex;
   align-items: center;
 }
-.sec-link:hover { color: #1E4231; text-decoration: underline; }
+.sec-link:hover { color: #153829; text-decoration: underline; }
 .sec-caption {
   margin: 0;
   font-size: 14px;
   line-height: 22px;
-  color: #5E6158;
+  color: #4D524A;
 }
 
 /* Museum Document Plate Cards (3x2 Featured & Full Gallery) */
@@ -338,20 +350,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   text-align: left;
   padding: 0;
   border-radius: 14px;
-  border: 1px solid #DFD9CC;
-  background: #FAF8F2;
+  border: 1px solid #DCD5C7;
+  background: #FCFBF7;
   overflow: hidden;
   transition: border-color 0.16s, box-shadow 0.16s, transform 0.16s;
 }
 .plate-card:hover {
-  border-color: #2F5D46;
-  box-shadow: 0 10px 28px rgba(31, 36, 33, 0.08);
+  border-color: #1F4F3A;
+  box-shadow: 0 10px 28px rgba(22, 26, 23, 0.08);
   transform: translateY(-2px);
 }
 .plate-mat {
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: #E8E2D4;
+  background: #EAE4D7;
   padding: 14px;
   display: flex;
   align-items: center;
@@ -366,14 +378,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   height: auto;
   display: block;
   object-fit: contain;
-  box-shadow: 0 4px 14px rgba(31, 36, 33, 0.18);
+  box-shadow: 0 4px 14px rgba(22, 26, 23, 0.18);
   border-radius: 2px;
   background: #F6F3EC;
 }
 .plate-text-mat {
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: linear-gradient(160deg, #F6F3EC 0%, #EAE4D6 100%);
+  background: linear-gradient(160deg, #F7F4ED 0%, #EAE4D6 100%);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -382,40 +394,42 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   border-bottom: 1px solid #E4DEC9;
 }
 .plate-text-kicker {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 11.5px;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #2F5D46;
+  color: #1F4F3A;
 }
 .plate-text-head {
   font-size: 26px;
   line-height: 30px;
   font-weight: 600;
-  color: #1F2421;
+  color: #161A17;
 }
 .plate-body {
-  padding: 14px 16px 18px;
+  padding: 15px 18px 19px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 .plate-year {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.03em;
-  color: #2F5D46;
+  color: #1F4F3A;
 }
 .plate-title {
-  font-size: 21px;
-  line-height: 25px;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 18.5px;
+  line-height: 24px;
   font-weight: 600;
-  color: #1F2421;
+  color: #161A17;
 }
 .plate-cap {
-  font-size: 13px;
-  line-height: 19px;
-  color: #5E6158;
+  font-size: 13.5px;
+  line-height: 20px;
+  color: #454A42;
 }
 
 /* Shajara Feature Strip above Family Tree */
@@ -634,20 +648,22 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 .p-rel.babaanne { color: #9a5534; }
 .p-rel.anne { color: #2e5b6e; }
 .p-name {
-  font-size: 20px;
-  line-height: 24px;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 18.5px;
+  line-height: 23px;
   font-weight: 600;
-  color: #1F2421;
+  color: #161A17;
 }
 .p-years {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 500;
-  color: #5E6158;
+  color: #4D524A;
 }
 .p-role {
-  font-size: 12.5px;
-  line-height: 17px;
-  color: #5E6158;
+  font-size: 13px;
+  line-height: 18px;
+  color: #454A42;
 }
 
 /* Quiet Native <details> Disclosures */
@@ -657,9 +673,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   gap: 10px;
 }
 .quiet-det {
-  border: 1px solid #DDD7CA;
+  border: 1px solid #DCD5C7;
   border-radius: 12px;
-  background: #FAF8F2;
+  background: #FCFBF7;
   overflow: hidden;
 }
 .quiet-det summary {
@@ -667,8 +683,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   min-height: 48px;
   padding: 12px 18px;
   font-size: 14.5px;
-  font-weight: 500;
-  color: #1F2421;
+  font-weight: 600;
+  color: #161A17;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -680,20 +696,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   content: '+';
   font-size: 18px;
   line-height: 1;
-  color: #7C7769;
+  color: #535850;
   font-weight: 400;
   flex: none;
 }
-.quiet-det[open] summary::after { content: '\2212'; color: #2F5D46; }
+.quiet-det[open] summary::after { content: '\2212'; color: #1F4F3A; }
 .quiet-det[open] summary { border-bottom: 1px solid #E4DEC9; }
 .quiet-body {
-  padding: 16px 18px 20px;
+  padding: 18px 20px 22px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  font-size: 14px;
-  line-height: 22px;
-  color: #363A35;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 15.5px;
+  line-height: 26px;
+  font-weight: 420;
+  color: #1D221E;
 }
 .branch-list {
   margin: 0;
@@ -703,11 +722,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   flex-direction: column;
 }
 .branch-list li {
-  padding: 10px 0;
+  padding: 11px 0;
   border-top: 1px solid #E9E3D6;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 16px;
+  line-height: 27px;
+  font-weight: 420;
+  color: #1D221E;
 }
 .branch-list li:first-child { border-top: 0; padding-top: 2px; }
-.branch-list b { color: #1F2421; font-weight: 600; }
+.branch-list b { color: #151916; font-weight: 650; }
 
 /* Documents Gallery Controls (1 Search + 2 Quiet Buttons) */
 .docs-toolbar {
@@ -763,13 +788,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   font-weight: 600;
 }
 
-/* Split Document Reader (Left 62% Original Image + Right 38% Book Reading Column) */
+/* Split Document Reader (Left 54% Original Image + Right 46% Archival Reading Paper) */
 .reader-top {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding-bottom: 18px;
-  border-bottom: 1px solid #DDD7CA;
+  border-bottom: 1px solid #DCD5C7;
 }
 .back-link {
   align-self: flex-start;
@@ -778,30 +803,30 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   background: transparent;
   padding: 0 4px 0 0;
   font-size: 14px;
-  font-weight: 500;
-  color: #2F5D46;
+  font-weight: 600;
+  color: #1F4F3A;
   display: inline-flex;
   align-items: center;
 }
-.back-link:hover { color: #1E4231; text-decoration: underline; }
+.back-link:hover { color: #153829; text-decoration: underline; }
 .reader-h1 {
   margin: 2px 0 0;
   font-size: 38px;
   line-height: 43px;
   font-weight: 600;
-  color: #1F2421;
+  color: #151916;
 }
 .reader-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 22px;
-  font-size: 13.5px;
-  color: #5E6158;
+  font-size: 14px;
+  color: #454A42;
 }
 .reader-split {
   display: grid;
-  grid-template-columns: minmax(0, 62fr) minmax(0, 38fr);
-  gap: 32px;
+  grid-template-columns: minmax(0, 54fr) minmax(0, 46fr);
+  gap: 30px;
   align-items: start;
 }
 .reader-visual {
@@ -1004,11 +1029,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 }
 .v-pg-chip.active .v-pg-dot { background: #E4EFE8; }
 
-/* Right Reading Column (Book Typography, Hairlines, No Nested Card Noise) */
+/* Right Reading Column (Warm Archival Paper, Crisp Book Serif Typography) */
 .reader-col {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  padding: 26px 30px 28px;
+  border-radius: 16px;
+  border: 1px solid #DCD5C7;
+  background: #FCFBF7;
+  box-shadow: 0 2px 12px rgba(22, 26, 23, 0.04);
 }
 .read-sec {
   display: flex;
@@ -1017,19 +1047,26 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 }
 .read-h {
   margin: 0;
-  font-size: 12px;
-  font-weight: 600;
+  font-family: Inter, -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #2F5D46;
+  color: #1F4F3A;
 }
 .read-body {
-  font-size: 15px;
-  line-height: 25px;
-  color: #1F2421;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 16.5px;
+  line-height: 28px;
+  font-weight: 420;
+  color: #1D221E;
 }
-.read-body p { margin: 0 0 12px; }
+.read-body p { margin: 0 0 14px; }
 .read-body p:last-child { margin-bottom: 0; }
+.read-sub-p {
+  color: #343A35;
+}
 .entry-list {
   display: flex;
   flex-direction: column;
@@ -1043,34 +1080,362 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 }
 .entry-item:first-child { border-top: 0; padding-top: 0; }
 .entry-no {
+  font-family: Inter, -apple-system, 'SF Pro Text', system-ui, sans-serif;
   font-size: 12px;
-  font-weight: 600;
-  color: #7C7769;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #4D524A;
 }
 .entry-serh {
-  font-size: 13px;
-  line-height: 20px;
-  color: #5E6158;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 14.5px;
+  line-height: 23px;
+  color: #454A42;
   font-style: italic;
 }
 .meta-note-box {
-  font-size: 13px;
-  line-height: 20px;
-  color: #4D5148;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 14.5px;
+  line-height: 23px;
+  color: #383E39;
+  text-align: left;
 }
 .field-table-wrap { overflow-x: auto; }
 .field-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12.5px;
+  font-family: Inter, -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px;
 }
 .field-table th, .field-table td {
   text-align: left;
-  padding: 7px 8px;
+  padding: 8px 9px;
   border-top: 1px solid #E4DEC9;
   vertical-align: top;
 }
-.field-table th { font-weight: 600; color: #5E6158; }
+.field-table th { font-weight: 600; color: #454A42; }
+
+/* Side-by-Side Diff Comparison Panel (Modern Turkish vs Original Ottoman Transliteration) */
+.diff-jump-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  border: 1px solid #C5D6CB;
+  background: #F4F9F5;
+}
+.diff-jump-text {
+  font-size: 13.5px;
+  line-height: 20px;
+  color: #1D221E;
+  font-weight: 500;
+}
+.diff-jump-btn {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 9px;
+  border: 1px solid #1F4F3A;
+  background: #1F4F3A;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.diff-jump-btn:hover { background: #153829; border-color: #153829; }
+.diff-shell {
+  border-radius: 18px;
+  border: 1px solid #D5CEC0;
+  background: #FCFBF7;
+  box-shadow: 0 4px 18px rgba(22, 26, 23, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.diff-head {
+  padding: 18px 24px;
+  border-bottom: 1px solid #E2DCCE;
+  background: #F7F4EC;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+}
+.diff-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.diff-h2 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 31px;
+  font-weight: 600;
+  color: #151916;
+}
+.diff-sub {
+  font-size: 13px;
+  line-height: 19px;
+  color: #4D524A;
+}
+.diff-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.diff-ctrl-btn {
+  min-height: 38px;
+  padding: 0 13px;
+  border-radius: 9px;
+  border: 1px solid #CFC8B8;
+  background: #FFFFFF;
+  font-size: 13px;
+  font-weight: 500;
+  color: #343A35;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.14s, border-color 0.14s, color 0.14s;
+}
+.diff-ctrl-btn:hover { border-color: #1F4F3A; color: #161A17; }
+.diff-ctrl-btn.active {
+  background: #1F4F3A;
+  border-color: #1F4F3A;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+.diff-overview {
+  padding: 16px 24px;
+  background: #F9F7F1;
+  border-bottom: 1px solid #E4DEC9;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.diff-col-heads {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-bottom: 1px solid #DFD9CC;
+  background: #FAF8F2;
+}
+.diff-col-head {
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.diff-col-head.mod {
+  color: #1F4F3A;
+  background: #F3F8F5;
+  border-right: 1px solid #DFD9CC;
+}
+.diff-col-head.orig {
+  color: #7A471E;
+  background: #FAF5EB;
+}
+.diff-col-badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+.diff-col-head.mod .diff-col-badge { background: #DCECE2; color: #173F2D; }
+.diff-col-head.orig .diff-col-badge { background: #EFE2CC; color: #6B3C17; }
+.diff-rows {
+  display: flex;
+  flex-direction: column;
+}
+.diff-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-bottom: 1px solid #E6E0D3;
+}
+.diff-row:last-child { border-bottom: 0; }
+.diff-cell {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.diff-cell.mod {
+  background: #FAFCFA;
+  border-right: 1px solid #E4DEC9;
+}
+.diff-cell.orig {
+  background: #FDFBF6;
+}
+.diff-cell-kicker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #4D524A;
+}
+.diff-cell-side-lbl {
+  display: none;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.diff-cell.mod .diff-cell-side-lbl { background: #DCECE2; color: #173F2D; }
+.diff-cell.orig .diff-cell-side-lbl { background: #EFE2CC; color: #6B3C17; }
+.diff-cell-body {
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 16.5px;
+  line-height: 28px;
+  font-weight: 420;
+  color: #1D221E;
+}
+.diff-cell-body p { margin: 0 0 12px; }
+.diff-cell-body p:last-child { margin-bottom: 0; }
+mark.diff-mod {
+  background: #E2F0E7;
+  color: #133123;
+  border-bottom: 1.5px solid #9AC2AA;
+  border-radius: 3px;
+  padding: 0 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+mark.diff-orig {
+  background: #F4E8D2;
+  color: #3D240E;
+  border-bottom: 1.5px solid #D3B27E;
+  border-radius: 3px;
+  padding: 0 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.diff-shell.diff-plain mark.diff-mod,
+.diff-shell.diff-plain mark.diff-orig {
+  background: transparent;
+  color: inherit;
+  border-bottom: 0;
+  padding: 0;
+}
+.diff-shell.diff-stacked .diff-col-heads { display: none; }
+.diff-shell.diff-stacked .diff-row { grid-template-columns: minmax(0, 1fr); }
+.diff-shell.diff-stacked .diff-cell.mod { border-right: 0; border-bottom: 1px dashed #DCD5C7; }
+.diff-shell.diff-stacked .diff-cell-side-lbl { display: inline-block; }
+.diff-legend {
+  padding: 12px 24px;
+  border-top: 1px solid #E4DEC9;
+  background: #F7F4EC;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  font-size: 12.5px;
+  color: #454A42;
+}
+.diff-leg-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.diff-leg-sw {
+  width: 14px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
+}
+.diff-leg-sw.mod { background: #E2F0E7; border-bottom: 2px solid #9AC2AA; }
+.diff-leg-sw.orig { background: #F4E8D2; border-bottom: 2px solid #D3B27E; }
+.diff-leg-sw.same { background: #FFFFFF; border: 1px solid #CFC8B8; }
+
+/* Abbreviation Hover/Tap ? Tooltip & Floating Popover */
+.abbr-tip {
+  display: inline;
+  white-space: nowrap;
+  cursor: help;
+  text-decoration: underline dotted rgba(31, 79, 58, 0.45);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  border-radius: 3px;
+  transition: background 0.14s, text-decoration-color 0.14s;
+}
+.abbr-tip::after {
+  content: '?';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  margin-left: 1.5px;
+  margin-right: 0;
+  vertical-align: super;
+  font-family: Inter, -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  line-height: 1;
+  font-style: normal;
+  color: #1F4F3A;
+  background: #E2EFE7;
+  border: 1px solid #B0CCBC;
+  border-radius: 50%;
+  transition: background 0.14s, color 0.14s, border-color 0.14s;
+}
+.abbr-tip:hover, .abbr-tip:focus-visible, .abbr-tip.is-open {
+  background: rgba(31, 79, 58, 0.08);
+  text-decoration-color: #1F4F3A;
+}
+.abbr-tip:hover::after, .abbr-tip:focus-visible::after, .abbr-tip.is-open::after {
+  background: #1F4F3A;
+  border-color: #1F4F3A;
+  color: #FFFFFF;
+}
+.abbr-pop {
+  position: fixed;
+  z-index: 200;
+  max-width: min(340px, calc(100vw - 24px));
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: #1B211D;
+  color: #F7F5EE;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 32px rgba(15, 19, 16, 0.28);
+  font-family: Inter, -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 19px;
+  pointer-events: none;
+}
+.abbr-pop[hidden] { display: none; }
+.abbr-pop-code {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #A8D4BA;
+  margin-bottom: 3px;
+}
+.abbr-pop-desc {
+  display: block;
+  color: #F7F5EE;
+  font-weight: 400;
+}
 
 /* Official Civil Registry Table (e-Devlet, No TCKN) */
 .ed-table-wrap {
@@ -1103,9 +1468,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 
 /* Tab 3: Tarihce (Single-Column Quiet Narrative Book Essay) */
 .essay-wrap {
-  max-width: 740px;
+  max-width: 820px;
   width: 100%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.essay-book {
+  background: #FCFBF7;
+  border: 1px solid #DCD5C7;
+  border-radius: 18px;
+  padding: 40px 48px 44px;
+  box-shadow: 0 4px 20px rgba(22, 26, 23, 0.04);
   display: flex;
   flex-direction: column;
   gap: 38px;
@@ -1113,41 +1488,45 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 .essay-chapter {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-top: 28px;
-  border-top: 1px solid #DDD7CA;
+  gap: 13px;
+  padding-top: 30px;
+  border-top: 1px solid #E2DCCE;
 }
 .essay-chapter:first-of-type { border-top: 0; padding-top: 0; }
 .essay-period {
+  font-family: Inter, -apple-system, 'SF Pro Text', system-ui, sans-serif;
   font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #2F5D46;
+  color: #1F4F3A;
 }
 .essay-h2 {
   margin: 0;
-  font-size: 30px;
-  line-height: 36px;
+  font-size: 31px;
+  line-height: 37px;
   font-weight: 600;
-  color: #1F2421;
+  color: #151916;
 }
 .essay-p {
   margin: 0;
-  font-size: 15.5px;
-  line-height: 27px;
-  color: #262A26;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 17.5px;
+  line-height: 31px;
+  font-weight: 420;
+  color: #1D221E;
 }
 .essay-fig {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   padding: 0;
 }
 .essay-fig-btn {
   width: 100%;
   padding: 16px;
   border-radius: 14px;
-  border: 1px solid #DDD7CA;
-  background: #FAF8F2;
+  border: 1px solid #DCD5C7;
+  background: #F6F3EB;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1156,15 +1535,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 .essay-fig-btn:hover {
-  border-color: #2F5D46;
-  box-shadow: 0 8px 24px rgba(31, 36, 33, 0.08);
+  border-color: #1F4F3A;
+  box-shadow: 0 8px 24px rgba(22, 26, 23, 0.08);
 }
 .essay-fig-frame {
   width: 100%;
   max-height: 360px;
   padding: 12px;
   border-radius: 8px;
-  background: #E8E2D4;
+  background: #EAE4D7;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1173,46 +1552,57 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   max-width: 100%;
   max-height: 336px;
   object-fit: contain;
-  box-shadow: 0 4px 16px rgba(31, 36, 33, 0.2);
+  box-shadow: 0 4px 16px rgba(22, 26, 23, 0.2);
 }
 .essay-fig-cap {
-  font-size: 13px;
-  line-height: 19px;
-  color: #5E6158;
+  font-size: 13.5px;
+  line-height: 20px;
+  color: #454A42;
   font-style: italic;
 }
 
 /* Shajara Treasures (Letter, Menkibe & Poem) */
 .quote-sheet {
-  padding: 24px 26px;
+  padding: 24px 28px;
   border-radius: 14px;
-  border: 1px solid #DDD7CA;
-  background: #FAF8F2;
+  border: 1px solid #DCD5C7;
+  background: #FCFBF7;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 16.5px;
+  line-height: 28px;
+  font-weight: 420;
+  color: #1D221E;
+}
+.essay-book .quote-sheet {
+  background: #F7F4EC;
 }
 .quote-meta {
-  font-size: 13px;
-  line-height: 20px;
-  color: #5E6158;
+  font-family: Inter, -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 21px;
+  color: #454A42;
   padding-bottom: 10px;
-  border-bottom: 1px solid #E9E3D6;
+  border-bottom: 1px solid #E4DEC9;
 }
 .poem-block {
-  border-left: 2.5px solid #2F5D46;
-  padding: 4px 0 4px 18px;
+  border-left: 3px solid #1F4F3A;
+  padding: 6px 0 6px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 .poem-stanza {
   margin: 0;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 20px;
-  line-height: 29px;
+  font-family: 'Source Serif 4', 'Cormorant Garamond', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 18px;
+  line-height: 30px;
   font-style: italic;
-  color: #1F2421;
+  color: #1D221E;
 }
 
 /* Quiet Person Drawer Modal */
@@ -1275,13 +1665,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 .drawer-path.anne { border-left-color: #2e5b6e; }
 .drawer-note {
   margin: 12px 0 0;
-  padding: 11px 14px;
+  padding: 12px 16px;
   border-radius: 10px;
-  border: 1px solid #E2DCCE;
-  background: #F4F0E7;
-  font-size: 13px;
-  line-height: 20px;
-  color: #4D5148;
+  border: 1px solid #DFD9CC;
+  background: #F6F3EB;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 14.5px;
+  line-height: 23px;
+  color: #2E342F;
 }
 .support-sec {
   padding-top: 18px;
@@ -1292,9 +1684,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 }
 .support-sub {
   margin: 0;
-  font-size: 12.5px;
-  line-height: 18px;
-  color: #6B675B;
+  font-size: 13px;
+  line-height: 20px;
+  color: #4D524A;
 }
 .support-list {
   display: flex;
@@ -1303,10 +1695,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 }
 .support-card {
   width: 100%;
-  padding: 10px 12px;
+  padding: 11px 13px;
   border-radius: 12px;
-  border: 1px solid #DFD9CC;
-  background: #F6F3EC;
+  border: 1px solid #DCD5C7;
+  background: #F8F5EE;
   display: grid;
   grid-template-columns: 58px minmax(0, 1fr);
   gap: 12px;
@@ -1315,7 +1707,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   transition: border-color 0.14s, background 0.14s;
 }
 .support-card:hover {
-  border-color: #2F5D46;
+  border-color: #1F4F3A;
   background: #FFFFFF;
 }
 .support-thumb {
@@ -1334,12 +1726,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  box-shadow: 0 2px 6px rgba(31, 36, 33, 0.16);
+  box-shadow: 0 2px 6px rgba(22, 26, 23, 0.16);
 }
 .support-body {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   min-width: 0;
 }
 .support-badge-row {
@@ -1354,34 +1746,39 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   padding: 1px 7px;
   border-radius: 999px;
   background: #E7E2D6;
-  color: #53564D;
+  color: #3D423B;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
 .support-meta {
-  font-size: 11.5px;
-  color: #6E6A5E;
+  font-size: 12px;
+  color: #4D524A;
 }
 .support-title {
-  font-size: 13.5px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 19px;
   font-weight: 600;
-  color: #1F2421;
+  color: #161A17;
 }
 .support-why {
-  font-size: 12.5px;
-  line-height: 18px;
-  color: #4D5148;
-}
-.locator-line {
-  padding: 11px 14px;
-  border-left: 3px solid #2f5242;
-  background: #FAF8F2;
-  border-radius: 0 10px 10px 0;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
   font-size: 14px;
   line-height: 21px;
-  color: #1F2421;
+  color: #383E39;
+}
+.locator-line {
+  padding: 13px 16px;
+  border-left: 3.5px solid #1F4F3A;
+  background: #F4F8F5;
+  border-radius: 0 10px 10px 0;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 420;
+  color: #1D221E;
 }
 .drawer-docs-grid {
   display: grid;
@@ -1739,27 +2136,30 @@ dialog.doc-lightbox::backdrop {
   min-width: 0;
 }
 .ev-tag {
-  font-size: 11px;
-  font-weight: 600;
-  color: #2F5D46;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1F4F3A;
   letter-spacing: 0.02em;
 }
 .ev-title {
-  font-size: 15px;
-  line-height: 20px;
+  font-size: 15.5px;
+  line-height: 21px;
   font-weight: 600;
-  color: #1F2421;
+  color: #161A17;
 }
 .ev-page {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 500;
-  color: #6B675B;
+  color: #4D524A;
 }
 .ev-quote {
   margin: 0;
-  font-size: 13px;
-  line-height: 19px;
-  color: #363A35;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 14.5px;
+  line-height: 23px;
+  font-weight: 420;
+  color: #1D221E;
 }
 .ev-actions {
   display: flex;
@@ -1859,14 +2259,17 @@ dialog.doc-lightbox::backdrop {
 }
 .report-banner:hover { border-color: #2F5D46; }
 .notice-box {
-  padding: 14px 18px;
+  padding: 16px 20px;
   border-radius: 12px;
   border: 1px solid #D9D1BF;
-  border-left: 3.5px solid #9a5534;
-  background: #FAF8F2;
-  font-size: 13.5px;
-  line-height: 21px;
-  color: #363A35;
+  border-left: 4px solid #8A4526;
+  background: #FCFBF7;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 15.5px;
+  line-height: 26px;
+  font-weight: 420;
+  color: #1D221E;
 }
 .toc-list {
   display: flex;
@@ -1953,30 +2356,35 @@ dialog.doc-lightbox::backdrop {
   gap: 16px;
 }
 .guide-col {
-  padding: 18px 20px;
+  padding: 20px 24px;
   border-radius: 14px;
-  border: 1px solid #DDD7CA;
-  background: #FAF8F2;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.guide-col-h {
-  margin: 0;
-  font-size: 20px;
-  line-height: 25px;
-  font-weight: 600;
-  color: #1F2421;
-}
-.guide-ol {
-  margin: 0;
-  padding-left: 20px;
+  border: 1px solid #DCD5C7;
+  background: #FCFBF7;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 14.5px;
-  line-height: 23px;
-  color: #2B302C;
+}
+.guide-col-h {
+  margin: 0;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 19.5px;
+  line-height: 26px;
+  font-weight: 600;
+  color: #151916;
+}
+.guide-ol {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 16px;
+  line-height: 27px;
+  font-weight: 420;
+  color: #1D221E;
 }
 .offset-grid {
   display: grid;
@@ -2023,20 +2431,34 @@ dialog.doc-lightbox::backdrop {
   .reader-visual { position: static; }
   .viewer-stage { height: 480px; }
   .tree-col-heads, .gen-row { grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1.15fr) 48px minmax(0, 1fr); }
-  .p-name { font-size: 18px; line-height: 22px; }
+  .p-name { font-size: 17.5px; line-height: 22px; }
   .stat-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ev-grid, .lit-grid, .guide-cols, .offset-grid { grid-template-columns: minmax(0, 1fr); }
+  .essay-book { padding: 30px 30px 34px; }
+  .diff-col-heads { display: none; }
+  .diff-layout-btn { display: none; }
+  .diff-row { grid-template-columns: minmax(0, 1fr); }
+  .diff-cell.mod { border-right: 0; border-bottom: 1px dashed #DCD5C7; }
+  .diff-cell-side-lbl { display: inline-block; }
 }
 @media (max-width: 720px) {
-  .app-shell { padding: 12px 14px 36px; }
-  .app-inner { gap: 28px; }
+  .app-shell { padding: 10px 10px 34px; }
+  .app-inner { gap: 26px; }
   .top-nav { position: static; flex-wrap: wrap; padding: 10px 12px; gap: 8px; }
   .brand-name { font-size: 19px; }
   .nav-tabs { order: 3; width: 100%; justify-content: space-between; border-top: 1px solid #E4DEC9; padding-top: 8px; gap: 2px; }
   .nav-tab { flex: 1; padding: 0 5px; font-size: 13px; text-align: center; }
-  .hero-h1 { font-size: 36px; line-height: 40px; }
-  .sec-h2 { font-size: 27px; line-height: 31px; }
-  .reader-h1 { font-size: 29px; line-height: 34px; }
+  .hero-h1 { font-size: 34px; line-height: 39px; }
+  .hero-lead { font-size: 15.5px; line-height: 26px; }
+  .sec-h2 { font-size: 26px; line-height: 31px; }
+  .reader-h1 { font-size: 25px; line-height: 30px; }
+  .reader-col { padding: 18px 15px 20px; }
+  .read-body, .diff-cell-body { font-size: 15.5px; line-height: 26px; }
+  .essay-book { padding: 22px 15px 26px; border-radius: 14px; gap: 26px; }
+  .essay-h2 { font-size: 24px; line-height: 30px; }
+  .essay-p { font-size: 15.5px; line-height: 27px; }
+  .diff-head, .diff-overview, .diff-cell, .diff-legend { padding-left: 14px; padding-right: 14px; }
+  .diff-h2 { font-size: 21px; line-height: 26px; }
   .plate-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .shajara-strip { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .shajara-thumb { width: 100%; height: 180px; }
@@ -2049,7 +2471,6 @@ dialog.doc-lightbox::backdrop {
   .gen-left-slot { order: 2; padding-left: 14px; border-left: 2px solid #DDD7CA; }
   .gen-right-slot { order: 3; padding-left: 14px; border-left: 2px solid #DDD7CA; }
   .gen-conn, .spine-arrow { display: none; }
-  .reader-h1 { font-size: 25px; line-height: 29px; }
   .viewer-stage { height: clamp(295px, 44svh, 380px); min-height: 295px; max-height: 390px; border-radius: 14px; }
   .v-arrow { width: 42px; height: 42px; font-size: 22px; }
   .v-arrow.v-prev { left: 8px; }
@@ -2060,11 +2481,10 @@ dialog.doc-lightbox::backdrop {
   .lb-bar { padding: calc(8px + env(safe-area-inset-top, 0px)) 12px 8px; }
   .drawer-dialog { padding: 20px 18px 24px; }
   .drawer-docs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .quote-sheet { padding: 18px; }
+  .quote-sheet { padding: 18px; font-size: 15.5px; line-height: 26px; }
   .lineage-card { padding: 18px 16px; }
   .ev-card, .lit-card { grid-template-columns: minmax(0, 1fr); }
   .ev-thumb-btn, .lit-thumb-btn { width: 100%; height: 180px; }
-  .prose { text-align: left; hyphens: none; -webkit-hyphens: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
@@ -2121,6 +2541,8 @@ dialog.doc-lightbox::backdrop {
     </footer>
   </div>
 </div>
+
+<div id="abbrPopover" class="abbr-pop" role="tooltip" hidden></div>
 
 <div id="drawerBackdrop" class="drawer-backdrop" aria-hidden="true">
   <div id="drawerDialog" class="drawer-dialog" role="dialog" aria-modal="true" aria-label="Kişi bilgisi" tabindex="-1"></div>
@@ -2189,7 +2611,9 @@ dialog.doc-lightbox::backdrop {
     viewerTy: 0,
     viewerImgW: 0,
     viewerImgH: 0,
-    lbOpen: false
+    lbOpen: false,
+    diffHighlight: true,
+    diffLayout: 'side'
   };
 
   function normPw(s) {
@@ -2210,8 +2634,254 @@ dialog.doc-lightbox::backdrop {
       .replace(/'/g, '&#39;');
   }
 
+  var ABBR_MAP = {
+    'ML.VRD.TMT.d': 'Maliye Nezareti Varidat Muhasebesi Temettuat Defterleri (gelir ve vergi sayımı)',
+    'A.{DVNSAHK.ME..d': 'Divan-ı Hümâyûn Sicilleri Eyalet Ahkâm Defterleri',
+    'A.{DVNS.AHK.ME.d': 'Divan-ı Hümâyûn Sicilleri Eyalet Ahkâm Defterleri',
+    'A.{DVNSAHK.ME': 'Divan-ı Hümâyûn Sicilleri Eyalet Ahkâm Defterleri',
+    'A.{DVNSMHM.d': 'Divan-ı Hümâyûn Sicilleri Mühimme Defterleri',
+    'A.DVNSMHM.d': 'Divan-ı Hümâyûn Sicilleri Mühimme Defterleri',
+    'A.DVNS.MHM.d': 'Divan-ı Hümâyûn Sicilleri Mühimme Defterleri',
+    'A.DVNS.TANH.d': 'Divan-ı Hümâyûn Sicilleri Tahvil (Nişan) Defterleri',
+    'A.{DVNSRSK.d': 'Divan-ı Hümâyûn Sicilleri Ruûs Kalemi Defterleri (atama ve tevcih)',
+    'A.{DVNSŞKT.d': 'Divan-ı Hümâyûn Sicilleri Şikâyet Defterleri',
+    'A.{RSK.d': 'Divan-ı Hümâyûn Sicilleri Ruûs Kalemi Defterleri',
+    'A.}MKT.MHM': 'Sadaret Mektubî Kalemi Mühimme Evrakı',
+    'A.}MKT.NZD': 'Sadaret Mektubî Kalemi Nezaret ve Devair Evrakı',
+    'A.}MKT.UM': 'Sadaret Mektubî Kalemi Umum Vilâyat Evrakı',
+    'A.MKT.UM': 'Sadaret Mektubî Kalemi Umum Vilâyat Evrakı',
+    'A.}MKT': 'Sadaret Mektubî Kalemi Evrakı',
+    'A.}DVN': 'Sadaret Divan (Beylikçi) Kalemi Evrakı',
+    'AE.SMST.III': 'Ali Emîrî Tasnifi, Sultan III. Mustafa Dönemi',
+    'AE.SMST.II': 'Ali Emîrî Tasnifi, Sultan II. Mustafa Dönemi',
+    'AE.SSLM.III': 'Ali Emîrî Tasnifi, Sultan III. Selim Dönemi',
+    'AE.SAMD.III': 'Ali Emîrî Tasnifi, Sultan III. Ahmed Dönemi',
+    'AE.SOSM.III': 'Ali Emîrî Tasnifi, Sultan III. Osman Dönemi',
+    'AE.SMHD.II': 'Ali Emîrî Tasnifi, Sultan II. Mahmud Dönemi',
+    'AE.SMHD.I': 'Ali Emîrî Tasnifi, Sultan I. Mahmud Dönemi',
+    'AE.SABH.I': 'Ali Emîrî Tasnifi, Sultan I. Abdülhamid Dönemi',
+    'AE.*': 'Ali Emîrî Tasnifi (tüm padişah dönemleri fon serisi)',
+    'EV.MKT.CHT.': 'Evkaf Nezareti Mektubî Kalemi Cihat (görev atama) Evrakı',
+    'EV.MKT.CHT': 'Evkaf Nezareti Mektubî Kalemi Cihat (görev atama) Evrakı',
+    'EV.HMH.d': 'Evkaf Nezareti Haremeyn Muhasebesi Defterleri',
+    'EV.MKT.': 'Evkaf Nezareti Mektubî Kalemi Evrakı',
+    'EV.MKT': 'Evkaf Nezareti Mektubî Kalemi Evrakı',
+    'EV.BRT.': 'Evkaf Nezareti Berat Evrakı ve Defterleri',
+    'EV.BRT': 'Evkaf Nezareti Berat Evrakı ve Defterleri',
+    'EV.THR.': 'Evkaf Nezareti Tahrirat Kalemi Evrakı',
+    'EV.THR': 'Evkaf Nezareti Tahrirat Kalemi Evrakı',
+    'EV.VKF.': 'Evkaf Nezareti Vakfiye ve Vakıf Evrakı',
+    'EV.VKF': 'Evkaf Nezareti Vakfiye ve Vakıf Evrakı',
+    'EV.d': 'Evkaf Nezareti Defterleri (vakıf muhasebe, şahsiyet ve cihat kayıtları)',
+    'MŞH.ŞSC.d': 'Meşihat Arşivi Şer\'iye Sicilleri Defterleri (kadı mahkemesi kayıtları)',
+    'D..MKF.d': 'Bab-ı Defterî Mevkufat Kalemi Defterleri',
+    'D.MKF.d': 'Bab-ı Defterî Mevkufat Kalemi Defterleri',
+    'MKF.d': 'Mevkufat Kalemi Defterleri',
+    'ML.CRD.d': 'Maliye Nezareti Ceride Odası Defterleri',
+    'ML.EEM': 'Maliye Nezareti Emlâk-ı Emîriye Müdüriyeti Evrakı',
+    'DH.SAİDd': 'Dahiliye Nezareti Sicill-i Ahvâl İdaresi Defterleri (memur özlük kayıtları)',
+    'DH.İ.UM': 'Dahiliye Nezareti İdare-i Umumiye Evrakı',
+    'DH.MKT': 'Dahiliye Nezareti Mektubî Kalemi Evrakı',
+    'DH.MUİ': 'Dahiliye Nezareti Muhaberat-ı Umumiye İdaresi Evrakı',
+    'DH.ŞFR': 'Dahiliye Nezareti Şifre Kalemi Evrakı',
+    'MF.İBT': 'Maarif Nezareti Tedrisat-ı İbtidaiye (ilköğretim) Evrakı',
+    'MF.MKT': 'Maarif Nezareti Mektubî Kalemi Evrakı',
+    'HR.MKT': 'Hariciye Nezareti Mektubî Kalemi Evrakı',
+    'HR.SYS': 'Hariciye Nezareti Siyasi Kısım Evrakı',
+    'C..ADL.': 'Cevdet Tasnifi, Adliye Bölümü',
+    'C..EV..': 'Cevdet Tasnifi, Evkaf (Vakıflar) Bölümü',
+    'C..MF..': 'Cevdet Tasnifi, Maarif (Eğitim) Bölümü',
+    'C..ADL': 'Cevdet Tasnifi, Adliye Bölümü',
+    'C..EV': 'Cevdet Tasnifi, Evkaf (Vakıflar) Bölümü',
+    'C..MF': 'Cevdet Tasnifi, Maarif (Eğitim) Bölümü',
+    'C.ADL': 'Cevdet Tasnifi, Adliye Bölümü',
+    'C.EV': 'Cevdet Tasnifi, Evkaf (Vakıflar) Bölümü',
+    'C.MF': 'Cevdet Tasnifi, Maarif (Eğitim) Bölümü',
+    'C.DH': 'Cevdet Tasnifi, Dahiliye (İçişleri) Bölümü',
+    'C.ZB': 'Cevdet Tasnifi, Zabtiye (Asayiş) Bölümü',
+    'İ..DH..': 'İrade Tasnifi, Dahiliye (Padişah onayı)',
+    'İ..EV..': 'İrade Tasnifi, Evkaf (Padişah onayı)',
+    'İ..MVL.': 'İrade Tasnifi, Meclis-i Vâlâ',
+    'İ..DH': 'İrade Tasnifi, Dahiliye (Padişah onayı)',
+    'İ..EV': 'İrade Tasnifi, Evkaf (Padişah onayı)',
+    'İ..MVL': 'İrade Tasnifi, Meclis-i Vâlâ',
+    'İ.MBH': 'İrade Tasnifi, Mâbeyn-i Hümâyûn',
+    'İ.MVL': 'İrade Tasnifi, Meclis-i Vâlâ',
+    'İ.DH': 'İrade Tasnifi, Dahiliye (Padişah onayı)',
+    'İ.UM': 'İrade Tasnifi, Umumî',
+    'İE.ADL': 'İbnülemin Tasnifi, Adliye Bölümü',
+    'İE.ENB': 'İbnülemin Tasnifi, Ensab (Soy ve Nesep) Bölümü',
+    'İE.EV..': 'İbnülemin Tasnifi, Evkaf (Vakıflar) Bölümü',
+    'İE.EV': 'İbnülemin Tasnifi, Evkaf (Vakıflar) Bölümü',
+    'İE.TCT.': 'İbnülemin Tasnifi, Tevcihat (Görev ve Atama) Bölümü',
+    'İE.TCT': 'İbnülemin Tasnifi, Tevcihat (Görev ve Atama) Bölümü',
+    'KK.TTd': 'Kâmil Kepeci Tasnifi, Tapu Tahrir Defterleri',
+    'KK.d': 'Kâmil Kepeci Tasnifi Defterleri',
+    'MAD.d': 'Maliyeden Müdevver Defterler',
+    'MHM.d': 'Mühimme Defterleri',
+    'NFS.d': 'Nüfus Defterleri (19. yüzyıl Osmanlı nüfus sayımı)',
+    'TK.GM.d': 'Tapu ve Kadastro Genel Müdürlüğü (Kuyûd-ı Kadîme) Defterleri',
+    'TS.MA.e': 'Topkapı Sarayı Müzesi Arşivi Evrakı',
+    'TT.d': 'Tapu Tahrir Defterleri (15. ve 16. yüzyıl vergi ve nüfus tahrirleri)',
+    'T.MKT': 'Ticaret Nezareti Mektubî Kalemi Evrakı',
+    'BETSİS': 'Devlet Arşivleri Başkanlığı Belge Tarama Sistemi',
+    'İMMEŞ': 'İstanbul Müftülüğü Meşihat Arşivi (ilmiye ve kadı sicilleri)',
+    'ATASE': 'Genelkurmay Askerî Tarih ve Stratejik Etüt Daire Başkanlığı Arşivi',
+    'CİMER': 'Cumhurbaşkanlığı İletişim Merkezi',
+    'MSGSÜ': 'Mimar Sinan Güzel Sanatlar Üniversitesi',
+    'ORSAM': 'Ortadoğu Araştırmaları Merkezi',
+    'VGMA': 'Vakıflar Genel Müdürlüğü Arşivi (Ankara)',
+    'TKGM': 'Tapu ve Kadastro Genel Müdürlüğü',
+    'İSAM': 'Türkiye Diyanet Vakfı İslâm Araştırmaları Merkezi',
+    'ATAM': 'Atatürk Araştırma Merkezi',
+    'TBMM': 'Türkiye Büyük Millet Meclisi',
+    'TÜBA': 'Türkiye Bilimler Akademisi',
+    'TUBA': 'Türkiye Bilimler Akademisi',
+    'DAB': 'T.C. Cumhurbaşkanlığı Devlet Arşivleri Başkanlığı',
+    'BOA': 'Başbakanlık Osmanlı Arşivi (Devlet Arşivleri Osmanlı Arşivi)',
+    'BCA': 'Başbakanlık Cumhuriyet Arşivi (Devlet Arşivleri Cumhuriyet Arşivi)',
+    'BDA': 'Başbakanlık Devlet Arşivleri',
+    'VGM': 'Vakıflar Genel Müdürlüğü',
+    'VAD': 'Vakıf Arşiv Defteri (VGMA vakfiye ve şahsiyet defter serisi)',
+    'DES': 'Dosya Envanter Sistemi (yalnızca defter veya dosya başlığı dizinli; kişi adı aramasında 0 sonuç verebilir)',
+    'NVİ': 'Nüfus ve Vatandaşlık İşleri Genel Müdürlüğü',
+    'DİB': 'Diyanet İşleri Başkanlığı',
+    'İTO': 'İstanbul Ticaret Odası',
+    'YÖK': 'Yükseköğretim Kurulu (Ulusal Tez Merkezi)',
+    'TDV': 'Türkiye Diyanet Vakfı',
+    'MSB': 'Millî Savunma Bakanlığı (Şehit ve Askerî Arşiv)',
+    'BEO': 'Bab-ı Âlî Evrak Odası (Sadaret merkez yazışma evrakı)',
+    'HAT': 'Hatt-ı Hümâyûn Tasnifi (Padişah el yazısı onay ve fermanları)',
+    'MAD': 'Maliyeden Müdevver Defterler',
+    'MVL': 'Meclis-i Vâlâ-yı Ahkâm-ı Adliye Evrakı',
+    'İBB': 'İstanbul Büyükşehir Belediyesi',
+    'SBE': 'Sosyal Bilimler Enstitüsü',
+    'İSH': 'İstiklâl Harbi Koleksiyonu (ATASE)',
+    'TKG': 'Tapu ve Kadastro Genel Müdürlüğü (Kuyûd-ı Kadîme)',
+    'ŞD': 'Şûrâ-yı Devlet (Danıştay) Evrakı',
+    'İÜ': 'İstanbul Üniversitesi',
+    '[B]': 'Birincil Arşiv Belgesi (Devlet Arşivleri veya kurum aslından edinilmiş belge)',
+    '[Ö]': 'Katalog Önizleme Okuması (tam kopyası edinilmeden önce portal önizlemesinden aday okuma)',
+    '[K]': 'Arşiv Katalog Kaydı (yalnız katalog özeti veya resmî rehber bilgisi, belge görüntüsü edinilmedi)',
+    '[D]': 'Basılı Defter veya Sicil Neşri (resmî yayın, şer\'iye sicili, salnâme veya ahkâm transkripsiyonu)',
+    '[İ]': 'İkincil Akademik Literatür (tez, makale veya kitap aktarımı; birincil arşiv belgesi yerine geçmez)',
+    '[Ş]': 'Aile Şeceresi (aile içi yazılı soy belgesi)',
+    '[S]': 'Sözlü Aktarım veya Aile Anısı (arşiv belgesiyle doğrulanıncaya kadar sözlü kaynak düzeyinde)'
+  };
+
+  var CTX_ABBR_MAP = {
+    'H.': 'Hicrî takvim yılı (Ay takvimi; Milâdî karşılığı yaklaşık +622 yıl civarındadır)',
+    'R.': 'Rûmî (malî) takvim yılı (Osmanlı malî takvimi; Milâdî karşılığı yaklaşık +584 yıldır)',
+    'M.': 'Mîlâdî takvim yılı',
+    'vr.': 'Varak (el yazması veya defter yaprağı; a ön yüz, b arka yüz)',
+    'nr.': 'Numara (arşiv defteri, dosya veya belge sıra kaydı)'
+  };
+
+  function escRe(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  var ABBR_KEYS = Object.keys(ABBR_MAP).concat(Object.keys(CTX_ABBR_MAP)).sort(function (a, b) {
+    return b.length - a.length;
+  });
+  var ABBR_RE = new RegExp(ABBR_KEYS.map(escRe).join('|'), 'g');
+  var TR_WORD_CH = /[A-Za-zÇĞİÖŞÜçğıöşüÂÎÛâîû0-9]/;
+
+  function decorateAbbrs(escapedHtml) {
+    if (!escapedHtml) return '';
+    var parts = escapedHtml.split(/(<[^>]+>|&[a-zA-Z0-9#]+;)/g);
+    var inTip = 0;
+    for (var i = 0; i < parts.length; i += 1) {
+      var seg = parts[i];
+      if (!seg) continue;
+      if (seg.charAt(0) === '<') {
+        if (/^<span\b[^>]*abbr-tip/.test(seg)) inTip += 1;
+        else if (inTip > 0 && /^<\/span>/.test(seg)) inTip -= 1;
+        continue;
+      }
+      if (seg.charAt(0) === '&' || inTip > 0) continue;
+      parts[i] = seg.replace(ABBR_RE, function (m, off, full) {
+        var firstCh = m.charAt(0);
+        var lastCh = m.charAt(m.length - 1);
+        var prevCh = off > 0 ? full.charAt(off - 1) : '';
+        var afterStr = full.slice(off + m.length);
+        var nextCh = afterStr.charAt(0);
+        var next2Ch = afterStr.charAt(1);
+
+        if (firstCh !== '[') {
+          if (prevCh && (TR_WORD_CH.test(prevCh) || prevCh === '.')) return m;
+        }
+        if (lastCh !== ']' && lastCh !== '.') {
+          if (nextCh && TR_WORD_CH.test(nextCh)) return m;
+          if (nextCh === '.' && next2Ch && TR_WORD_CH.test(next2Ch)) return m;
+        }
+        if (CTX_ABBR_MAP[m]) {
+          if (m === 'H.' || m === 'R.' || m === 'M.') {
+            if (!/^\s*\d{3,4}/.test(afterStr)) return m;
+          } else if (!/^\s*\d/.test(afterStr)) {
+            return m;
+          }
+          return '<span class="abbr-tip" data-abbr="' + esc(m) + '" data-tip="' + esc(CTX_ABBR_MAP[m]) + '">' + m + '</span>';
+        }
+        var tip = ABBR_MAP[m];
+        if (!tip) return m;
+        return '<span class="abbr-tip" data-abbr="' + esc(m) + '" data-tip="' + esc(tip) + '">' + m + '</span>';
+      });
+    }
+    return parts.join('');
+  }
+
+  var TR_VOWELS = 'aeıioöuüâîûAEIİOÖUÜÂÎÛ';
+  var TR_ALPHA_RE = /^[A-Za-zÇĞİÖŞÜçğıöşüÂÎÛâîû]+$/;
+
+  function hyphenateTRChunk(chunk) {
+    if (!chunk || chunk.length < 6) return chunk;
+    if (!TR_ALPHA_RE.test(chunk)) return chunk;
+    if (chunk === chunk.toLocaleUpperCase('tr-TR')) return chunk;
+    var vPos = [];
+    for (var i = 0; i < chunk.length; i += 1) {
+      if (TR_VOWELS.indexOf(chunk.charAt(i)) >= 0) vPos.push(i);
+    }
+    if (vPos.length < 2) return chunk;
+    var minLeft = chunk.length === 6 ? 3 : 2;
+    var breaks = [];
+    for (var k = 0; k < vPos.length - 1; k += 1) {
+      var cCount = vPos[k + 1] - vPos[k] - 1;
+      var sp;
+      if (cCount === 0) sp = vPos[k + 1];
+      else if (cCount === 1) sp = vPos[k] + 1;
+      else if (cCount === 2) sp = vPos[k] + 2;
+      else sp = vPos[k + 1] - 1;
+      if (sp >= minLeft && (chunk.length - sp) >= 3) {
+        if (!breaks.length || sp - breaks[breaks.length - 1] >= 2) {
+          breaks.push(sp);
+        }
+      }
+    }
+    if (!breaks.length) return chunk;
+    var res = '';
+    var prev = 0;
+    for (var b = 0; b < breaks.length; b += 1) {
+      res += chunk.slice(prev, breaks[b]) + '\u00AD';
+      prev = breaks[b];
+    }
+    return res + chunk.slice(prev);
+  }
+
+  function hyphenateTRWord(tok) {
+    if (!tok || tok.length < 6) return tok;
+    if (/[0-9@#\\{}=]|https?:/i.test(tok)) return tok;
+    if (ABBR_MAP[tok]) return tok;
+    return tok.replace(/[A-Za-zÇĞİÖŞÜçğıöşüÂÎÛâîû]{6,}/g, function (seg) {
+      return hyphenateTRChunk(seg);
+    });
+  }
+
   function fmtInline(s) {
-    return esc(s).replace(/[ \t]+\|[ \t]+/g, '&nbsp;&nbsp;|&nbsp;&nbsp;<wbr>');
+    var html = esc(s)
+      .replace(/[ \t]+\|[ \t]+/g, '&nbsp;&nbsp;|&nbsp;&nbsp;<wbr>')
+      .replace(/([A-Za-zÇĞİÖŞÜçğıöşüÂÎÛâîû])\/([A-Za-zÇĞİÖŞÜçğıöşüÂÎÛâîû])/g, '$1/<wbr>$2');
+    return decorateAbbrs(html);
   }
 
   function cleanHuman(s) {
@@ -2229,14 +2899,17 @@ dialog.doc-lightbox::backdrop {
     var parts = raw.split(/([ \t]+)/);
     var wordIdx = [];
     for (var i = 0; i < parts.length; i += 1) {
-      if (parts[i] && !/^[ \t]+$/.test(parts[i])) wordIdx.push(i);
+      if (parts[i] && !/^[ \t]+$/.test(parts[i])) {
+        wordIdx.push(i);
+        parts[i] = hyphenateTRWord(parts[i]);
+      }
     }
     if (wordIdx.length >= 4) {
       var iLast = wordIdx[wordIdx.length - 1];
       var iPrev = wordIdx[wordIdx.length - 2];
-      var wLast = parts[iLast];
-      var wPrev = parts[iPrev];
-      if (wLast !== '|' && wPrev !== '|' && wLast.length <= 18 && (wPrev.length + wLast.length) <= 28 && iLast - iPrev === 2) {
+      var wLastClean = parts[iLast].replace(/\u00AD/g, '');
+      var wPrevClean = parts[iPrev].replace(/\u00AD/g, '');
+      if (wLastClean !== '|' && wPrevClean !== '|' && wLastClean.length <= 12 && (wPrevClean.length + wLastClean.length) <= 21 && iLast - iPrev === 2) {
         parts[iPrev + 1] = '\u00a0';
       }
     }
@@ -2252,6 +2925,332 @@ dialog.doc-lightbox::backdrop {
       out.push('<p class="prose">' + fmtProse(ln) + '</p>');
     }
     return out.length ? out.join('') : '<p class="prose">Metin kaydı bulunmuyor.</p>';
+  }
+
+  /* Side-by-Side Diff Engine (Modern Turkish vs Original Ottoman Transliteration) */
+  function normDiffWord(tok) {
+    var s = String(tok || '').replace(/^[^A-Za-zÇĞİÖŞÜçğıöşüÂÎÛâîû0-9]+|[^A-Za-zÇĞİÖŞÜçğıöşüÂÎÛâîû0-9]+$/g, '');
+    if (!s) return '';
+    if (/^\d+(?:[.,]\d+)*$/.test(s)) {
+      return s.replace(/\.(?=\d{3}(?:\D|$))/g, '');
+    }
+    s = s.replace(/İ/g, 'i').replace(/I/g, 'ı').toLocaleLowerCase('tr-TR');
+    s = s
+      .replace(/[âàá]/g, 'a')
+      .replace(/[îìí]/g, 'i')
+      .replace(/[ûùú]/g, 'u')
+      .replace(/['’‘`\-]/g, '')
+      .replace(/yy/g, 'y')
+      .replace(/ll/g, 'l')
+      .replace(/dd/g, 'd')
+      .replace(/ss/g, 's')
+      .replace(/tt/g, 't')
+      .replace(/([a-zçğıöşü]{3,})d$/g, '$1t')
+      .replace(/([a-zçğıöşü]{3,})b$/g, '$1p');
+    return s;
+  }
+
+  function wordsMatchDiff(na, nb) {
+    if (!na || !nb) return false;
+    if (na === nb) return true;
+    if (/^\d/.test(na) || /^\d/.test(nb)) return na === nb;
+    if (na.length >= 5 && nb.length >= 5 && na.slice(0, 5) === nb.slice(0, 5)) return true;
+    if (na.length >= 4 && nb.length >= 4 && (na.indexOf(nb) === 0 || nb.indexOf(na) === 0)) {
+      return Math.min(na.length, nb.length) >= 4 && Math.abs(na.length - nb.length) <= 5;
+    }
+    return false;
+  }
+
+  function computeSideDiffMasks(leftWords, rightWords) {
+    var m = leftWords.length;
+    var n = rightWords.length;
+    var leftKeep = new Array(m);
+    var rightKeep = new Array(n);
+    var i, j;
+    for (i = 0; i < m; i += 1) leftKeep[i] = false;
+    for (j = 0; j < n; j += 1) rightKeep[j] = false;
+
+    var ln = leftWords.map(normDiffWord);
+    var rn = rightWords.map(normDiffWord);
+
+    if (m * n <= 85000 && m > 0 && n > 0) {
+      var stride = n + 1;
+      var dp = new Uint16Array((m + 1) * stride);
+      for (i = m - 1; i >= 0; i -= 1) {
+        var rowOff = i * stride;
+        var nextOff = (i + 1) * stride;
+        for (j = n - 1; j >= 0; j -= 1) {
+          if (wordsMatchDiff(ln[i], rn[j])) {
+            dp[rowOff + j] = dp[nextOff + j + 1] + 1;
+          } else {
+            var a = dp[nextOff + j];
+            var b = dp[rowOff + j + 1];
+            dp[rowOff + j] = a >= b ? a : b;
+          }
+        }
+      }
+      i = 0;
+      j = 0;
+      while (i < m && j < n) {
+        if (wordsMatchDiff(ln[i], rn[j])) {
+          leftKeep[i] = true;
+          rightKeep[j] = true;
+          i += 1;
+          j += 1;
+        } else if (dp[(i + 1) * stride + j] >= dp[i * stride + j + 1]) {
+          i += 1;
+        } else {
+          j += 1;
+        }
+      }
+      return { leftKeep: leftKeep, rightKeep: rightKeep };
+    }
+
+    var rightBag = {};
+    for (j = 0; j < n; j += 1) {
+      if (!rn[j]) continue;
+      var k5 = rn[j].length >= 5 ? rn[j].slice(0, 5) : rn[j];
+      rightBag[k5] = (rightBag[k5] || 0) + 1;
+    }
+    var leftBag = {};
+    for (i = 0; i < m; i += 1) {
+      if (!ln[i]) continue;
+      var lk5 = ln[i].length >= 5 ? ln[i].slice(0, 5) : ln[i];
+      leftBag[lk5] = (leftBag[lk5] || 0) + 1;
+      if (rightBag[lk5]) leftKeep[i] = true;
+    }
+    for (j = 0; j < n; j += 1) {
+      if (!rn[j]) continue;
+      var rk5 = rn[j].length >= 5 ? rn[j].slice(0, 5) : rn[j];
+      if (leftBag[rk5]) rightKeep[j] = true;
+    }
+    return { leftKeep: leftKeep, rightKeep: rightKeep };
+  }
+
+  function renderDiffMarkedText(rawText, keepMask, markCls) {
+    var parts = String(rawText || '').trim().split(/([ \t]+)/);
+    var wordIdx = [];
+    var i;
+    for (i = 0; i < parts.length; i += 1) {
+      if (parts[i] && !/^[ \t]+$/.test(parts[i])) wordIdx.push(i);
+    }
+    var wIdxToMark = {};
+    for (var w = 0; w < wordIdx.length; w += 1) {
+      var tok = parts[wordIdx[w]];
+      var isSep = tok === '|' || tok === '/';
+      wIdxToMark[wordIdx[w]] = !isSep && !keepMask[w];
+    }
+    if (wordIdx.length >= 4) {
+      var iLast = wordIdx[wordIdx.length - 1];
+      var iPrev = wordIdx[wordIdx.length - 2];
+      var wLastClean = parts[iLast];
+      var wPrevClean = parts[iPrev];
+      if (wLastClean !== '|' && wPrevClean !== '|' && wLastClean.length <= 10 && (wPrevClean.length + wLastClean.length) <= 18 && iLast - iPrev === 2) {
+        parts[iPrev + 1] = '\u00a0';
+      }
+    }
+    var out = [];
+    var openMark = false;
+    for (i = 0; i < parts.length; i += 1) {
+      var p = parts[i];
+      if (!p) continue;
+      var isWs = /^[ \t\u00a0]+$/.test(p);
+      if (isWs) {
+        var nextIsMarked = (i + 1 < parts.length) && !!wIdxToMark[i + 1];
+        if (openMark && !nextIsMarked) {
+          out.push('</mark>');
+          openMark = false;
+        }
+        out.push(p === '\u00a0' ? '&nbsp;' : p);
+        continue;
+      }
+      if (p === '|') {
+        if (openMark) { out.push('</mark>'); openMark = false; }
+        if (out.length && /^[ \t]+$/.test(out[out.length - 1])) out.pop();
+        if (i + 1 < parts.length && /^[ \t]+$/.test(parts[i + 1])) i += 1;
+        out.push('&nbsp;&nbsp;|&nbsp;&nbsp;<wbr>');
+        continue;
+      }
+      var shouldMark = !!wIdxToMark[i];
+      if (shouldMark && !openMark) {
+        out.push('<mark class="' + markCls + '">');
+        openMark = true;
+      } else if (!shouldMark && openMark) {
+        out.push('</mark>');
+        openMark = false;
+      }
+      out.push(decorateAbbrs(esc(hyphenateTRWord(p))));
+    }
+    if (openMark) out.push('</mark>');
+    return out.join('');
+  }
+
+  function renderDiffPairBlock(leftText, rightText) {
+    var lWords = String(leftText || '').trim().split(/[ \t]+/).filter(Boolean);
+    var rWords = String(rightText || '').trim().split(/[ \t]+/).filter(Boolean);
+    var masks = computeSideDiffMasks(lWords, rWords);
+    return {
+      leftHtml: renderDiffMarkedText(leftText, masks.leftKeep, 'diff-mod'),
+      rightHtml: renderDiffMarkedText(rightText, masks.rightKeep, 'diff-orig')
+    };
+  }
+
+  function buildDiffSectionHtml(sadeMetin, kayitlar, multiPage, pageNum) {
+    var sadeParas = String(sadeMetin || '').split(/\r?\n+/).map(function (x) { return x.trim(); }).filter(Boolean);
+    var recs = (kayitlar || []).filter(function (k) { return k && (k.latin || '').trim(); });
+    if (!sadeParas.length || !recs.length) return '';
+
+    var introParas = [];
+    var numberedParas = [];
+    for (var i = 0; i < sadeParas.length; i += 1) {
+      if (/^\d+\.\s+/.test(sadeParas[i])) {
+        numberedParas.push(sadeParas[i]);
+      } else if (!numberedParas.length) {
+        introParas.push(sadeParas[i]);
+      } else {
+        numberedParas[numberedParas.length - 1] += ' ' + sadeParas[i];
+      }
+    }
+
+    var overviewHtml = '';
+    var rowsHtml = '';
+    if (numberedParas.length === recs.length && recs.length >= 2) {
+      if (introParas.length) {
+        overviewHtml =
+          '<div class="diff-overview">' +
+            '<div class="read-h">Sayfa Özeti</div>' +
+            '<div class="read-body">' + introParas.map(function (ip) { return '<p class="prose">' + fmtProse(ip) + '</p>'; }).join('') + '</div>' +
+          '</div>';
+      }
+      rowsHtml = recs.map(function (k, idx) {
+        var pair = renderDiffPairBlock(numberedParas[idx], k.latin || '');
+        var recLabel = esc(k.no || (idx + 1)) + '. Kayıt';
+        return (
+          '<div class="diff-row">' +
+            '<div class="diff-cell mod">' +
+              '<div class="diff-cell-kicker"><span>' + recLabel + '</span><span class="diff-cell-side-lbl">Günümüz Türkçesi</span></div>' +
+              '<div class="diff-cell-body"><p class="prose">' + pair.leftHtml + '</p></div>' +
+            '</div>' +
+            '<div class="diff-cell orig">' +
+              '<div class="diff-cell-kicker"><span>' + recLabel + '</span><span class="diff-cell-side-lbl">Orijinal Çeviriyazı</span></div>' +
+              '<div class="diff-cell-body"><p class="prose">' + pair.rightHtml + '</p>' +
+                (k.serh ? '<div class="entry-serh prose" style="margin-top:8px;"><b>Şerh:</b> ' + fmtProse(k.serh) + '</div>' : '') +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        );
+      }).join('');
+    } else {
+      var fullRightJoined = recs.map(function (k) { return (k.latin || '').trim(); }).join(' ');
+      var leftParasHtml = sadeParas.map(function (sp) {
+        var pr = renderDiffPairBlock(sp, fullRightJoined);
+        return '<p class="prose">' + pr.leftHtml + '</p>';
+      }).join('');
+      var fullLeftJoined = sadeParas.join(' ');
+      var multiRec = recs.length > 1;
+      var rightParasHtml = recs.map(function (k, idx) {
+        var pr = renderDiffPairBlock(fullLeftJoined, k.latin || '');
+        return (
+          '<div class="entry-item">' +
+            (multiRec ? '<span class="entry-no">' + esc(k.no || (idx + 1)) + '. Kayıt</span>' : '') +
+            '<p class="prose">' + pr.rightHtml + '</p>' +
+            (k.serh ? '<div class="entry-serh prose"><b>Şerh:</b> ' + fmtProse(k.serh) + '</div>' : '') +
+          '</div>'
+        );
+      }).join('');
+      rowsHtml =
+        '<div class="diff-row">' +
+          '<div class="diff-cell mod">' +
+            '<div class="diff-cell-kicker"><span class="diff-cell-side-lbl">Günümüz Türkçesi</span></div>' +
+            '<div class="diff-cell-body">' + leftParasHtml + '</div>' +
+          '</div>' +
+          '<div class="diff-cell orig">' +
+            '<div class="diff-cell-kicker"><span class="diff-cell-side-lbl">Orijinal Çeviriyazı</span></div>' +
+            '<div class="diff-cell-body">' + rightParasHtml + '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    var shellCls = 'diff-shell' + (!STATE.diffHighlight ? ' diff-plain' : '') + (STATE.diffLayout === 'stack' ? ' diff-stacked' : '');
+    return (
+      '<section id="textDiffSection" class="' + shellCls + '" aria-label="Günümüz Türkçesi ve orijinal çeviriyazı karşılaştırması">' +
+        '<div class="diff-head">' +
+          '<div class="diff-title-group">' +
+            '<h2 class="diff-h2 serif">Günümüz Türkçesiyle Anlamı ve Orijinal Çeviriyazı' + (multiPage ? ' (Sayfa ' + pageNum + ')' : '') + '</h2>' +
+            '<span class="diff-sub">Sadeleştirilmiş metin ile Osmanlıca birebir çeviriyazı yan yana eşleştirilmiştir.</span>' +
+          '</div>' +
+          '<div class="diff-controls">' +
+            '<button type="button" id="diffHighlightBtn" class="diff-ctrl-btn' + (STATE.diffHighlight ? ' active' : '') + '" aria-pressed="' + (STATE.diffHighlight ? 'true' : 'false') + '">Farkları Vurgula</button>' +
+            '<button type="button" id="diffLayoutSide" class="diff-ctrl-btn diff-layout-btn' + (STATE.diffLayout !== 'stack' ? ' active' : '') + '">Yan Yana</button>' +
+            '<button type="button" id="diffLayoutStack" class="diff-ctrl-btn diff-layout-btn' + (STATE.diffLayout === 'stack' ? ' active' : '') + '">Tek Sütun</button>' +
+          '</div>' +
+        '</div>' +
+        overviewHtml +
+        '<div class="diff-col-heads" aria-hidden="true">' +
+          '<div class="diff-col-head mod"><span>Günümüz Türkçesiyle Anlamı</span><span class="diff-col-badge">Sadeleştirilmiş</span></div>' +
+          '<div class="diff-col-head orig"><span>Orijinal Osmanlıca Çeviriyazı</span><span class="diff-col-badge">Birebir Transkripsiyon</span></div>' +
+        '</div>' +
+        '<div class="diff-rows">' + rowsHtml + '</div>' +
+        '<div class="diff-legend">' +
+          '<span class="diff-leg-item"><span class="diff-leg-sw mod" aria-hidden="true"></span>Günümüz Türkçesine uyarlanan ifade</span>' +
+          '<span class="diff-leg-item"><span class="diff-leg-sw orig" aria-hidden="true"></span>Orijinal Osmanlıca ifade</span>' +
+          '<span class="diff-leg-item"><span class="diff-leg-sw same" aria-hidden="true"></span>Ortak ad, tarih veya sözcük</span>' +
+        '</div>' +
+      '</section>'
+    );
+  }
+
+  /* Floating ? Abbreviation Tooltip Controller */
+  var ACTIVE_ABBR_EL = null;
+  function positionAbbrPopover(el) {
+    var pop = document.getElementById('abbrPopover');
+    if (!pop || !el) return;
+    var code = el.getAttribute('data-abbr') || el.textContent || '';
+    var tip = el.getAttribute('data-tip') || '';
+    if (!tip) return;
+    pop.innerHTML = '<span class="abbr-pop-code">' + esc(code) + '</span><span class="abbr-pop-desc">' + esc(tip) + '</span>';
+    pop.hidden = false;
+    var r = el.getBoundingClientRect();
+    var pw = pop.offsetWidth || 280;
+    var ph = pop.offsetHeight || 64;
+    var pad = 12;
+    var left = r.left + r.width / 2 - pw / 2;
+    left = Math.max(pad, Math.min(window.innerWidth - pw - pad, left));
+    var top = r.top - ph - 10;
+    if (top < pad) top = r.bottom + 10;
+    if (top + ph > window.innerHeight - pad) top = Math.max(pad, window.innerHeight - ph - pad);
+    pop.style.left = Math.round(left) + 'px';
+    pop.style.top = Math.round(top) + 'px';
+  }
+
+  function showAbbrPopover(el) {
+    if (ACTIVE_ABBR_EL && ACTIVE_ABBR_EL !== el) ACTIVE_ABBR_EL.classList.remove('is-open');
+    ACTIVE_ABBR_EL = el;
+    el.classList.add('is-open');
+    positionAbbrPopover(el);
+  }
+
+  function hideAbbrPopover() {
+    var pop = document.getElementById('abbrPopover');
+    if (pop) pop.hidden = true;
+    if (ACTIVE_ABBR_EL) {
+      ACTIVE_ABBR_EL.classList.remove('is-open');
+      ACTIVE_ABBR_EL = null;
+    }
+  }
+
+  function wireAbbrTips(container) {
+    if (!container) return;
+    var els = container.querySelectorAll('.abbr-tip');
+    for (var i = 0; i < els.length; i += 1) {
+      var el = els[i];
+      if (!el.closest('button, a, summary')) {
+        el.setAttribute('tabindex', '0');
+        el.setAttribute('role', 'note');
+      }
+      var t = el.getAttribute('data-tip');
+      if (t) el.setAttribute('aria-label', (el.getAttribute('data-abbr') || el.textContent) + ': ' + t);
+    }
   }
 
   function trLower(s) {
@@ -3005,6 +4004,7 @@ dialog.doc-lightbox::backdrop {
     var visualCol = renderModernVisualCol(doc, pageObj, 'Orijinal belge hazırlanıyor...');
 
     var readingCol = '';
+    var diffSectionHtml = '';
     if (doc.specialSecere) {
       var sec = doc.specialSecere;
       var mkt = sec.adana_mektubu_1963 || {};
@@ -3020,12 +4020,12 @@ dialog.doc-lightbox::backdrop {
       var secLoc = (ATLAS.v15.docLocators || {})[doc.id] || '';
       readingCol =
         '<div class="reader-col">' +
-          (secLoc ? '<div class="locator-line"><b>Bu sayfada ne var?</b> ' + fmtInline(secLoc) + '</div>' : '') +
+          (secLoc ? '<div class="locator-line prose"><b>Bu sayfada ne var?</b> ' + fmtProse(secLoc) + '</div>' : '') +
           '<section class="read-sec">' +
             '<h2 class="read-h">Bu Belgede Ne Yazıyor?</h2>' +
             '<div class="read-body">' +
               '<p class="prose">' + fmtProse(cleanHuman(doc.summary)) + '</p>' +
-              '<p class="prose" style="color:#4D5148;">' + fmtProse(cleanHuman(doc.familyLink)) + '</p>' +
+              '<p class="prose read-sub-p">' + fmtProse(cleanHuman(doc.familyLink)) + '</p>' +
             '</div>' +
           '</section>' +
           '<section class="read-sec">' +
@@ -3039,7 +4039,7 @@ dialog.doc-lightbox::backdrop {
             '<details class="quiet-det">' +
               '<summary>' + esc(ssMeta.letterSummary || 'Tarihî Mektubu göster') + ' (' + esc(mkt.tarih || '') + ')</summary>' +
               '<div class="quiet-body">' +
-                '<div style="font-size:12.5px;color:#5E6158;"><b>Gönderen:</b> ' + fmtInline(mkt.gonderen) + '<br><b>Muhatap:</b> ' + fmtInline(mkt.muhatap) + '</div>' +
+                '<div style="font-family:Inter,sans-serif;font-size:13px;color:#454A42;"><b>Gönderen:</b> ' + fmtInline(mkt.gonderen) + '<br><b>Muhatap:</b> ' + fmtInline(mkt.muhatap) + '</div>' +
                 '<div class="read-body">' + fmtProseParas(mkt.tam_metin) + '</div>' +
               '</div>' +
             '</details>' +
@@ -3048,7 +4048,7 @@ dialog.doc-lightbox::backdrop {
               '<div class="quiet-body">' +
                 '<p class="prose" style="margin:0;">' + fmtProse(mnk.aciklama) + '</p>' +
                 '<div class="poem-block">' + kitalar + '</div>' +
-                '<p class="prose" style="margin:8px 0 0;color:#5E6158;">' + fmtProse(sec.romen_rakami_kurali) + '</p>' +
+                '<p class="prose" style="margin:8px 0 0;color:#454A42;">' + fmtProse(sec.romen_rakami_kurali) + '</p>' +
               '</div>' +
             '</details>' +
           '</div>' +
@@ -3074,7 +4074,7 @@ dialog.doc-lightbox::backdrop {
           return (
             '<div class="entry-item">' +
               (multiRec ? '<span class="entry-no">' + esc(k.no) + '. Kayıt</span>' : '') +
-              (k.arap ? '<div class="rtl-ott" dir="rtl" lang="ota">' + fmtInline(k.arap) + '</div>' : '<div style="font-size:13px;color:#5E6158;">Bu kayıt Latin harfli veya daktilo metindir.</div>') +
+              (k.arap ? '<div class="rtl-ott" dir="rtl" lang="ota">' + fmtInline(k.arap) + '</div>' : '<div style="font-size:13.5px;color:#4D524A;">Bu kayıt Latin harfli veya daktilo metindir.</div>') +
             '</div>'
           );
         }).join('');
@@ -3085,12 +4085,12 @@ dialog.doc-lightbox::backdrop {
           var al = kr.alanlar || [];
           for (var ai = 0; ai < al.length; ai += 1) {
             var f = al[ai];
-            var altStr = (f.alternatifler && f.alternatifler.length) ? '<div style="font-size:11.5px;color:#7A3528;">Seçenekler: ' + fmtInline(f.alternatifler.join(', ')) + '</div>' : '';
+            var altStr = (f.alternatifler && f.alternatifler.length) ? '<div style="font-size:12px;color:#7A3528;">Seçenekler: ' + fmtInline(f.alternatifler.join(', ')) + '</div>' : '';
             fieldRows.push(
               '<tr>' +
                 '<td><b>' + esc(f.ad) + '</b></td>' +
                 '<td>' + fmtInline(f.latin) + altStr + '</td>' +
-                '<td style="color:#5E6158;">' + esc(f.belirsizlik || 'yok') + '</td>' +
+                '<td style="color:#4D524A;">' + esc(f.belirsizlik || 'yok') + '</td>' +
               '</tr>'
             );
           }
@@ -3099,15 +4099,28 @@ dialog.doc-lightbox::backdrop {
           fieldsHtml = '<div class="field-table-wrap"><table class="field-table"><thead><tr><th>Alan</th><th>Okunan Değer</th><th>Belirsizlik</th></tr></thead><tbody>' + fieldRows.join('') + '</tbody></table></div>';
         }
       } else {
-        latinHtml = '<p style="margin:0;color:#5E6158;font-size:14px;">Bu sayfada çözümlenmiş satır metni bulunmuyor; soldaki orijinal görüntüyü inceleyebilirsiniz.</p>';
-        arapHtml = '<p style="margin:0;color:#5E6158;font-size:14px;">Bu sayfada Arap harfli metin yer almıyor.</p>';
+        latinHtml = '<p style="margin:0;color:#4D524A;font-size:14px;">Bu sayfada çözümlenmiş satır metni bulunmuyor; soldaki orijinal görüntüyü inceleyebilirsiniz.</p>';
+        arapHtml = '<p style="margin:0;color:#4D524A;font-size:14px;">Bu sayfada Arap harfli metin yer almıyor.</p>';
       }
 
       var sadePg = pageObj ? pageObj.sade : null;
       var locText = (sadePg && sadePg.isaret) ? sadePg.isaret : ((ATLAS.v15.docLocators || {})[doc.id] || '');
+      var hasBothPair = !!(sadePg && sadePg.metin && rd && rd.kayitlar && rd.kayitlar.length);
       var primaryReadHtml = '';
       var extraTransDet = '';
-      if (sadePg && sadePg.metin) {
+      if (hasBothPair) {
+        diffSectionHtml = buildDiffSectionHtml(sadePg.metin, rd.kayitlar, multiPage, pageObj.num);
+        primaryReadHtml =
+          '<div class="diff-jump-bar">' +
+            '<span class="diff-jump-text">Günümüz Türkçesi ile orijinal Osmanlıca çeviriyazıyı aşağıda yan yana (diff görünümünde) karşılaştırabilirsiniz.</span>' +
+            '<button type="button" id="jumpToDiffBtn" class="diff-jump-btn">Yan Yana Karşılaştırmaya Git ↓</button>' +
+          '</div>';
+        extraTransDet =
+          '<details class="quiet-det" id="detLatin">' +
+            '<summary>Ham Osmanlıca çeviriyazıyı tek sütunda göster</summary>' +
+            '<div class="quiet-body"><div class="entry-list">' + latinHtml + '</div></div>' +
+          '</details>';
+      } else if (sadePg && sadePg.metin) {
         primaryReadHtml =
           '<section class="read-sec">' +
             '<h2 class="read-h">Günümüz Türkçesiyle Anlamı' + (multiPage ? ' (Sayfa ' + pageObj.num + ')' : '') + '</h2>' +
@@ -3128,12 +4141,12 @@ dialog.doc-lightbox::backdrop {
 
       readingCol =
         '<div class="reader-col">' +
-          (locText ? '<div class="locator-line"><b>Bu sayfada kim, nerede geçiyor?</b> ' + fmtInline(locText) + '</div>' : '') +
+          (locText ? '<div class="locator-line prose"><b>Bu sayfada kim, nerede geçiyor?</b> ' + fmtProse(locText) + '</div>' : '') +
           '<section class="read-sec">' +
             '<h2 class="read-h">Bu Belgede Ne Yazıyor?</h2>' +
             '<div class="read-body">' +
               '<p class="prose">' + fmtProse(cleanHuman(doc.summary)) + '</p>' +
-              '<p class="prose" style="color:#4D5148;">' + fmtProse(cleanHuman(doc.familyLink)) + '</p>' +
+              '<p class="prose read-sub-p">' + fmtProse(cleanHuman(doc.familyLink)) + '</p>' +
             '</div>' +
           '</section>' +
           primaryReadHtml +
@@ -3146,7 +4159,7 @@ dialog.doc-lightbox::backdrop {
             '<details class="quiet-det" id="detMeta">' +
               '<summary>Arşiv künyesi ve okuma notu</summary>' +
               '<div class="quiet-body">' +
-                '<div class="meta-note-box prose">' +
+                '<div class="meta-note-box">' +
                   '<b>Arşiv Kodu:</b> ' + fmtInline(doc.code + '  |  ' + doc.fundExpansion) + '<br>' +
                   '<b>Okuma Güveni:</b> aday (bağımsız yapay zekâ kör okumasıdır; uzman paleograf teyidi yerine geçmez).' +
                   (rd ? '<br><b>Yazı ve Sayfa:</b> ' + fmtInline((rd.yazi_turu || 'belirtilmedi') + '  |  ' + (rd.sayfa_duzeni || '')) : '') +
@@ -3176,7 +4189,8 @@ dialog.doc-lightbox::backdrop {
       '<div class="reader-split">' +
         visualCol +
         readingCol +
-      '</div>'
+      '</div>' +
+      diffSectionHtml
     );
   }
 
@@ -3308,10 +4322,10 @@ dialog.doc-lightbox::backdrop {
       var pillCls = r.status === 'elendi_adas' ? ' warn' : (r.status === 'birincil_aday' || r.status === 'secere' || r.status === 'edevlet' ? ' ok' : '');
       var titleCell = r.clickable
         ? '<button type="button" class="src-row-btn" data-open-doc="' + esc(r.id) + '">' + esc(r.title) + '</button>'
-        : '<span style="color:#4D5148;">' + esc(r.title) + '</span>';
+        : '<span style="color:#454A42;">' + esc(r.title) + '</span>';
       return (
         '<tr>' +
-          '<td style="font-weight:600;color:#2F5D46;">' + esc(r.code) + '</td>' +
+          '<td style="font-weight:600;color:#1F4F3A;">' + fmtInline(r.code) + '</td>' +
           '<td>' + titleCell + '</td>' +
           '<td>' + esc(r.date) + '</td>' +
           '<td>' + fmtInline(r.wave + (r.pages ? '  |  ' + r.pages + '\u00a0s.' : '')) + '</td>' +
@@ -3533,7 +4547,7 @@ dialog.doc-lightbox::backdrop {
     }).join('');
 
     return (
-      '<div class="essay-wrap" style="max-width:820px;">' +
+      '<div class="essay-wrap" style="max-width:860px;">' +
         '<div class="reader-actions-bar">' +
           '<button type="button" id="backFromReport" class="back-link">← Literatüre dön</button>' +
           renderCopyBtnHtml() +
@@ -3544,12 +4558,14 @@ dialog.doc-lightbox::backdrop {
         '</header>' +
         '<div class="notice-box prose">' + fmtProse(rep.notice || '') + '</div>' +
         '<div class="toc-list"><div class="read-h" style="margin-bottom:4px;">Bölümler</div>' + tocHtml + '</div>' +
-        bodyHtml +
-        '<section id="dr-bib" class="essay-chapter">' +
-          '<span class="essay-period">Tıklanabilir Kaynakça</span>' +
-          '<h2 class="essay-h2 serif">Raporda Kullanılan Açık Erişimli Kaynaklar (' + srcs.length + ')</h2>' +
-          '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>No</th><th>Kaynak Başlığı</th><th>Dış Bağlantı</th></tr></thead><tbody>' + bibRows + '</tbody></table></div>' +
-        '</section>' +
+        '<div class="essay-book">' +
+          bodyHtml +
+          '<section id="dr-bib" class="essay-chapter">' +
+            '<span class="essay-period">Tıklanabilir Kaynakça</span>' +
+            '<h2 class="essay-h2 serif">Raporda Kullanılan Açık Erişimli Kaynaklar (' + srcs.length + ')</h2>' +
+            '<div class="src-table-wrap"><table class="src-table"><thead><tr><th>No</th><th>Kaynak Başlığı</th><th>Dış Bağlantı</th></tr></thead><tbody>' + bibRows + '</tbody></table></div>' +
+          '</section>' +
+        '</div>' +
       '</div>'
     );
   }
@@ -3569,8 +4585,8 @@ dialog.doc-lightbox::backdrop {
       var isDes = String(f.indexType || '').indexOf('DES') >= 0 || String(f.indexType || '').indexOf('0 sonuç') >= 0;
       return (
         '<tr>' +
-          '<td style="font-weight:600;color:#2F5D46;">' + fmtInline(f.code) + '</td>' +
-          '<td><span class="tag-pill' + (isDes ? ' warn' : ' ok') + '">' + esc(f.indexType) + '</span></td>' +
+          '<td style="font-weight:600;color:#1F4F3A;">' + fmtInline(f.code) + '</td>' +
+          '<td><span class="tag-pill' + (isDes ? ' warn' : ' ok') + '">' + fmtInline(f.indexType) + '</span></td>' +
           '<td style="white-space:nowrap;">' + esc(f.years) + '</td>' +
           '<td class="prose">' + fmtProse(f.role) + '</td>' +
         '</tr>'
@@ -3594,8 +4610,8 @@ dialog.doc-lightbox::backdrop {
     var nonDabRows = (gd.nonDabBoundaries || []).map(function (nd) {
       return (
         '<tr>' +
-          '<td style="font-weight:600;color:#1F2421;">' + esc(nd.inst) + '</td>' +
-          '<td style="font-size:12.5px;color:#2F5D46;">' + fmtInline(nd.series) + '</td>' +
+          '<td style="font-weight:600;color:#161A17;">' + fmtInline(nd.inst) + '</td>' +
+          '<td style="font-size:13px;color:#1F4F3A;">' + fmtInline(nd.series) + '</td>' +
           '<td class="prose">' + fmtProse(nd.why) + '</td>' +
         '</tr>'
       );
@@ -3700,7 +4716,7 @@ dialog.doc-lightbox::backdrop {
     var d5Html = renderWaveGroups(ho.dalga5And5BPackages);
     var d4Html = renderWaveGroups(ho.dalga4ByLineage);
     var instRows = (ho.institutionalTargets || []).map(function (it) {
-      return '<tr><td style="font-weight:600;color:#1F2421;">' + esc(it.inst) + '</td><td style="font-size:12.5px;color:#2F5D46;">' + fmtInline(it.ref) + '</td><td class="prose">' + fmtProse(it.goal) + '</td></tr>';
+      return '<tr><td style="font-weight:600;color:#161A17;">' + fmtInline(it.inst) + '</td><td style="font-size:13px;color:#1F4F3A;">' + fmtInline(it.ref) + '</td><td class="prose">' + fmtProse(it.goal) + '</td></tr>';
     }).join('');
 
     return (
@@ -3810,7 +4826,7 @@ dialog.doc-lightbox::backdrop {
     }).join('');
 
     var elimsHtml = (meth.eliminations || []).map(function (el) {
-      return '<li><b>' + esc(el.code) + ':</b> <span class="prose">' + fmtProse(el.note) + '</span> <button type="button" class="sec-link" data-open-doc="' + esc(el.id) + '" style="margin-left:6px;font-size:13px;">Belgeyi gör</button></li>';
+      return '<li><b>' + fmtInline(el.code) + ':</b> <span class="prose">' + fmtProse(el.note) + '</span> <button type="button" class="sec-link" data-open-doc="' + esc(el.id) + '" style="margin-left:6px;font-size:13.5px;">Belgeyi gör</button></li>';
     }).join('');
 
     return (
@@ -3820,29 +4836,31 @@ dialog.doc-lightbox::backdrop {
           '<p class="hero-lead prose">' + fmtProse(ch.lead) + '</p>' +
         '</header>' +
 
-        chaptersHtml +
+        '<div class="essay-book">' +
+          chaptersHtml +
 
-        '<section class="essay-chapter">' +
-          '<span class="essay-period">' + fmtInline(ch.letterPeriod || 'Şecere Mektubu') + '</span>' +
-          '<h2 class="essay-h2 serif">' + esc(ch.letterHeading || '') + '</h2>' +
-          '<div class="quote-sheet">' +
-            '<div class="quote-meta"><b>Gönderen:</b> ' + fmtInline(mkt.gonderen) + '<br><b>Muhatap:</b> ' + fmtInline(mkt.muhatap) + '</div>' +
-            '<div class="read-body">' + fmtProseParas(mkt.tam_metin) + '</div>' +
-          '</div>' +
-        '</section>' +
+          '<section class="essay-chapter">' +
+            '<span class="essay-period">' + fmtInline(ch.letterPeriod || 'Şecere Mektubu') + '</span>' +
+            '<h2 class="essay-h2 serif">' + esc(ch.letterHeading || '') + '</h2>' +
+            '<div class="quote-sheet">' +
+              '<div class="quote-meta"><b>Gönderen:</b> ' + fmtInline(mkt.gonderen) + '<br><b>Muhatap:</b> ' + fmtInline(mkt.muhatap) + '</div>' +
+              '<div class="read-body">' + fmtProseParas(mkt.tam_metin) + '</div>' +
+            '</div>' +
+          '</section>' +
 
-        '<section class="essay-chapter">' +
-          '<span class="essay-period">Şecere Menkıbesi</span>' +
-          '<h2 class="essay-h2 serif">' + esc(ch.menkibeHeading || '') + '</h2>' +
-          '<p class="essay-p prose">' + fmtProse(mnk.aciklama) + '</p>' +
-          '<div class="poem-block">' + kitalarHtml + '</div>' +
-        '</section>' +
+          '<section class="essay-chapter">' +
+            '<span class="essay-period">Şecere Menkıbesi</span>' +
+            '<h2 class="essay-h2 serif">' + esc(ch.menkibeHeading || '') + '</h2>' +
+            '<p class="essay-p prose">' + fmtProse(mnk.aciklama) + '</p>' +
+            '<div class="poem-block">' + kitalarHtml + '</div>' +
+          '</section>' +
 
-        '<section class="essay-chapter">' +
-          '<span class="essay-period">Şecere Notları</span>' +
-          '<h2 class="essay-h2 serif">' + esc(ch.regionalHeading || '') + '</h2>' +
-          '<ul class="branch-list">' + regNotesHtml + '</ul>' +
-        '</section>' +
+          '<section class="essay-chapter">' +
+            '<span class="essay-period">Şecere Notları</span>' +
+            '<h2 class="essay-h2 serif">' + esc(ch.regionalHeading || '') + '</h2>' +
+            '<ul class="branch-list">' + regNotesHtml + '</ul>' +
+          '</section>' +
+        '</div>' +
 
         '<details class="quiet-det">' +
           '<summary>Araştırma yöntemi ve elenen kayıtlar</summary>' +
@@ -3944,7 +4962,7 @@ dialog.doc-lightbox::backdrop {
                       '<span class="support-meta">' + fmtInline(it.meta) + '</span>' +
                     '</div>' +
                     '<div class="support-title">' + esc(shortSentence(it.title, 76)) + '</div>' +
-                    '<div class="support-why">' + fmtInline(it.why) + '</div>' +
+                    '<div class="support-why prose">' + fmtProse(it.why) + '</div>' +
                   '</div>' +
                 '</button>'
               );
@@ -4002,6 +5020,7 @@ dialog.doc-lightbox::backdrop {
         openLitReader(ev.currentTarget.getAttribute('data-dr-support-lit'), 1);
       });
     }
+    wireAbbrTips(dlg);
     try { document.getElementById('drCloseBtn').focus(); } catch (e) {}
   }
 
@@ -4723,6 +5742,41 @@ dialog.doc-lightbox::backdrop {
           window.scrollTo({ top: 0, behavior: 'auto' });
         });
       }
+      var jumpDiff = document.getElementById('jumpToDiffBtn');
+      if (jumpDiff) {
+        jumpDiff.addEventListener('click', function () {
+          var sec = document.getElementById('textDiffSection');
+          if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+      var diffHiBtn = document.getElementById('diffHighlightBtn');
+      if (diffHiBtn) {
+        diffHiBtn.addEventListener('click', function () {
+          STATE.diffHighlight = !STATE.diffHighlight;
+          var sec = document.getElementById('textDiffSection');
+          if (sec) sec.classList.toggle('diff-plain', !STATE.diffHighlight);
+          diffHiBtn.classList.toggle('active', STATE.diffHighlight);
+          diffHiBtn.setAttribute('aria-pressed', STATE.diffHighlight ? 'true' : 'false');
+        });
+      }
+      var diffSideBtn = document.getElementById('diffLayoutSide');
+      var diffStackBtn = document.getElementById('diffLayoutStack');
+      if (diffSideBtn && diffStackBtn) {
+        diffSideBtn.addEventListener('click', function () {
+          STATE.diffLayout = 'side';
+          var sec = document.getElementById('textDiffSection');
+          if (sec) sec.classList.remove('diff-stacked');
+          diffSideBtn.classList.add('active');
+          diffStackBtn.classList.remove('active');
+        });
+        diffStackBtn.addEventListener('click', function () {
+          STATE.diffLayout = 'stack';
+          var sec = document.getElementById('textDiffSection');
+          if (sec) sec.classList.add('diff-stacked');
+          diffStackBtn.classList.add('active');
+          diffSideBtn.classList.remove('active');
+        });
+      }
       var doc = getDocById(STATE.openDocId);
       if (!doc || !doc.hasImages) return;
       bindMediaStageEvents(doc, false);
@@ -4836,6 +5890,8 @@ dialog.doc-lightbox::backdrop {
       root.innerHTML = renderHistoryTab();
     }
     bindCurrentTabEvents();
+    wireAbbrTips(root);
+    hideAbbrPopover();
   }
 
   function mountApp() {
@@ -4995,6 +6051,7 @@ dialog.doc-lightbox::backdrop {
     var tag = e.target && e.target.tagName ? e.target.tagName.toUpperCase() : '';
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
     if (e.key === 'Escape') {
+      if (ACTIVE_ABBR_EL) { hideAbbrPopover(); return; }
       if (STATE.lbOpen) { closeLightbox(); return; }
       if (STATE.drawerPerson) { closeDrawer(); return; }
     }
@@ -5019,10 +6076,50 @@ dialog.doc-lightbox::backdrop {
   });
 
   window.addEventListener('resize', function () {
+    hideAbbrPopover();
     var img = document.getElementById('viewerImg');
     var st = document.getElementById('viewerStage');
     if (img && st && img.naturalWidth > 0) applyViewerTransform(img, st);
     if (STATE.lbOpen) applyViewerTransform(getLbImg(), lbStage);
+  });
+
+  /* Delegated Hover, Focus & Tap Handlers for ? Abbreviation Tooltips */
+  document.addEventListener('mouseover', function (e) {
+    var tipEl = e.target && e.target.closest ? e.target.closest('.abbr-tip') : null;
+    if (tipEl) {
+      if (tipEl !== ACTIVE_ABBR_EL) showAbbrPopover(tipEl);
+    } else if (ACTIVE_ABBR_EL) {
+      hideAbbrPopover();
+    }
+  });
+  document.addEventListener('focusin', function (e) {
+    var tipEl = e.target && e.target.closest ? e.target.closest('.abbr-tip') : null;
+    if (tipEl) showAbbrPopover(tipEl);
+  });
+  document.addEventListener('focusout', function (e) {
+    if (ACTIVE_ABBR_EL && e.target === ACTIVE_ABBR_EL) hideAbbrPopover();
+  });
+  document.addEventListener('click', function (e) {
+    var tipEl = e.target && e.target.closest ? e.target.closest('.abbr-tip') : null;
+    if (tipEl && !tipEl.closest('button, a, summary')) {
+      e.stopPropagation();
+      if (ACTIVE_ABBR_EL === tipEl) hideAbbrPopover();
+      else showAbbrPopover(tipEl);
+      return;
+    }
+    if (ACTIVE_ABBR_EL) hideAbbrPopover();
+  });
+  window.addEventListener('scroll', hideAbbrPopover, true);
+
+  /* Strip Invisible Soft Hyphens on Copy-Paste */
+  document.addEventListener('copy', function (e) {
+    var sel = window.getSelection ? window.getSelection() : null;
+    if (!sel || sel.isCollapsed) return;
+    var txt = sel.toString();
+    if (txt.indexOf('\u00AD') >= 0 && e.clipboardData) {
+      e.clipboardData.setData('text/plain', txt.replace(/\u00AD/g, ''));
+      e.preventDefault();
+    }
   });
 })();
 </script>
