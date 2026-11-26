@@ -297,7 +297,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 17px;
-  line-height: 29px;
+  line-height: 32px;
   font-weight: 420;
   color: #2B302C;
 }
@@ -703,14 +703,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 .quiet-det[open] summary::after { content: '\2212'; color: #1F4F3A; }
 .quiet-det[open] summary { border-bottom: 1px solid #E4DEC9; }
 .quiet-body {
-  padding: 18px 20px 22px;
+  padding: 20px 22px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 15.5px;
-  line-height: 26px;
+  line-height: 29px;
   font-weight: 420;
   color: #1D221E;
 }
@@ -722,12 +722,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   flex-direction: column;
 }
 .branch-list li {
-  padding: 11px 0;
+  padding: 15px 0;
   border-top: 1px solid #E9E3D6;
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 16px;
-  line-height: 27px;
+  line-height: 30px;
   font-weight: 420;
   color: #1D221E;
 }
@@ -1033,8 +1033,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 .reader-col {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 26px 30px 28px;
+  gap: 28px;
+  padding: 28px 32px 32px;
   border-radius: 16px;
   border: 1px solid #DCD5C7;
   background: #FCFBF7;
@@ -1043,7 +1043,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 .read-sec {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 13px;
 }
 .read-h {
   margin: 0;
@@ -1058,11 +1058,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 16.5px;
-  line-height: 28px;
+  line-height: 31px;
   font-weight: 420;
   color: #1D221E;
 }
-.read-body p { margin: 0 0 14px; }
+.read-body p { margin: 0 0 22px; }
 .read-body p:last-child { margin-bottom: 0; }
 .read-sub-p {
   color: #343A35;
@@ -1072,11 +1072,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   flex-direction: column;
 }
 .entry-item {
-  padding: 14px 0;
-  border-top: 1px solid #DFD9CC;
+  padding: 18px 0;
+  border-top: 1px solid #E4DEC9;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 .entry-item:first-child { border-top: 0; padding-top: 0; }
 .entry-no {
@@ -1090,7 +1090,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 14.5px;
-  line-height: 23px;
+  line-height: 26px;
   color: #454A42;
   font-style: italic;
 }
@@ -1214,12 +1214,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   font-weight: 600;
 }
 .diff-overview {
-  padding: 16px 24px;
+  padding: 22px 30px;
   background: #F9F7F1;
   border-bottom: 1px solid #E4DEC9;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 .diff-col-heads {
   display: grid;
@@ -1228,35 +1228,24 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   background: #FAF8F2;
 }
 .diff-col-head {
-  padding: 12px 24px;
+  padding: 14px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  background: #FAF8F2;
 }
 .diff-col-head.mod {
   color: #1F4F3A;
-  background: #F3F8F5;
-  border-right: 1px solid #DFD9CC;
+  border-right: 1px solid #E4DEC9;
 }
 .diff-col-head.orig {
-  color: #7A471E;
-  background: #FAF5EB;
+  color: #4D524A;
 }
-.diff-col-badge {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: none;
-  letter-spacing: 0.01em;
-  padding: 2px 9px;
-  border-radius: 999px;
-}
-.diff-col-head.mod .diff-col-badge { background: #DCECE2; color: #173F2D; }
-.diff-col-head.orig .diff-col-badge { background: #EFE2CC; color: #6B3C17; }
 .diff-rows {
   display: flex;
   flex-direction: column;
@@ -1264,22 +1253,22 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 .diff-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-bottom: 1px solid #E6E0D3;
+  border-bottom: 1px solid #E8E2D5;
 }
 .diff-row:last-child { border-bottom: 0; }
 .diff-cell {
-  padding: 20px 24px;
+  padding: 28px 32px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   min-width: 0;
+  background: #FCFBF7;
 }
 .diff-cell.mod {
-  background: #FAFCFA;
-  border-right: 1px solid #E4DEC9;
+  border-right: 1px solid #E8E2D5;
 }
 .diff-cell.orig {
-  background: #FDFBF6;
+  background: #FAF8F2;
 }
 .diff-cell-kicker {
   display: flex;
@@ -1290,42 +1279,40 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #4D524A;
+  color: #565B53;
 }
 .diff-cell-side-lbl {
   display: none;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 2px 8px;
   border-radius: 999px;
+  background: #EFECE3;
+  color: #383E39;
 }
-.diff-cell.mod .diff-cell-side-lbl { background: #DCECE2; color: #173F2D; }
-.diff-cell.orig .diff-cell-side-lbl { background: #EFE2CC; color: #6B3C17; }
 .diff-cell-body {
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 16.5px;
-  line-height: 28px;
+  line-height: 32px;
   font-weight: 420;
   color: #1D221E;
 }
-.diff-cell-body p { margin: 0 0 12px; }
+.diff-cell-body p { margin: 0 0 22px; }
 .diff-cell-body p:last-child { margin-bottom: 0; }
 mark.diff-mod {
-  background: #E2F0E7;
-  color: #133123;
-  border-bottom: 1.5px solid #9AC2AA;
+  background: rgba(31, 79, 58, 0.085);
+  color: inherit;
   border-radius: 3px;
-  padding: 0 2px;
+  padding: 1px 2px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
 mark.diff-orig {
-  background: #F4E8D2;
-  color: #3D240E;
-  border-bottom: 1.5px solid #D3B27E;
+  background: rgba(154, 122, 68, 0.11);
+  color: inherit;
   border-radius: 3px;
-  padding: 0 2px;
+  padding: 1px 2px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
@@ -1333,23 +1320,23 @@ mark.diff-orig {
 .diff-shell.diff-plain mark.diff-orig {
   background: transparent;
   color: inherit;
-  border-bottom: 0;
   padding: 0;
 }
+.diff-shell.diff-plain .diff-legend { display: none; }
 .diff-shell.diff-stacked .diff-col-heads { display: none; }
 .diff-shell.diff-stacked .diff-row { grid-template-columns: minmax(0, 1fr); }
 .diff-shell.diff-stacked .diff-cell.mod { border-right: 0; border-bottom: 1px dashed #DCD5C7; }
 .diff-shell.diff-stacked .diff-cell-side-lbl { display: inline-block; }
 .diff-legend {
-  padding: 12px 24px;
-  border-top: 1px solid #E4DEC9;
-  background: #F7F4EC;
+  padding: 13px 32px;
+  border-top: 1px solid #E6E0D3;
+  background: #F9F7F1;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 20px;
   font-size: 12.5px;
-  color: #454A42;
+  color: #4D524A;
 }
 .diff-leg-item {
   display: inline-flex;
@@ -1358,12 +1345,12 @@ mark.diff-orig {
 }
 .diff-leg-sw {
   width: 14px;
-  height: 10px;
+  height: 11px;
   border-radius: 3px;
   display: inline-block;
 }
-.diff-leg-sw.mod { background: #E2F0E7; border-bottom: 2px solid #9AC2AA; }
-.diff-leg-sw.orig { background: #F4E8D2; border-bottom: 2px solid #D3B27E; }
+.diff-leg-sw.mod { background: rgba(31, 79, 58, 0.14); border: 1px solid rgba(31, 79, 58, 0.28); }
+.diff-leg-sw.orig { background: rgba(154, 122, 68, 0.18); border: 1px solid rgba(154, 122, 68, 0.34); }
 .diff-leg-sw.same { background: #FFFFFF; border: 1px solid #CFC8B8; }
 
 /* Abbreviation Hover/Tap ? Tooltip & Floating Popover */
@@ -1473,23 +1460,23 @@ mark.diff-orig {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 32px;
 }
 .essay-book {
   background: #FCFBF7;
   border: 1px solid #DCD5C7;
   border-radius: 18px;
-  padding: 40px 48px 44px;
+  padding: 46px 52px 50px;
   box-shadow: 0 4px 20px rgba(22, 26, 23, 0.04);
   display: flex;
   flex-direction: column;
-  gap: 38px;
+  gap: 46px;
 }
 .essay-chapter {
   display: flex;
   flex-direction: column;
-  gap: 13px;
-  padding-top: 30px;
+  gap: 20px;
+  padding-top: 38px;
   border-top: 1px solid #E2DCCE;
 }
 .essay-chapter:first-of-type { border-top: 0; padding-top: 0; }
@@ -1504,7 +1491,7 @@ mark.diff-orig {
 .essay-h2 {
   margin: 0;
   font-size: 31px;
-  line-height: 37px;
+  line-height: 39px;
   font-weight: 600;
   color: #151916;
 }
@@ -1513,7 +1500,7 @@ mark.diff-orig {
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 17.5px;
-  line-height: 31px;
+  line-height: 34px;
   font-weight: 420;
   color: #1D221E;
 }
@@ -1563,17 +1550,17 @@ mark.diff-orig {
 
 /* Shajara Treasures (Letter, Menkibe & Poem) */
 .quote-sheet {
-  padding: 24px 28px;
+  padding: 26px 30px;
   border-radius: 14px;
   border: 1px solid #DCD5C7;
   background: #FCFBF7;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 16.5px;
-  line-height: 28px;
+  line-height: 31px;
   font-weight: 420;
   color: #1D221E;
 }
@@ -1769,14 +1756,14 @@ mark.diff-orig {
   color: #383E39;
 }
 .locator-line {
-  padding: 13px 16px;
+  padding: 14px 18px;
   border-left: 3.5px solid #1F4F3A;
   background: #F4F8F5;
   border-radius: 0 10px 10px 0;
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 15px;
-  line-height: 24px;
+  line-height: 27px;
   font-weight: 420;
   color: #1D221E;
 }
@@ -2157,7 +2144,7 @@ dialog.doc-lightbox::backdrop {
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 14.5px;
-  line-height: 23px;
+  line-height: 26px;
   font-weight: 420;
   color: #1D221E;
 }
@@ -2259,7 +2246,7 @@ dialog.doc-lightbox::backdrop {
 }
 .report-banner:hover { border-color: #2F5D46; }
 .notice-box {
-  padding: 16px 20px;
+  padding: 18px 22px;
   border-radius: 12px;
   border: 1px solid #D9D1BF;
   border-left: 4px solid #8A4526;
@@ -2267,7 +2254,7 @@ dialog.doc-lightbox::backdrop {
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 15.5px;
-  line-height: 26px;
+  line-height: 29px;
   font-weight: 420;
   color: #1D221E;
 }
@@ -2378,11 +2365,11 @@ dialog.doc-lightbox::backdrop {
   padding-left: 22px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
   font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   font-optical-sizing: auto;
   font-size: 16px;
-  line-height: 27px;
+  line-height: 31px;
   font-weight: 420;
   color: #1D221E;
 }
@@ -2452,12 +2439,14 @@ dialog.doc-lightbox::backdrop {
   .hero-lead { font-size: 15.5px; line-height: 26px; }
   .sec-h2 { font-size: 26px; line-height: 31px; }
   .reader-h1 { font-size: 25px; line-height: 30px; }
-  .reader-col { padding: 18px 15px 20px; }
-  .read-body, .diff-cell-body { font-size: 15.5px; line-height: 26px; }
-  .essay-book { padding: 22px 15px 26px; border-radius: 14px; gap: 26px; }
-  .essay-h2 { font-size: 24px; line-height: 30px; }
-  .essay-p { font-size: 15.5px; line-height: 27px; }
-  .diff-head, .diff-overview, .diff-cell, .diff-legend { padding-left: 14px; padding-right: 14px; }
+  .reader-col { padding: 20px 16px 24px; }
+  .read-body, .diff-cell-body { font-size: 15.5px; line-height: 29px; }
+  .read-body p, .diff-cell-body p { margin-bottom: 18px; }
+  .essay-book { padding: 24px 16px 28px; border-radius: 14px; gap: 32px; }
+  .essay-h2 { font-size: 24px; line-height: 31px; }
+  .essay-p { font-size: 15.5px; line-height: 30px; }
+  .diff-head, .diff-overview, .diff-cell, .diff-legend { padding-left: 15px; padding-right: 15px; }
+  .diff-cell { padding-top: 22px; padding-bottom: 22px; }
   .diff-h2 { font-size: 21px; line-height: 26px; }
   .plate-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .shajara-strip { grid-template-columns: minmax(0, 1fr); gap: 12px; }
@@ -2612,7 +2601,7 @@ dialog.doc-lightbox::backdrop {
     viewerImgW: 0,
     viewerImgH: 0,
     lbOpen: false,
-    diffHighlight: true,
+    diffHighlight: false,
     diffLayout: 'side'
   };
 
@@ -3095,11 +3084,285 @@ dialog.doc-lightbox::backdrop {
     };
   }
 
+  function normSubstrKey(s) {
+    return String(s || '')
+      .replace(/İ/g, 'i').replace(/I/g, 'ı').toLocaleLowerCase('tr-TR')
+      .replace(/[âàá]/g, 'a').replace(/[îìí]/g, 'i').replace(/[ûùú]/g, 'u')
+      .replace(/[^a-zçğıöşü0-9]+/g, ' ')
+      .trim();
+  }
+
+  function filterDuplicateStubRecs(recs) {
+    if (!recs || recs.length <= 1) return recs || [];
+    var longNorms = [];
+    var i;
+    for (i = 0; i < recs.length; i += 1) {
+      var lt = (recs[i].latin || '').trim();
+      if (lt.length >= 200) longNorms.push({ idx: i, norm: normSubstrKey(lt) });
+    }
+    if (!longNorms.length) return recs;
+    var out = [];
+    for (i = 0; i < recs.length; i += 1) {
+      var r = recs[i];
+      var txt = (r.latin || '').trim();
+      if (txt.length < 110 && !(r.serh && r.serh.trim())) {
+        var nk = normSubstrKey(txt);
+        var isDup = false;
+        if (nk.length >= 6) {
+          for (var j = 0; j < longNorms.length; j += 1) {
+            if (longNorms[j].idx !== i && longNorms[j].norm.indexOf(nk) >= 0) {
+              isDup = true;
+              break;
+            }
+          }
+        }
+        if (isDup) continue;
+      }
+      out.push(r);
+    }
+    return out.length ? out : recs;
+  }
+
+  function splitTurkishSentences(paras) {
+    var units = [];
+    var abbrEndRe = /(?:^|[\s(])(?:H|R|M|I|II|III|IV|V|Dr|Av|Prof|Hz|bkz|krş|vb|vs|nr|vr|No|s|sf|b|c|d|ö)\.$/;
+    for (var pi = 0; pi < paras.length; pi += 1) {
+      var p = paras[pi].trim();
+      if (!p) continue;
+      if (p.length <= 270) {
+        units.push(p);
+        continue;
+      }
+      var cur = '';
+      var tokens = p.split(/(\s+)/);
+      var pSents = [];
+      for (var ti = 0; ti < tokens.length; ti += 1) {
+        var tk = tokens[ti];
+        cur += tk;
+        if (/[.!?]["»')]?$/.test(tk) && !abbrEndRe.test(tk) && !/\d\.\d/.test(tk)) {
+          var nextTok = tokens[ti + 2] || '';
+          if (nextTok && /^[A-ZÇĞİÖŞÜ"«(\[]/.test(nextTok) && cur.trim().length >= 65) {
+            pSents.push(cur.trim());
+            cur = '';
+            if (tokens[ti + 1] && /^\s+$/.test(tokens[ti + 1])) ti += 1;
+          }
+        }
+      }
+      if (cur.trim()) {
+        if (pSents.length && cur.trim().length < 65) {
+          pSents[pSents.length - 1] += ' ' + cur.trim();
+        } else {
+          pSents.push(cur.trim());
+        }
+      }
+      for (var si = 0; si < pSents.length; si += 1) units.push(pSents[si]);
+    }
+    return units;
+  }
+
+  function splitOttomanClauses(recs) {
+    var clauses = [];
+    for (var ri = 0; ri < recs.length; ri += 1) {
+      var k = recs[ri];
+      var raw = String(k.latin || '').trim();
+      if (!raw) continue;
+      var parts = raw
+        .replace(/(?:\s*\|\s*){1,2}(?=\[)/g, '\n')
+        .replace(/[ \t]+\|[ \t]+/g, '\n')
+        .replace(/[ \t]+\/[ \t]+/g, '\n')
+        .split(/\r?\n+/)
+        .map(function (x) { return x.trim(); })
+        .filter(Boolean);
+
+      var expanded = [];
+      for (var pi = 0; pi < parts.length; pi += 1) {
+        var seg = parts[pi];
+        if (seg.length > 240) {
+          var sub = splitTurkishSentences([seg]);
+          for (var s = 0; s < sub.length; s += 1) expanded.push(sub[s]);
+        } else {
+          expanded.push(seg);
+        }
+      }
+      if (!expanded.length) expanded = [raw];
+      for (var ei = 0; ei < expanded.length; ei += 1) {
+        clauses.push({
+          text: expanded[ei],
+          serh: (ei === expanded.length - 1 && k.serh) ? k.serh : ''
+        });
+      }
+    }
+    return clauses;
+  }
+
+  function tokenSetForAlign(s) {
+    var ws = String(s || '').split(/[ \t\n/|,;:()[\]"'«»]+/);
+    var map = {};
+    for (var i = 0; i < ws.length; i += 1) {
+      var nw = normDiffWord(ws[i]);
+      if (!nw) continue;
+      if (/^\d{2,}$/.test(nw)) {
+        map['#' + nw] = 3.2;
+      } else if (nw.length >= 4) {
+        map[nw.slice(0, 5)] = Math.max(map[nw.slice(0, 5)] || 0, nw.length >= 6 ? 1.8 : 1.2);
+      }
+    }
+    return map;
+  }
+
+  function alignUnitsMonotonic(leftTexts, rightObjs, joinSep) {
+    var L = leftTexts.length;
+    var R = rightObjs.length;
+    if (L === 0 || R === 0) return [];
+    if (L === 1) {
+      return [{
+        left: leftTexts[0],
+        right: rightObjs.map(function (o) { return o.text; }).join(joinSep),
+        serhs: rightObjs.map(function (o) { return o.serh; }).filter(Boolean)
+      }];
+    }
+    if (R === 1) {
+      return [{
+        left: leftTexts.join('\n'),
+        right: rightObjs[0].text,
+        serhs: rightObjs[0].serh ? [rightObjs[0].serh] : []
+      }];
+    }
+
+    var sep = joinSep || ' / ';
+    if (L > R) {
+      // Group left units to match R right units cleanly
+      var swapped = alignUnitsMonotonic(
+        rightObjs.map(function (o) { return o.text; }),
+        leftTexts.map(function (t) { return { text: t, serh: '' }; }),
+        ' '
+      );
+      return swapped.map(function (row, idx) {
+        return {
+          left: row.right,
+          right: rightObjs[idx].text,
+          serhs: rightObjs[idx].serh ? [rightObjs[idx].serh] : []
+        };
+      });
+    }
+
+    var lSets = leftTexts.map(tokenSetForAlign);
+    var rSets = rightObjs.map(function (o) { return tokenSetForAlign(o.text); });
+    var lLens = leftTexts.map(function (t) { return Math.max(20, t.length); });
+    var rLens = rightObjs.map(function (o) { return Math.max(12, o.text.length); });
+    var totL = lLens.reduce(function (a, b) { return a + b; }, 0);
+    var totR = rLens.reduce(function (a, b) { return a + b; }, 0);
+    var lCum = [0];
+    var rCum = [0];
+    var i, j, k;
+    for (i = 0; i < L; i += 1) lCum.push(lCum[i] + lLens[i]);
+    for (j = 0; j < R; j += 1) rCum.push(rCum[j] + rLens[j]);
+
+    var pairSim = new Float32Array(L * R);
+    for (i = 0; i < L; i += 1) {
+      var ls = lSets[i];
+      for (j = 0; j < R; j += 1) {
+        var rs = rSets[j];
+        var sc = 0;
+        for (var key in rs) {
+          if (ls[key]) sc += Math.min(ls[key], rs[key]);
+        }
+        pairSim[i * R + j] = sc;
+      }
+    }
+
+    // DP[i][j] = best score aligning left[0..i-1] with right[0..j-1] (each left gets >=1 right)
+    var NEG = -1e9;
+    var dp = [];
+    var back = [];
+    for (i = 0; i <= L; i += 1) {
+      dp[i] = new Float64Array(R + 1);
+      back[i] = new Int16Array(R + 1);
+      for (j = 0; j <= R; j += 1) { dp[i][j] = NEG; back[i][j] = -1; }
+    }
+    dp[0][0] = 0;
+
+    for (i = 1; i <= L; i += 1) {
+      var lFracEnd = lCum[i] / totL;
+      var lFracLen = lLens[i - 1] / totL;
+      var jMin = i;
+      var jMax = R - (L - i);
+      for (j = jMin; j <= jMax; j += 1) {
+        var kMin = i - 1;
+        var kMax = j - 1;
+        var best = NEG;
+        var bestK = kMin;
+        var runOverlap = 0;
+        for (k = kMax; k >= kMin; k -= 1) {
+          runOverlap += pairSim[(i - 1) * R + k];
+          if (dp[i - 1][k] <= NEG / 2) continue;
+          var rFracEnd = rCum[j] / totR;
+          var rFracLen = (rCum[j] - rCum[k]) / totR;
+          var posPen = Math.abs(lFracEnd - rFracEnd) * 3.5;
+          var lenPen = Math.abs(lFracLen - rFracLen) * 4.0;
+          var cand = dp[i - 1][k] + runOverlap - posPen - lenPen;
+          if (cand > best) {
+            best = cand;
+            bestK = k;
+          }
+        }
+        dp[i][j] = best;
+        back[i][j] = bestK;
+      }
+    }
+
+    var slices = new Array(L);
+    var curJ = R;
+    for (i = L; i >= 1; i -= 1) {
+      var prevK = back[i][curJ];
+      if (prevK < 0) prevK = i - 1;
+      slices[i - 1] = rightObjs.slice(prevK, curJ);
+      curJ = prevK;
+    }
+
+    return slices.map(function (sl, idx) {
+      return {
+        left: leftTexts[idx],
+        right: sl.map(function (o) { return o.text; }).join(sep),
+        serhs: sl.map(function (o) { return o.serh; }).filter(Boolean)
+      };
+    });
+  }
+
+  function renderAlignedRowsHtml(alignedRows, labelPrefix) {
+    return alignedRows.map(function (row, idx) {
+      var lParas = String(row.left || '').split(/\r?\n+/).filter(Boolean);
+      var rText = String(row.right || '');
+      var lBodyHtml = lParas.map(function (lp) {
+        var pr = renderDiffPairBlock(lp, rText);
+        return '<p class="prose">' + pr.leftHtml + '</p>';
+      }).join('');
+      var rPair = renderDiffPairBlock(lParas.join(' '), rText);
+      var serhHtml = (row.serhs || []).map(function (sh) {
+        return '<div class="entry-serh prose" style="margin-top:10px;"><b>Şerh:</b> ' + fmtProse(sh) + '</div>';
+      }).join('');
+      var kickerTxt = labelPrefix ? (esc(row.label || ((idx + 1) + '. ' + labelPrefix))) : '';
+      return (
+        '<div class="diff-row">' +
+          '<div class="diff-cell mod">' +
+            (kickerTxt ? '<div class="diff-cell-kicker"><span>' + kickerTxt + '</span><span class="diff-cell-side-lbl">Günümüz Türkçesi</span></div>' : '<div class="diff-cell-kicker"><span class="diff-cell-side-lbl">Günümüz Türkçesi</span></div>') +
+            '<div class="diff-cell-body">' + lBodyHtml + '</div>' +
+          '</div>' +
+          '<div class="diff-cell orig">' +
+            (kickerTxt ? '<div class="diff-cell-kicker"><span>' + kickerTxt + '</span><span class="diff-cell-side-lbl">Orijinal Çeviriyazı</span></div>' : '<div class="diff-cell-kicker"><span class="diff-cell-side-lbl">Orijinal Çeviriyazı</span></div>') +
+            '<div class="diff-cell-body"><p class="prose">' + rPair.rightHtml + '</p>' + serhHtml + '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
   function buildDiffSectionHtml(sadeMetin, kayitlar, multiPage, pageNum) {
     var sadeParas = String(sadeMetin || '').split(/\r?\n+/).map(function (x) { return x.trim(); }).filter(Boolean);
-    var recs = (kayitlar || []).filter(function (k) { return k && (k.latin || '').trim(); });
-    if (!sadeParas.length || !recs.length) return '';
+    var rawRecs = (kayitlar || []).filter(function (k) { return k && (k.latin || '').trim(); });
+    if (!sadeParas.length || !rawRecs.length) return '';
 
+    var recs = filterDuplicateStubRecs(rawRecs);
     var introParas = [];
     var numberedParas = [];
     for (var i = 0; i < sadeParas.length; i += 1) {
@@ -3114,6 +3377,8 @@ dialog.doc-lightbox::backdrop {
 
     var overviewHtml = '';
     var rowsHtml = '';
+    var avgRecLen = recs.reduce(function (acc, r) { return acc + (r.latin || '').length; }, 0) / recs.length;
+
     if (numberedParas.length === recs.length && recs.length >= 2) {
       if (introParas.length) {
         overviewHtml =
@@ -3122,53 +3387,28 @@ dialog.doc-lightbox::backdrop {
             '<div class="read-body">' + introParas.map(function (ip) { return '<p class="prose">' + fmtProse(ip) + '</p>'; }).join('') + '</div>' +
           '</div>';
       }
-      rowsHtml = recs.map(function (k, idx) {
-        var pair = renderDiffPairBlock(numberedParas[idx], k.latin || '');
-        var recLabel = esc(k.no || (idx + 1)) + '. Kayıt';
-        return (
-          '<div class="diff-row">' +
-            '<div class="diff-cell mod">' +
-              '<div class="diff-cell-kicker"><span>' + recLabel + '</span><span class="diff-cell-side-lbl">Günümüz Türkçesi</span></div>' +
-              '<div class="diff-cell-body"><p class="prose">' + pair.leftHtml + '</p></div>' +
-            '</div>' +
-            '<div class="diff-cell orig">' +
-              '<div class="diff-cell-kicker"><span>' + recLabel + '</span><span class="diff-cell-side-lbl">Orijinal Çeviriyazı</span></div>' +
-              '<div class="diff-cell-body"><p class="prose">' + pair.rightHtml + '</p>' +
-                (k.serh ? '<div class="entry-serh prose" style="margin-top:8px;"><b>Şerh:</b> ' + fmtProse(k.serh) + '</div>' : '') +
-              '</div>' +
-            '</div>' +
-          '</div>'
-        );
-      }).join('');
+      var numRows = recs.map(function (k, idx) {
+        return {
+          label: (k.no || (idx + 1)) + '. Kayıt',
+          left: numberedParas[idx],
+          right: k.latin || '',
+          serhs: k.serh ? [k.serh] : []
+        };
+      });
+      rowsHtml = renderAlignedRowsHtml(numRows, 'Kayıt');
+    } else if (recs.length >= 6 && avgRecLen < 130) {
+      // Name / signature roster (e.g., B08 p.3, B42): monotonically group short entries per sade paragraph & flow with '  |  '
+      var rosterObjs = recs.map(function (k) {
+        return { text: String(k.latin || '').trim(), serh: k.serh || '' };
+      });
+      var rosterAligned = alignUnitsMonotonic(sadeParas, rosterObjs, '  |  ');
+      rowsHtml = renderAlignedRowsHtml(rosterAligned, rosterAligned.length > 1 ? 'Bölüm' : '');
     } else {
-      var fullRightJoined = recs.map(function (k) { return (k.latin || '').trim(); }).join(' ');
-      var leftParasHtml = sadeParas.map(function (sp) {
-        var pr = renderDiffPairBlock(sp, fullRightJoined);
-        return '<p class="prose">' + pr.leftHtml + '</p>';
-      }).join('');
-      var fullLeftJoined = sadeParas.join(' ');
-      var multiRec = recs.length > 1;
-      var rightParasHtml = recs.map(function (k, idx) {
-        var pr = renderDiffPairBlock(fullLeftJoined, k.latin || '');
-        return (
-          '<div class="entry-item">' +
-            (multiRec ? '<span class="entry-no">' + esc(k.no || (idx + 1)) + '. Kayıt</span>' : '') +
-            '<p class="prose">' + pr.rightHtml + '</p>' +
-            (k.serh ? '<div class="entry-serh prose"><b>Şerh:</b> ' + fmtProse(k.serh) + '</div>' : '') +
-          '</div>'
-        );
-      }).join('');
-      rowsHtml =
-        '<div class="diff-row">' +
-          '<div class="diff-cell mod">' +
-            '<div class="diff-cell-kicker"><span class="diff-cell-side-lbl">Günümüz Türkçesi</span></div>' +
-            '<div class="diff-cell-body">' + leftParasHtml + '</div>' +
-          '</div>' +
-          '<div class="diff-cell orig">' +
-            '<div class="diff-cell-kicker"><span class="diff-cell-side-lbl">Orijinal Çeviriyazı</span></div>' +
-            '<div class="diff-cell-body">' + rightParasHtml + '</div>' +
-          '</div>' +
-        '</div>';
+      // Sentence / diplomatic clause alignment for continuous documents (B40, B45, B08 p.2, B31, B09...)
+      var leftSents = splitTurkishSentences(sadeParas);
+      var rightClauses = splitOttomanClauses(recs);
+      var sentAligned = alignUnitsMonotonic(leftSents, rightClauses, '  |  ');
+      rowsHtml = renderAlignedRowsHtml(sentAligned, sentAligned.length > 1 ? 'Kısım' : '');
     }
 
     var shellCls = 'diff-shell' + (!STATE.diffHighlight ? ' diff-plain' : '') + (STATE.diffLayout === 'stack' ? ' diff-stacked' : '');
@@ -3177,7 +3417,7 @@ dialog.doc-lightbox::backdrop {
         '<div class="diff-head">' +
           '<div class="diff-title-group">' +
             '<h2 class="diff-h2 serif">Günümüz Türkçesiyle Anlamı ve Orijinal Çeviriyazı' + (multiPage ? ' (Sayfa ' + pageNum + ')' : '') + '</h2>' +
-            '<span class="diff-sub">Sadeleştirilmiş metin ile Osmanlıca birebir çeviriyazı yan yana eşleştirilmiştir.</span>' +
+            '<span class="diff-sub">Sadeleştirilmiş metin ile Osmanlıca birebir çeviriyazı cümle ve bölüm düzeyinde yan yana hizalanmıştır.</span>' +
           '</div>' +
           '<div class="diff-controls">' +
             '<button type="button" id="diffHighlightBtn" class="diff-ctrl-btn' + (STATE.diffHighlight ? ' active' : '') + '" aria-pressed="' + (STATE.diffHighlight ? 'true' : 'false') + '">Farkları Vurgula</button>' +
@@ -3187,8 +3427,8 @@ dialog.doc-lightbox::backdrop {
         '</div>' +
         overviewHtml +
         '<div class="diff-col-heads" aria-hidden="true">' +
-          '<div class="diff-col-head mod"><span>Günümüz Türkçesiyle Anlamı</span><span class="diff-col-badge">Sadeleştirilmiş</span></div>' +
-          '<div class="diff-col-head orig"><span>Orijinal Osmanlıca Çeviriyazı</span><span class="diff-col-badge">Birebir Transkripsiyon</span></div>' +
+          '<div class="diff-col-head mod"><span>Günümüz Türkçesiyle Anlamı</span></div>' +
+          '<div class="diff-col-head orig"><span>Orijinal Osmanlıca Çeviriyazı</span></div>' +
         '</div>' +
         '<div class="diff-rows">' + rowsHtml + '</div>' +
         '<div class="diff-legend">' +
