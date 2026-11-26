@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Aile Arşivi  |  Arşiv Sepeti</title>
+<style>
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: #EDE8DC;
+  color: #1F2421;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.62;
+  font-feature-settings: 'kern' 1;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.serif {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.01em;
+}
+.tnum { font-variant-numeric: tabular-nums; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visible {
+  outline: 2.5px solid #2A5741;
+  outline-offset: 2px;
+}
+
+/* Password Gate (Used Only in Encrypted Live Version) */
+.gate-wrap {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 18px;
+}
+.gate-card {
+  width: 100%;
+  max-width: 448px;
+  padding: 36px 34px 32px;
+  border-radius: 20px;
+  background: rgba(250, 248, 242, 0.92);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid #DDD6C7;
+  box-shadow: 0 22px 54px rgba(31, 36, 33, 0.08), 0 2px 6px rgba(31, 36, 33, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.gate-title { margin: 0; font-size: 32px; line-height: 1.15; font-weight: 600; color: #1F2421; }
+.gate-sub { margin: 8px 0 0; font-size: 14.5px; line-height: 1.55; color: #52574F; }
+.gate-form { display: flex; flex-direction: column; gap: 12px; }
+.gate-label { display: block; font-size: 13px; font-weight: 600; color: #363A35; margin-bottom: 6px; }
+.pw-box { position: relative; display: flex; align-items: center; }
+.pw-input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 46px 10px 14px;
+  border-radius: 11px;
+  border: 1px solid #CFC8B7;
+  background: #FFFFFF;
+  font-size: 15.5px;
+  color: #1F2421;
+}
+.pw-toggle {
+  position: absolute;
+  right: 4px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #5E6158;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.pw-toggle:hover { background: #EDE8DC; color: #1F2421; }
+.gate-hint { margin: 0; font-size: 12.5px; color: #6E6A5E; }
+.gate-err {
+  display: none;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #FAF0EC;
+  border: 1px solid #E3C2B4;
+  color: #8A3A21;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.gate-err.show { display: block; }
+.gate-btn {
+  min-height: 46px;
+  border: 0;
+  border-radius: 11px;
+  background: #2A5741;
+  color: #FAF8F2;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.14s;
+}
+.gate-btn:hover { background: #1E4030; }
+.gate-btn:disabled { opacity: 0.65; cursor: wait; }
+.gate-foot { margin: 0; font-size: 12px; line-height: 1.5; color: #726E62; }
+.gate-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2A5741;
+  text-decoration: none;
+}
+.gate-back:hover { text-decoration: underline; }
+.app-root.locked { display: none; }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(237, 232, 220, 0.88);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+  backdrop-filter: blur(18px) saturate(1.35);
+  border-bottom: 1px solid #D8D1C2;
+}
+.topbar-in {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 8px;
+  background: #2A5741;
+  color: #FAF8F2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.brand-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1F2421;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.brand-sub {
+  font-size: 12px;
+  color: #636257;
+  display: block;
+  line-height: 1.2;
+}
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+.icon-pill {
+  min-height: 40px;
+  padding: 0 13px;
+  border-radius: 999px;
+  border: 1px solid #CFC8B7;
+  background: #FAF8F2;
+  color: #2B302C;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+}
+.icon-pill:hover { border-color: #2A5741; background: #FFFFFF; color: #1E4030; text-decoration: none; }
+.icon-pill.atlas-back {
+  border-color: #B8D0C2;
+  background: #F1F6F3;
+  color: #214B36;
+  font-weight: 600;
+}
+.icon-pill.atlas-back:hover { background: #2A5741; border-color: #2A5741; color: #FFFFFF; }
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 820px;
+}
+.kicker {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #2A5741;
+}
+.hero h1 {
+  margin: 0;
+  font-size: 38px;
+  line-height: 1.14;
+  font-weight: 600;
+  color: #1F2421;
+}
+.hero-lead {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: #4A4E47;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.kpi-card {
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid #DDD6C7;
+  background: #FAF8F2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 2px rgba(31, 36, 33, 0.04);
+}
+.kpi-card.accent { border-color: #B8D0C2; background: #F4F8F5; }
+.kpi-card.saving { border-color: #DFC6B3; background: #FAF3EC; }
+.kpi-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #5E6158;
+}
+.kpi-val {
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 600;
+  color: #1F2421;
+}
+.kpi-card.accent .kpi-val { color: #244F3A; }
+.kpi-card.saving .kpi-val { color: #8A4929; }
+.kpi-sub { font-size: 12.5px; line-height: 1.45; color: #62645B; }
+
+.guide-strip {
+  padding: 20px 22px;
+  border-radius: 14px;
+  border: 1px solid #DDD6C7;
+  background: #FAF8F2;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.strip-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+.sec-h2 {
+  margin: 0;
+  font-size: 23px;
+  line-height: 1.25;
+  font-weight: 600;
+  color: #1F2421;
+}
+.sec-sub { font-size: 13px; color: #636257; }
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.how-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-left: 14px;
+  border-left: 2.5px solid #C8D7CE;
+}
+.how-item.amber { border-left-color: #D7B49B; }
+.how-item.slate { border-left-color: #B4CBD8; }
+.how-title { font-size: 14px; font-weight: 600; color: #1F2421; }
+.how-text { margin: 0; font-size: 13.5px; line-height: 1.56; color: #4D5148; }
+
+.chart-panel {
+  padding: 20px 22px 18px;
+  border-radius: 14px;
+  border: 1px solid #DDD6C7;
+  background: #FAF8F2;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.chart-cols {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 8px;
+  align-items: end;
+  padding-top: 6px;
+}
+.bar-btn {
+  padding: 8px 4px 7px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.14s, border-color 0.14s;
+}
+.bar-btn:hover { background: #F1ECE1; border-color: #D9D2C3; }
+.bar-btn.active { background: #E6F0EA; border-color: #2A5741; }
+.bar-btn.dimmed { opacity: 0.45; }
+.bar-count { font-size: 12px; font-weight: 600; color: #2B302C; }
+.bar-track {
+  width: 100%;
+  max-width: 34px;
+  height: 104px;
+  border-radius: 6px 6px 3px 3px;
+  background: #EAE4D7;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.bar-fill {
+  width: 100%;
+  border-radius: 5px 5px 2px 2px;
+  background: #5E836F;
+  transition: height 0.25s ease, background-color 0.15s;
+}
+.bar-btn:hover .bar-fill { background: #2A5741; }
+.bar-btn.active .bar-fill { background: #1E4432; }
+.bar-lbl { font-size: 11px; line-height: 1.2; color: #5A5C53; text-align: center; white-space: nowrap; }
+.bar-btn.active .bar-lbl { color: #1E4432; font-weight: 600; }
+
+.chart-mobile {
+  display: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.mbar-btn {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #E2DCCE;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+  transition: border-color 0.14s, background-color 0.14s;
+}
+.mbar-btn.active { border-color: #2A5741; background: #E8F2EC; }
+.mbar-btn.dimmed { opacity: 0.5; }
+.mbar-top { display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 6px; font-size: 12px; }
+.mbar-name { font-weight: 500; color: #2B302C; }
+.mbar-num { font-weight: 600; color: #2A5741; }
+.mbar-track { display: block; width: 100%; height: 7px; border-radius: 999px; background: #EAE4D7; overflow: hidden; }
+.mbar-fill { display: block; height: 100%; border-radius: 999px; background: #3F6E56; transition: width 0.25s ease; }
+
+.controls {
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid #DDD6C7;
+  background: #FAF8F2;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.mode-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+.mode-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: #EAE4D7;
+  border: 1px solid #DCD5C6;
+}
+.mode-btn {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 9px;
+  border: 0;
+  background: transparent;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #4D5148;
+  transition: background-color 0.14s, color 0.14s, box-shadow 0.14s;
+}
+.mode-btn:hover { color: #1F2421; }
+.mode-btn.active {
+  background: #FFFFFF;
+  color: #1F2421;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(31, 36, 33, 0.1);
+}
+.filter-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.45fr) repeat(3, minmax(150px, 1fr));
+  gap: 10px;
+}
+.search-box { position: relative; display: flex; align-items: center; }
+.search-ico { position: absolute; left: 12px; color: #747063; pointer-events: none; display: inline-flex; }
+.search-inp {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 36px 8px 36px;
+  border-radius: 10px;
+  border: 1px solid #D3CDBE;
+  background: #FFFFFF;
+  font-size: 14px;
+  color: #1F2421;
+}
+.search-inp::placeholder { color: #837F72; }
+.search-clear {
+  position: absolute;
+  right: 6px;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  color: #6B675B;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.search-clear.show { display: inline-flex; }
+.search-clear:hover { background: #EDE8DC; color: #1F2421; }
+.sel-ctrl {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #D3CDBE;
+  background: #FFFFFF;
+  font-size: 13.5px;
+  color: #1F2421;
+}
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding-top: 10px;
+  border-top: 1px solid #E7E1D4;
+}
+.toggle-left { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.chip-toggle {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid #CFC8B7;
+  background: #FFFFFF;
+  font-size: 13px;
+  font-weight: 500;
+  color: #363A35;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.14s, border-color 0.14s, color 0.14s;
+}
+.chip-toggle:hover { border-color: #2A5741; color: #1E4030; }
+.chip-toggle.active { background: #2A5741; border-color: #2A5741; color: #FAF8F2; }
+.chip-dot { width: 8px; height: 8px; border-radius: 999px; background: #9A5534; }
+.chip-toggle.active .chip-dot { background: #F5CFAF; }
+.ghost-btn {
+  min-height: 38px;
+  padding: 0 13px;
+  border-radius: 999px;
+  border: 1px solid #D5CEBE;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4F534A;
+}
+.ghost-btn:hover { background: #EFEAE0; color: #1F2421; border-color: #B9B2A2; }
+.ghost-btn.lit { border-color: #9A5534; color: #8A4929; background: #FAF3EC; }
+
+.live-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #F4F0E6;
+  border: 1px solid #DDD6C7;
+  font-size: 13.5px;
+}
+.live-summary { font-weight: 600; color: #1F2421; }
+.live-summary span { color: #2A5741; }
+.live-actions { display: flex; align-items: center; gap: 8px; }
+.mini-btn {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #D3CDBE;
+  background: #FFFFFF;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #3B403A;
+}
+.mini-btn:hover { border-color: #2A5741; color: #1E4030; }
+
+.groups-stack { display: flex; flex-direction: column; gap: 18px; }
+.grp-sec {
+  border-radius: 16px;
+  border: 1px solid #DBD4C5;
+  background: #FAF8F2;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(31, 36, 33, 0.04);
+}
+.grp-head {
+  width: 100%;
+  padding: 16px 20px;
+  border: 0;
+  background: #F4EFE4;
+  border-bottom: 1px solid #E2DBC9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+  text-align: left;
+  transition: background-color 0.14s;
+}
+.grp-sec.collapsed .grp-head { border-bottom-color: transparent; }
+.grp-head:hover { background: #EFE9DC; }
+.grp-head-l { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.grp-accent { width: 4px; height: 26px; border-radius: 4px; background: #2A5741; flex: none; }
+.grp-accent.a2 { background: #8A4929; }
+.grp-accent.a3 { background: #2B596C; }
+.grp-accent.a4 { background: #6B5639; }
+.grp-accent.a5 { background: #3E6650; }
+.grp-accent.a6 { background: #4F5D73; }
+.grp-accent.a7 { background: #7B4B52; }
+.grp-title { margin: 0; font-size: 21px; line-height: 1.24; font-weight: 600; color: #1F2421; }
+.grp-head-r { display: flex; align-items: center; gap: 12px; flex: none; }
+.grp-totals {
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: #FAF8F2;
+  border: 1px solid #DDD6C7;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #373C37;
+  white-space: nowrap;
+}
+.grp-chev {
+  width: 22px;
+  height: 22px;
+  color: #5E6158;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+.grp-sec.collapsed .grp-chev { transform: rotate(-90deg); }
+.grp-body { display: flex; flex-direction: column; }
+.grp-sec.collapsed .grp-body { display: none; }
+
+.doc-item {
+  padding: 20px 22px;
+  border-bottom: 1px solid #E7E1D3;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #FAF8F2;
+}
+.doc-item:last-child { border-bottom: 0; }
+.doc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px 18px; }
+.doc-title-wrap { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 1 auto; }
+.doc-id-line { font-size: 11.5px; font-weight: 600; letter-spacing: 0.04em; color: #706D60; }
+.doc-title { margin: 0; font-size: 20px; line-height: 1.28; font-weight: 600; color: #1F2421; }
+.doc-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  flex: 0 1 auto;
+  max-width: 44%;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.badge-code { background: #EFEAE0; border: 1px solid #D9D2C3; color: #262A26; }
+.badge-date { background: #F4F2EC; border: 1px solid #E0D9CA; color: #54574E; }
+.badge-cost { background: #E8F1EC; border: 1px solid #C2D7CA; color: #214B36; }
+
+.sel-ribbon {
+  padding: 9px 14px;
+  border-radius: 10px;
+  border-left: 3.5px solid #9A5534;
+  background: #F7EFE7;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  font-size: 13px;
+  line-height: 1.48;
+  color: #3E2D22;
+}
+.sel-ribbon.preview-only { border-left-color: #275163; background: #EDF3F6; color: #233B46; }
+.preview-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: #275163;
+  color: #FAF8F2;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.sel-save { font-weight: 700; color: #8A4929; }
+
+.doc-dl { margin: 0; display: flex; flex-direction: column; gap: 9px; }
+.doc-field { display: grid; grid-template-columns: 158px minmax(0, 1fr); gap: 4px 16px; align-items: baseline; }
+.doc-dt { font-size: 12px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: #5D6157; }
+.doc-dd { margin: 0; font-size: 14.5px; line-height: 1.62; color: #252926; }
+.doc-field.expect .doc-dt { color: #2A5741; }
+
+.tech-det { margin-top: 2px; border-top: 1px dashed #DFD8C8; padding-top: 8px; }
+.tech-det summary {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #5E6158;
+  cursor: pointer;
+  user-select: none;
+}
+.tech-det summary::-webkit-details-marker { display: none; }
+.tech-det summary:hover { color: #2A5741; }
+.tech-det summary::before {
+  content: '+';
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid #CFC8B7;
+  background: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+}
+.tech-det[open] summary::before { content: '\2212'; }
+.split-note-pill { padding: 1px 8px; border-radius: 999px; background: #EAE4D7; color: #4D5148; font-size: 11px; font-weight: 600; }
+.tech-body {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #F3EEE3;
+  font-size: 13px;
+  line-height: 1.56;
+  color: #3D413B;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tech-body b { color: #1F2421; }
+
+.empty-state {
+  padding: 44px 24px;
+  border-radius: 16px;
+  border: 1px dashed #CBC4B3;
+  background: #FAF8F2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.empty-state h3 { margin: 0; font-size: 22px; color: #1F2421; }
+.empty-state p { margin: 0; color: #5E6158; font-size: 14px; }
+
+.foot {
+  padding-top: 18px;
+  border-top: 1px solid #D8D1C2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 18px;
+  font-size: 12.5px;
+  color: #6B675B;
+}
+
+/* DARK THEME (Calm Archival Slate  |  Zero CSS Custom Properties) */
+body.dark { background: #141715; color: #EDE9DF; }
+body.dark .gate-card { background: rgba(28, 32, 29, 0.94); border-color: #2E3530; box-shadow: 0 22px 54px rgba(0, 0, 0, 0.35); }
+body.dark .gate-title { color: #F2EEE5; }
+body.dark .gate-sub, body.dark .gate-foot, body.dark .gate-hint { color: #A9A69B; }
+body.dark .gate-label { color: #DBD7CC; }
+body.dark .pw-input { background: #242926; border-color: #38413B; color: #F2EEE5; }
+body.dark .pw-toggle { color: #B4B0A4; }
+body.dark .pw-toggle:hover { background: #313834; color: #FFFFFF; }
+body.dark .gate-back { color: #84C4A2; }
+body.dark .topbar { background: rgba(20, 23, 21, 0.88); border-bottom-color: #2A312C; }
+body.dark .brand-mark { background: #3D755A; color: #F5F2EB; }
+body.dark .brand-title { color: #F1EDE4; }
+body.dark .brand-sub { color: #9EA095; }
+body.dark .icon-pill { background: #1F2421; border-color: #333B36; color: #E2DED3; }
+body.dark .icon-pill:hover { background: #29302C; border-color: #79B796; color: #FFFFFF; }
+body.dark .icon-pill.atlas-back { background: #1B3025; border-color: #355845; color: #93D2B0; }
+body.dark .icon-pill.atlas-back:hover { background: #2F6449; border-color: #79B796; color: #FFFFFF; }
+body.dark .kicker { color: #79B796; }
+body.dark .hero h1 { color: #F3EFE6; }
+body.dark .hero-lead { color: #BEB9AC; }
+body.dark .kpi-card { background: #1C201D; border-color: #2E3530; box-shadow: none; }
+body.dark .kpi-card.accent { background: #192620; border-color: #325241; }
+body.dark .kpi-card.saving { background: #261E19; border-color: #543B2B; }
+body.dark .kpi-label { color: #A0A196; }
+body.dark .kpi-val { color: #F2EEE5; }
+body.dark .kpi-card.accent .kpi-val { color: #84C4A2; }
+body.dark .kpi-card.saving .kpi-val { color: #E5A67D; }
+body.dark .kpi-sub { color: #A6A498; }
+body.dark .guide-strip, body.dark .chart-panel, body.dark .controls, body.dark .grp-sec, body.dark .empty-state {
+  background: #1C201D;
+  border-color: #2E3530;
+}
+body.dark .sec-h2, body.dark .how-title, body.dark .grp-title, body.dark .doc-title, body.dark .empty-state h3 { color: #F1EDE4; }
+body.dark .sec-sub, body.dark .how-text, body.dark .empty-state p { color: #B4B0A4; }
+body.dark .how-item { border-left-color: #3B604C; }
+body.dark .how-item.amber { border-left-color: #7D5237; }
+body.dark .how-item.slate { border-left-color: #3C6475; }
+body.dark .bar-btn:hover { background: #252B27; border-color: #3B443E; }
+body.dark .bar-btn.active { background: #1E3228; border-color: #79B796; }
+body.dark .bar-count { color: #E5E1D6; }
+body.dark .bar-track, body.dark .mbar-track { background: #282E2A; }
+body.dark .bar-fill, body.dark .mbar-fill { background: #629B7D; }
+body.dark .bar-btn.active .bar-fill { background: #84C4A2; }
+body.dark .bar-lbl { color: #A5A398; }
+body.dark .bar-btn.active .bar-lbl { color: #8DD0AC; }
+body.dark .mbar-btn { background: #222724; border-color: #323A35; }
+body.dark .mbar-btn.active { background: #1D3127; border-color: #79B796; }
+body.dark .mbar-name { color: #E5E1D6; }
+body.dark .mbar-num { color: #84C4A2; }
+body.dark .mode-tabs { background: #151816; border-color: #2B322D; }
+body.dark .mode-btn { color: #A9A69B; }
+body.dark .mode-btn:hover { color: #F1EDE4; }
+body.dark .mode-btn.active { background: #282F2B; color: #F3EFE6; }
+body.dark .search-inp, body.dark .sel-ctrl { background: #242926; border-color: #363F39; color: #F0ECE2; }
+body.dark .search-inp::placeholder { color: #8E8C81; }
+body.dark .search-ico, body.dark .search-clear { color: #9C998D; }
+body.dark .search-clear:hover { background: #313834; color: #FFFFFF; }
+body.dark .toggle-row { border-top-color: #2B322D; }
+body.dark .chip-toggle { background: #242926; border-color: #38413B; color: #E2DED3; }
+body.dark .chip-toggle:hover { border-color: #79B796; color: #FFFFFF; }
+body.dark .chip-toggle.active { background: #2F6449; border-color: #79B796; color: #FFFFFF; }
+body.dark .ghost-btn { border-color: #363F39; color: #C1BDB1; }
+body.dark .ghost-btn:hover { background: #262C28; color: #FFFFFF; }
+body.dark .ghost-btn.lit { border-color: #B4744C; color: #E5A67D; background: #2A2019; }
+body.dark .live-bar { background: #181C19; border-color: #2E3530; }
+body.dark .live-summary { color: #EDE9DF; }
+body.dark .live-summary span { color: #84C4A2; }
+body.dark .mini-btn { background: #242926; border-color: #363F39; color: #DBD7CC; }
+body.dark .mini-btn:hover { border-color: #79B796; color: #FFFFFF; }
+body.dark .grp-head { background: #222724; border-bottom-color: #2E3530; }
+body.dark .grp-head:hover { background: #272D29; }
+body.dark .grp-totals { background: #181C19; border-color: #323A35; color: #D7D3C7; }
+body.dark .grp-chev { color: #A6A498; }
+body.dark .doc-item { background: #1C201D; border-bottom-color: #2B322D; }
+body.dark .doc-id-line { color: #9C9A8E; }
+body.dark .badge-code { background: #262C28; border-color: #39423C; color: #E6E2D7; }
+body.dark .badge-date { background: #212623; border-color: #343C37; color: #B8B4A8; }
+body.dark .badge-cost { background: #1B3025; border-color: #335745; color: #93D2B0; }
+body.dark .sel-ribbon { background: #29201A; border-left-color: #D58E61; color: #E7D5C7; }
+body.dark .sel-ribbon.preview-only { background: #1A2830; border-left-color: #6BAAC2; color: #CFE1EA; }
+body.dark .preview-pill { background: #2E647A; color: #F5F2EB; }
+body.dark .sel-save { color: #EAB08A; }
+body.dark .doc-dt { color: #A2A195; }
+body.dark .doc-field.expect .doc-dt { color: #84C4A2; }
+body.dark .doc-dd { color: #E2DED3; }
+body.dark .tech-det { border-top-color: #303732; }
+body.dark .tech-det summary { color: #A9A69B; }
+body.dark .tech-det summary:hover { color: #84C4A2; }
+body.dark .tech-det summary::before { background: #242926; border-color: #3C4640; }
+body.dark .split-note-pill { background: #29302C; color: #C5C1B5; }
+body.dark .tech-body { background: #161A17; color: #C8C4B8; }
+body.dark .tech-body b { color: #F0ECE2; }
+body.dark .foot { border-top-color: #2A312C; color: #98968B; }
+body.dark button:focus-visible, body.dark input:focus-visible, body.dark select:focus-visible, body.dark summary:focus-visible, body.dark a:focus-visible {
+  outline-color: #84C4A2;
+}
+
+@media (max-width: 960px) {
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .how-grid { grid-template-columns: 1fr; gap: 14px; }
+  .filter-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .chart-cols { display: none; }
+  .chart-mobile { display: grid; }
+  .doc-badges { max-width: none; justify-content: flex-start; }
+}
+
+@media (max-width: 680px) {
+  .topbar-in { padding: 9px 14px; flex-wrap: wrap; gap: 8px; }
+  .brand-sub { display: none; }
+  .brand-title { font-size: 14.5px; }
+  .wrap { padding: 20px 14px 48px; gap: 18px; }
+  .hero h1 { font-size: 29px; }
+  .kpi-val { font-size: 25px; }
+  .kpi-card { padding: 14px 15px; }
+  .guide-strip, .chart-panel, .controls { padding: 15px 14px; }
+  .filter-row { grid-template-columns: 1fr; }
+  .chart-mobile { grid-template-columns: 1fr; }
+  .mode-tabs { width: 100%; }
+  .mode-btn { flex: 1 1 auto; text-align: center; padding: 0 10px; font-size: 13px; }
+  .grp-head { padding: 14px 14px; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .grp-head-r { width: 100%; justify-content: space-between; }
+  .grp-title { font-size: 18.5px; }
+  .doc-item { padding: 16px 14px; }
+  .doc-top { flex-direction: column; gap: 8px; }
+  .doc-title { font-size: 18px; }
+  .doc-field { grid-template-columns: 1fr; gap: 2px; }
+  .icon-pill { min-height: 36px; padding: 0 10px; font-size: 12.5px; }
+  .icon-pill span.lbl-hide-sm { display: none; }
+  .gate-card { padding: 28px 22px 24px; }
+}
+
+@media print {
+  .topbar, .controls, .live-actions, .chart-panel, .gate-wrap { display: none !important; }
+  body { background: #FFFFFF; color: #000000; }
+  .grp-sec, .doc-item, .kpi-card, .guide-strip { break-inside: avoid; box-shadow: none; }
+  .grp-sec.collapsed .grp-body { display: flex !important; }
+}
+
+</style>
+</head>
+<body>
+<div id="gateWrap" class="gate-wrap">
+  <main class="gate-card" aria-labelledby="gateTitle">
+    <div>
+      <a class="gate-back" href="index.html">← Aile Atlası'na Dön</a>
+      <h1 id="gateTitle" class="gate-title serif" style="margin-top:10px;">Arşiv Sepeti Özeti</h1>
+      <p class="gate-sub">Bu arşiv belgesi listesi yalnızca aile üyelerinin incelemesine açıktır. Devam etmek için erişim şifresini girin.</p>
+    </div>
+    <form id="gateForm" class="gate-form" autocomplete="off">
+      <div>
+        <label class="gate-label" for="pwInput">Erişim Şifresi</label>
+        <div class="pw-box">
+          <input id="pwInput" class="pw-input" type="password" autocomplete="current-password" placeholder="Erişim şifresini yazın" required>
+          <button id="pwToggle" class="pw-toggle" type="button" aria-label="Şifreyi göster" aria-pressed="false">
+            <svg id="eyeIcon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+        </div>
+      </div>
+      <p class="gate-hint">Büyük ve küçük harf ayrımı yapılmaz.</p>
+      <div id="gateErr" class="gate-err" role="alert"></div>
+      <button id="gateBtn" class="gate-btn" type="submit">Listeyi Aç</button>
+    </form>
+    <p class="gate-foot">Tüm belge özetleri tarayıcınızda uçtan uca AES-256-GCM (PBKDF2 600.000) ile çözülür; şifre sunucuya iletilmez.</p>
+  </main>
+</div>
+<div id="appRoot" class="app-root locked">
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      </span>
+      <div style="min-width:0;">
+        <div id="brandTitleEl" class="brand-title serif">Arşiv Sepeti Özeti</div>
+        <span id="brandSubEl" class="brand-sub"></span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="icon-pill atlas-back" href="index.html">← Aile Atlası'na Dön</a>
+      <button type="button" id="themeBtn" class="icon-pill" aria-label="Temayı değiştir" aria-pressed="false">
+        <svg id="themeIco" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <span id="themeLbl">Koyu Tema</span>
+      </button>
+      <button type="button" id="printBtn" class="icon-pill" aria-label="Yazdır veya PDF kaydet">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        <span class="lbl-hide-sm">Yazdır</span>
+      </button>
+      <button type="button" id="lockBtn" class="icon-pill" aria-label="Listeyi kilitle">Kilitle</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <span id="heroKicker" class="kicker"></span>
+    <h1 id="heroTitle" class="serif"></h1>
+    <p id="heroLead" class="hero-lead"></p>
+  </section>
+
+  <section id="kpiGrid" class="kpi-grid" aria-label="Sepet özeti sayıları"></section>
+
+  <section class="guide-strip" aria-label="Bu liste nasıl hazırlandı">
+    <div class="strip-head">
+      <h2 id="howHeading" class="sec-h2 serif"></h2>
+      <span id="howSub" class="sec-sub"></span>
+    </div>
+    <div id="howGrid" class="how-grid"></div>
+  </section>
+
+  <section class="chart-panel" aria-label="25 yıllık dönem dağılım grafiği">
+    <div class="strip-head">
+      <h2 class="sec-h2 serif">25 Yıllık Dönemlere Göre Belge Dağılımı</h2>
+      <span class="sec-sub" id="chartHint">Bir döneme tıklayarak listeyi süzebilirsiniz (tekrar tıklayınca açılır)</span>
+    </div>
+    <div class="chart-cols" id="chartDesktop" role="group" aria-label="Dönem sütun grafiği"></div>
+    <div class="chart-mobile" id="chartMobile" role="group" aria-label="Dönem yatay grafiği"></div>
+  </section>
+
+  <section class="controls" aria-label="Gruplama ve filtreleme araçları">
+    <div class="mode-row">
+      <div class="mode-tabs" role="tablist" aria-label="Gruplama kipi">
+        <button type="button" class="mode-btn active" role="tab" aria-selected="true" data-mode="konu">Konu ve Aileye Göre</button>
+        <button type="button" class="mode-btn" role="tab" aria-selected="false" data-mode="donem">25 Yıllık Dönemlere Göre</button>
+        <button type="button" class="mode-btn" role="tab" aria-selected="false" data-mode="tur">Belge Türüne Göre</button>
+      </div>
+      <button type="button" id="clearFiltersBtn" class="ghost-btn">Filtreleri Temizle</button>
+    </div>
+
+    <div class="filter-row">
+      <div class="search-box">
+        <span class="search-ico" aria-hidden="true">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        </span>
+        <input id="searchInput" class="search-inp" type="search" placeholder="Başlık, fon, kişi, yer veya açıklama ara..." aria-label="Belgelerde ara">
+        <button type="button" id="searchClear" class="search-clear" aria-label="Aramayı temizle">×</button>
+      </div>
+      <select id="selKonu" class="sel-ctrl" aria-label="Konu süzgeci"></select>
+      <select id="selDonem" class="sel-ctrl" aria-label="Dönem süzgeci"></select>
+      <select id="selTur" class="sel-ctrl" aria-label="Belge türü süzgeci"></select>
+    </div>
+
+    <div class="toggle-row">
+      <div class="toggle-left">
+        <button type="button" id="selectiveToggle" class="chip-toggle" aria-pressed="false">
+          <span class="chip-dot" aria-hidden="true"></span>
+          <span id="selToggleLbl">Yalnız Ön Okumalı Seçkili Ciltler</span>
+        </button>
+      </div>
+      <div class="live-actions">
+        <button type="button" id="expandAllBtn" class="mini-btn">Tüm Grupları Aç</button>
+        <button type="button" id="collapseAllBtn" class="mini-btn">Tüm Grupları Daralt</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="live-bar" aria-live="polite">
+    <div class="live-summary tnum" id="liveSummary"></div>
+    <div class="sec-sub tnum" id="liveExtra"></div>
+  </div>
+
+  <div id="groupsContainer" class="groups-stack"></div>
+
+  <footer class="foot">
+    <span id="footLeft"></span>
+    <span id="footRight"></span>
+  </footer>
+</main>
+</div>
+<script>
+(function () {
+  'use strict';
+
+  var DOCS = [];
+  var KONU_ORDER = [];
+  var DONEM_ORDER = [];
+  var TUR_ORDER = [];
+
+  var STATE = {
+    mode: 'konu',
+    query: '',
+    konu: '',
+    donem: '',
+    tur: '',
+    selectiveOnly: false,
+    collapsed: {}
+  };
+
+  var EVENTS_BOUND = false;
+
+  function normTr(s) {
+    if (!s) return '';
+    return String(s)
+      .replace(/İ/g, 'i')
+      .replace(/I/g, 'i')
+      .toLocaleLowerCase('tr-TR')
+      .replace(/[âàá]/g, 'a')
+      .replace(/[îìíı]/g, 'i')
+      .replace(/[ûùúü]/g, 'u')
+      .replace(/[öô]/g, 'o')
+      .replace(/ş/g, 's')
+      .replace(/ğ/g, 'g')
+      .replace(/ç/g, 'c')
+      .replace(/[’'‘`]/g, '');
+  }
+
+  var PIPE = ' \u00a0|\u00a0 ';
+  var PIPE_HTML = ' &nbsp;|&nbsp; ';
+
+  function pipeText(s) {
+    return String(s == null ? '' : s).replace(/  \|  /g, PIPE);
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function fmtTl(n) {
+    var num = Number(n || 0);
+    var parts = num.toFixed(2).split('.');
+    var intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return intPart + ',' + parts[1] + ' TL';
+  }
+
+  function applyTheme(dark) {
+    document.body.classList.toggle('dark', dark);
+    var btn = document.getElementById('themeBtn');
+    var lbl = document.getElementById('themeLbl');
+    var ico = document.getElementById('themeIco');
+    if (btn) btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    if (lbl) lbl.textContent = dark ? 'Açık Tema' : 'Koyu Tema';
+    if (ico) {
+      ico.innerHTML = dark
+        ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+        : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+    }
+    try { localStorage.setItem('tka_sepet_theme', dark ? 'dark' : 'light'); } catch (e) {}
+  }
+
+  function mountShellCopy(copy) {
+    if (!copy) return;
+    document.title = copy.pageTitle || document.title;
+    var el;
+    el = document.getElementById('brandTitleEl'); if (el) el.textContent = pipeText(copy.brandTitle || '');
+    el = document.getElementById('brandSubEl'); if (el) el.textContent = pipeText(copy.brandSub || '');
+    el = document.getElementById('heroKicker'); if (el) el.textContent = pipeText(copy.kicker || '');
+    el = document.getElementById('heroTitle'); if (el) el.textContent = pipeText(copy.heroTitle || '');
+    el = document.getElementById('heroLead'); if (el) el.textContent = pipeText(copy.heroLead || '');
+    el = document.getElementById('howHeading'); if (el) el.textContent = pipeText(copy.howHeading || '');
+    el = document.getElementById('howSub'); if (el) el.textContent = pipeText(copy.howSub || '');
+    el = document.getElementById('selToggleLbl'); if (el) el.textContent = pipeText(copy.selectiveToggleLabel || '');
+    el = document.getElementById('footLeft'); if (el) el.textContent = pipeText(copy.footLeft || '');
+    el = document.getElementById('footRight'); if (el) el.textContent = pipeText(copy.footRight || '');
+
+    var kpiGrid = document.getElementById('kpiGrid');
+    if (kpiGrid && copy.kpis) {
+      kpiGrid.innerHTML = copy.kpis.map(function (k) {
+        return (
+          '<article class="kpi-card' + (k.cls ? ' ' + esc(k.cls) : '') + '">' +
+            '<span class="kpi-label">' + esc(k.label) + '</span>' +
+            '<span class="kpi-val serif tnum">' + esc(k.val) + '</span>' +
+            '<span class="kpi-sub tnum">' + esc(k.sub) + '</span>' +
+          '</article>'
+        );
+      }).join('');
+    }
+    var howGrid = document.getElementById('howGrid');
+    if (howGrid && copy.howItems) {
+      howGrid.innerHTML = copy.howItems.map(function (h) {
+        return (
+          '<div class="how-item' + (h.cls ? ' ' + esc(h.cls) : '') + '">' +
+            '<div class="how-title">' + esc(h.title) + '</div>' +
+            '<p class="how-text">' + esc(h.text) + '</p>' +
+          '</div>'
+        );
+      }).join('');
+    }
+  }
+
+  function populateSelects() {
+    var selK = document.getElementById('selKonu');
+    var selD = document.getElementById('selDonem');
+    var selT = document.getElementById('selTur');
+
+    selK.innerHTML = '<option value="">Tüm Konular (' + KONU_ORDER.length + ')</option>' +
+      KONU_ORDER.map(function (k) {
+        return '<option value="' + esc(k[0]) + '">' + esc(k[1]) + '</option>';
+      }).join('');
+
+    selD.innerHTML = '<option value="">Tüm Dönemler (' + DONEM_ORDER.length + ')</option>' +
+      DONEM_ORDER.map(function (d) {
+        return '<option value="' + esc(d[0]) + '">' + esc(d[1]) + '</option>';
+      }).join('');
+
+    selT.innerHTML = '<option value="">Tüm Belge Türleri (' + TUR_ORDER.length + ')</option>' +
+      TUR_ORDER.map(function (t) {
+        return '<option value="' + esc(t) + '">' + esc(t) + '</option>';
+      }).join('');
+  }
+
+  function getFiltered(ignoreDonem) {
+    var qTokens = normTr(STATE.query).trim().split(/\s+/).filter(Boolean);
+    var out = [];
+    for (var i = 0; i < DOCS.length; i += 1) {
+      var d = DOCS[i];
+      if (STATE.konu && d.konuKod !== STATE.konu) continue;
+      if (!ignoreDonem && STATE.donem && d.donemKod !== STATE.donem) continue;
+      if (STATE.tur && d.tur !== STATE.tur) continue;
+      if (STATE.selectiveOnly && !d.isSelective) continue;
+      if (qTokens.length) {
+        var ok = true;
+        for (var j = 0; j < qTokens.length; j += 1) {
+          if (d._hay.indexOf(qTokens[j]) < 0) { ok = false; break; }
+        }
+        if (!ok) continue;
+      }
+      out.push(d);
+    }
+    return out;
+  }
+
+  function renderChart() {
+    var baseDocs = getFiltered(true);
+    var counts = {};
+    var pozMap = {};
+    var tlMap = {};
+    var maxCnt = 1;
+    for (var i = 0; i < baseDocs.length; i += 1) {
+      var d = baseDocs[i];
+      counts[d.donemKod] = (counts[d.donemKod] || 0) + 1;
+      pozMap[d.donemKod] = (pozMap[d.donemKod] || 0) + d.poz;
+      tlMap[d.donemKod] = (tlMap[d.donemKod] || 0) + d.tl;
+      if (counts[d.donemKod] > maxCnt) maxCnt = counts[d.donemKod];
+    }
+
+    var deskHtml = '';
+    var mobHtml = '';
+    for (var k = 0; k < DONEM_ORDER.length; k += 1) {
+      var kod = DONEM_ORDER[k][0];
+      var fullLbl = DONEM_ORDER[k][1];
+      var shortLbl = DONEM_ORDER[k][2];
+      var cnt = counts[kod] || 0;
+      var pz = pozMap[kod] || 0;
+      var tl = tlMap[kod] || 0;
+      var pct = cnt > 0 ? Math.max(7, Math.round((cnt / maxCnt) * 100)) : 0;
+      var isAct = STATE.donem === kod;
+      var isDim = !!STATE.donem && !isAct;
+      var cls = (isAct ? ' active' : '') + (isDim ? ' dimmed' : '');
+      var tip = fullLbl + ': ' + cnt + ' belge  |  ' + pz + ' poz  |  ' + fmtTl(tl);
+
+      deskHtml +=
+        '<button type="button" class="bar-btn' + cls + '" data-donem-bar="' + esc(kod) + '" title="' + esc(tip) + '" aria-pressed="' + (isAct ? 'true' : 'false') + '">' +
+          '<span class="bar-count tnum">' + cnt + '</span>' +
+          '<span class="bar-track"><span class="bar-fill" style="height:' + pct + '%;"></span></span>' +
+          '<span class="bar-lbl tnum">' + esc(shortLbl) + '</span>' +
+        '</button>';
+
+      mobHtml +=
+        '<button type="button" class="mbar-btn' + cls + '" data-donem-bar="' + esc(kod) + '" aria-pressed="' + (isAct ? 'true' : 'false') + '">' +
+          '<span class="mbar-top"><span class="mbar-name">' + esc(fullLbl) + '</span><span class="mbar-num tnum">' + cnt + ' belge</span></span>' +
+          '<span class="mbar-track"><span class="mbar-fill" style="width:' + pct + '%;"></span></span>' +
+        '</button>';
+    }
+
+    document.getElementById('chartDesktop').innerHTML = deskHtml;
+    document.getElementById('chartMobile').innerHTML = mobHtml;
+
+    var barBtns = document.querySelectorAll('[data-donem-bar]');
+    for (var b = 0; b < barBtns.length; b += 1) {
+      barBtns[b].addEventListener('click', function (ev) {
+        var dk = ev.currentTarget.getAttribute('data-donem-bar');
+        STATE.donem = (STATE.donem === dk) ? '' : dk;
+        document.getElementById('selDonem').value = STATE.donem;
+        renderAll();
+      });
+    }
+  }
+
+  function renderDocCard(d) {
+    var dateShort = d.yil ? String(d.yil) : 'Tarihsiz';
+    var selHtml = '';
+    if (d.isSelective) {
+      var prevBadge = d.onInceleme ? 'Ön İnceleme [Ö]' : 'Sayfa Seçimli [Ö]';
+      selHtml =
+        '<div class="sel-ribbon tnum">' +
+          '<span class="preview-pill">' + esc(prevBadge) + '</span>' +
+          '<span><b>Seçilen Sayfalar:</b> Kutu ' + esc(d.kutuAralik) + ' (' + d.poz + ' / ' + d.fullPoz + ' poz)</span>' +
+          '<span>' + PIPE_HTML + '</span>' +
+          '<span class="sel-save">Tasarruf: ' + esc(fmtTl(d.savedTl)) + '</span>' +
+        '</div>';
+    } else if (d.onInceleme) {
+      selHtml =
+        '<div class="sel-ribbon preview-only tnum">' +
+          '<span class="preview-pill">Ön İnceleme [Ö]</span>' +
+          '<span>Önizlemeden doğrulandı' + PIPE_HTML + 'Tam dosya (' + d.poz + ' / ' + d.fullPoz + ' poz)</span>' +
+        '</div>';
+    }
+
+    var splitPill = d.splitRows > 1
+      ? '<span class="split-note-pill tnum">Sepette ' + d.splitRows + ' satır</span>'
+      : '';
+
+    var splitDetail = d.splitRows > 1
+      ? '<div><b>Sepet Parça Bilgisi:</b> BETSİS 25 poz sınırı sebebiyle sepette ' + d.splitRows + ' ayrı satırda (satır no: ' + esc(d.cartRows.join(', ')) + ') yer alır.</div>'
+      : '';
+
+    var previewDetail = d.onInceleme
+      ? '<div><b>Ön İnceleme Notu ([Ö], aday okuma):</b> ' + esc(d.onInceleme) + '</div>'
+      : '';
+
+    return (
+      '<article class="doc-item" data-doc-id="' + esc(d.id) + '">' +
+        '<div class="doc-top">' +
+          '<div class="doc-title-wrap">' +
+            '<span class="doc-id-line tnum">' + esc(d.id) + PIPE_HTML + esc(d.tur) + '</span>' +
+            '<h3 class="doc-title serif">' + esc(d.baslik) + '</h3>' +
+          '</div>' +
+          '<div class="doc-badges tnum">' +
+            '<span class="badge badge-code">' + esc(d.code) + '</span>' +
+            '<span class="badge badge-date">' + esc(dateShort) + '</span>' +
+            '<span class="badge badge-cost">' + d.poz + ' poz' + PIPE_HTML + esc(fmtTl(d.tl)) + '</span>' +
+          '</div>' +
+        '</div>' +
+        selHtml +
+        '<dl class="doc-dl">' +
+          '<div class="doc-field"><dt class="doc-dt">Neyle İlgili?</dt><dd class="doc-dd">' + esc(d.neyle) + '</dd></div>' +
+          '<div class="doc-field"><dt class="doc-dt">Neden Önemli?</dt><dd class="doc-dd">' + esc(d.neden) + '</dd></div>' +
+          '<div class="doc-field expect"><dt class="doc-dt">İçinden Ne Çıkabilir?</dt><dd class="doc-dd">' + esc(d.icinden) + '</dd></div>' +
+        '</dl>' +
+        '<details class="tech-det">' +
+          '<summary><span>Katalog Kaydı ve Teknik Bilgi</span>' + splitPill + '</summary>' +
+          '<div class="tech-body">' +
+            '<div><b>DAB Katalog Özeti [K]:</b> ' + esc(d.ozet) + '</div>' +
+            '<div class="tnum"><b>Arşiv Künyesi ve Tarih:</b> ' + esc(d.yerTam) + PIPE_HTML + esc(d.tarihGosterim) +
+              (d.tarihHam ? ' (Katalog: ' + esc(d.tarihHam) + ')' : '') +
+              PIPE_HTML + esc(d.donemAd) + '</div>' +
+            previewDetail +
+            splitDetail +
+          '</div>' +
+        '</details>' +
+      '</article>'
+    );
+  }
+
+  function buildGroups(filtered) {
+    var groups = [];
+    var buckets = {};
+    var i, d, key;
+
+    if (STATE.mode === 'konu') {
+      for (i = 0; i < filtered.length; i += 1) {
+        d = filtered[i];
+        if (!buckets[d.konuKod]) buckets[d.konuKod] = [];
+        buckets[d.konuKod].push(d);
+      }
+      for (i = 0; i < KONU_ORDER.length; i += 1) {
+        key = KONU_ORDER[i][0];
+        if (buckets[key] && buckets[key].length) {
+          groups.push({ key: 'konu:' + key, title: KONU_ORDER[i][1], accent: 'a' + ((i % 7) + 1), items: buckets[key] });
+        }
+      }
+    } else if (STATE.mode === 'donem') {
+      for (i = 0; i < filtered.length; i += 1) {
+        d = filtered[i];
+        if (!buckets[d.donemKod]) buckets[d.donemKod] = [];
+        buckets[d.donemKod].push(d);
+      }
+      for (i = 0; i < DONEM_ORDER.length; i += 1) {
+        key = DONEM_ORDER[i][0];
+        if (buckets[key] && buckets[key].length) {
+          groups.push({ key: 'donem:' + key, title: DONEM_ORDER[i][1], accent: 'a' + ((i % 7) + 1), items: buckets[key] });
+        }
+      }
+    } else {
+      for (i = 0; i < filtered.length; i += 1) {
+        d = filtered[i];
+        if (!buckets[d.tur]) buckets[d.tur] = [];
+        buckets[d.tur].push(d);
+      }
+      for (i = 0; i < TUR_ORDER.length; i += 1) {
+        key = TUR_ORDER[i];
+        if (buckets[key] && buckets[key].length) {
+          groups.push({ key: 'tur:' + key, title: key, accent: 'a' + ((i % 7) + 1), items: buckets[key] });
+        }
+      }
+    }
+    return groups;
+  }
+
+  function renderAll() {
+    var filtered = getFiltered(false);
+    var totalPoz = 0;
+    var totalTl = 0;
+    var savedTl = 0;
+    var selCount = 0;
+    for (var i = 0; i < filtered.length; i += 1) {
+      totalPoz += filtered[i].poz;
+      totalTl += filtered[i].tl;
+      savedTl += filtered[i].savedTl;
+      if (filtered[i].isSelective) selCount += 1;
+    }
+
+    document.getElementById('liveSummary').innerHTML =
+      'Gösterilen: <span>' + filtered.length + ' belge' + PIPE_HTML + totalPoz + ' poz' + PIPE_HTML + esc(fmtTl(totalTl)) + '</span>';
+    document.getElementById('liveExtra').textContent =
+      selCount > 0
+        ? (selCount + ' seçkili cilt' + PIPE + 'Tasarruf: ' + fmtTl(savedTl))
+        : 'Bu süzgeçte seçkili cilt bulunmuyor';
+
+    var hasFilter = !!(STATE.query.trim() || STATE.konu || STATE.donem || STATE.tur || STATE.selectiveOnly);
+    document.getElementById('clearFiltersBtn').classList.toggle('lit', hasFilter);
+    document.getElementById('searchClear').classList.toggle('show', !!STATE.query);
+
+    var selBtn = document.getElementById('selectiveToggle');
+    selBtn.classList.toggle('active', STATE.selectiveOnly);
+    selBtn.setAttribute('aria-pressed', STATE.selectiveOnly ? 'true' : 'false');
+
+    var modeBtns = document.querySelectorAll('[data-mode]');
+    for (var m = 0; m < modeBtns.length; m += 1) {
+      var isCur = modeBtns[m].getAttribute('data-mode') === STATE.mode;
+      modeBtns[m].classList.toggle('active', isCur);
+      modeBtns[m].setAttribute('aria-selected', isCur ? 'true' : 'false');
+    }
+
+    renderChart();
+
+    var cont = document.getElementById('groupsContainer');
+    if (!filtered.length) {
+      cont.innerHTML =
+        '<div class="empty-state">' +
+          '<h3 class="serif">Seçilen süzgeçle eşleşen belge bulunamadı</h3>' +
+          '<p>Arama terimini kısaltabilir veya tüm filtreleri tek tıkla sıfırlayabilirsiniz.</p>' +
+          '<button type="button" id="emptyResetBtn" class="chip-toggle active">Filtreleri Temizle</button>' +
+        '</div>';
+      var erb = document.getElementById('emptyResetBtn');
+      if (erb) erb.addEventListener('click', resetFilters);
+      return;
+    }
+
+    var groups = buildGroups(filtered);
+    var html = '';
+    for (var g = 0; g < groups.length; g += 1) {
+      var grp = groups[g];
+      var gPoz = 0;
+      var gTl = 0;
+      var cardsHtml = '';
+      for (var c = 0; c < grp.items.length; c += 1) {
+        gPoz += grp.items[c].poz;
+        gTl += grp.items[c].tl;
+        cardsHtml += renderDocCard(grp.items[c]);
+      }
+      var isCol = !!STATE.collapsed[grp.key];
+      html +=
+        '<section class="grp-sec' + (isCol ? ' collapsed' : '') + '" data-grp-key="' + esc(grp.key) + '">' +
+          '<button type="button" class="grp-head" aria-expanded="' + (isCol ? 'false' : 'true') + '">' +
+            '<span class="grp-head-l">' +
+              '<span class="grp-accent ' + esc(grp.accent) + '" aria-hidden="true"></span>' +
+              '<h2 class="grp-title serif">' + esc(grp.title) + '</h2>' +
+            '</span>' +
+            '<span class="grp-head-r">' +
+              '<span class="grp-totals tnum">' + grp.items.length + ' belge' + PIPE_HTML + gPoz + ' poz' + PIPE_HTML + esc(fmtTl(gTl)) + '</span>' +
+              '<span class="grp-chev" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>' +
+            '</span>' +
+          '</button>' +
+          '<div class="grp-body">' + cardsHtml + '</div>' +
+        '</section>';
+    }
+    cont.innerHTML = html;
+
+    var heads = cont.querySelectorAll('.grp-head');
+    for (var h = 0; h < heads.length; h += 1) {
+      heads[h].addEventListener('click', function (ev) {
+        var sec = ev.currentTarget.closest('.grp-sec');
+        var gk = sec.getAttribute('data-grp-key');
+        var nextCol = !sec.classList.contains('collapsed');
+        STATE.collapsed[gk] = nextCol;
+        sec.classList.toggle('collapsed', nextCol);
+        ev.currentTarget.setAttribute('aria-expanded', nextCol ? 'false' : 'true');
+      });
+    }
+  }
+
+  function resetFilters() {
+    STATE.query = '';
+    STATE.konu = '';
+    STATE.donem = '';
+    STATE.tur = '';
+    STATE.selectiveOnly = false;
+    document.getElementById('searchInput').value = '';
+    document.getElementById('selKonu').value = '';
+    document.getElementById('selDonem').value = '';
+    document.getElementById('selTur').value = '';
+    renderAll();
+  }
+
+  function setAllGroups(collapse) {
+    var secs = document.querySelectorAll('.grp-sec');
+    for (var i = 0; i < secs.length; i += 1) {
+      var gk = secs[i].getAttribute('data-grp-key');
+      STATE.collapsed[gk] = collapse;
+      secs[i].classList.toggle('collapsed', collapse);
+      var btn = secs[i].querySelector('.grp-head');
+      if (btn) btn.setAttribute('aria-expanded', collapse ? 'false' : 'true');
+    }
+  }
+
+  function bindUiEventsOnce() {
+    if (EVENTS_BOUND) return;
+    EVENTS_BOUND = true;
+
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      applyTheme(!document.body.classList.contains('dark'));
+    });
+    document.getElementById('printBtn').addEventListener('click', function () {
+      window.print();
+    });
+
+    var modeBtns = document.querySelectorAll('[data-mode]');
+    for (var i = 0; i < modeBtns.length; i += 1) {
+      modeBtns[i].addEventListener('click', function (ev) {
+        STATE.mode = ev.currentTarget.getAttribute('data-mode');
+        renderAll();
+      });
+    }
+
+    var debTimer = null;
+    document.getElementById('searchInput').addEventListener('input', function (ev) {
+      var val = ev.target.value;
+      clearTimeout(debTimer);
+      debTimer = setTimeout(function () {
+        STATE.query = val;
+        renderAll();
+      }, 120);
+    });
+    document.getElementById('searchClear').addEventListener('click', function () {
+      STATE.query = '';
+      var inp = document.getElementById('searchInput');
+      inp.value = '';
+      inp.focus();
+      renderAll();
+    });
+    document.getElementById('selKonu').addEventListener('change', function (ev) {
+      STATE.konu = ev.target.value;
+      renderAll();
+    });
+    document.getElementById('selDonem').addEventListener('change', function (ev) {
+      STATE.donem = ev.target.value;
+      renderAll();
+    });
+    document.getElementById('selTur').addEventListener('change', function (ev) {
+      STATE.tur = ev.target.value;
+      renderAll();
+    });
+    document.getElementById('selectiveToggle').addEventListener('click', function () {
+      STATE.selectiveOnly = !STATE.selectiveOnly;
+      renderAll();
+    });
+    document.getElementById('clearFiltersBtn').addEventListener('click', resetFilters);
+    document.getElementById('expandAllBtn').addEventListener('click', function () { setAllGroups(false); });
+    document.getElementById('collapseAllBtn').addEventListener('click', function () { setAllGroups(true); });
+  }
+
+  function mountPayload(payload) {
+    DOCS = payload.docs || [];
+    KONU_ORDER = payload.konuOrder || [];
+    DONEM_ORDER = payload.donemOrder || [];
+    TUR_ORDER = payload.turOrder || [];
+    for (var di = 0; di < DOCS.length; di += 1) {
+      var d0 = DOCS[di];
+      d0._hay = normTr([
+        d0.id, d0.code, d0.yerTam, d0.fon, d0.tarihGosterim, d0.tarihHam,
+        d0.donemAd, d0.konuAd, d0.tur, d0.baslik, d0.neyle, d0.neden,
+        d0.icinden, d0.ozet, d0.onInceleme, d0.kutuAralik
+      ].join(' '));
+    }
+    mountShellCopy(payload.copy);
+    populateSelects();
+    bindUiEventsOnce();
+    renderAll();
+    window.__SEPET_READY = true;
+  }
+
+  var savedTheme = '';
+  try { savedTheme = localStorage.getItem('tka_sepet_theme') || ''; } catch (e) {}
+  applyTheme(savedTheme === 'dark');
+
+
+  function normPw(s) {
+    return String(s || '')
+      .trim()
+      .normalize('NFC')
+      .replace(/i/g, 'İ')
+      .replace(/ı/g, 'I')
+      .toLocaleUpperCase('tr-TR');
+  }
+
+  function bytesToHex(u8) {
+    var out = '';
+    for (var i = 0; i < u8.length; i += 1) {
+      out += (u8[i] < 16 ? '0' : '') + u8[i].toString(16);
+    }
+    return out;
+  }
+
+  function bytesToB64(u8) {
+    var bin = '';
+    for (var i = 0; i < u8.length; i += 1) bin += String.fromCharCode(u8[i]);
+    return window.btoa(bin);
+  }
+
+  function b64ToBytes(b64) {
+    var bin = window.atob(b64);
+    var out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i += 1) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  async function deriveAesKey(pwNormalized, saltBytes, iterations) {
+    var enc = new TextEncoder();
+    var baseKey = await window.crypto.subtle.importKey(
+      'raw',
+      enc.encode(pwNormalized),
+      { name: 'PBKDF2' },
+      false,
+      ['deriveKey']
+    );
+    return window.crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt: saltBytes, iterations: iterations, hash: 'SHA-256' },
+      baseKey,
+      { name: 'AES-GCM', length: 256 },
+      true,
+      ['decrypt']
+    );
+  }
+
+  async function saveSessionKey(aesKey, saltHex) {
+    try {
+      var raw = new Uint8Array(await window.crypto.subtle.exportKey('raw', aesKey));
+      window.sessionStorage.setItem('tka_ses_aes', bytesToB64(raw));
+      window.sessionStorage.setItem('tka_ses_salt', saltHex);
+    } catch (e) {}
+  }
+
+  function clearSessionKey() {
+    try {
+      window.sessionStorage.removeItem('tka_ses_aes');
+      window.sessionStorage.removeItem('tka_ses_salt');
+    } catch (e) {}
+  }
+
+  async function fetchSepetPacket() {
+    var resp = await window.fetch('assets/sepet.enc', { cache: 'no-store' });
+    if (!resp.ok) throw new Error('Şifreli sepet paketi yüklenemedi.');
+    var buf = await resp.arrayBuffer();
+    var bytes = new Uint8Array(buf);
+    if (bytes.length < 40 || String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3]) !== 'TKS1') {
+      throw new Error('Sepet paketi biçimi geçersiz.');
+    }
+    var dv = new DataView(buf);
+    return {
+      iterations: dv.getUint32(4, false),
+      salt: bytes.slice(8, 24),
+      saltHex: bytesToHex(bytes.slice(8, 24)),
+      iv: bytes.slice(24, 36),
+      ct: bytes.slice(36)
+    };
+  }
+
+  function showUnlockedApp(payload, viaSso) {
+    document.getElementById('gateWrap').style.display = 'none';
+    document.getElementById('appRoot').classList.remove('locked');
+    mountPayload(payload);
+    window.__SEPET_UNLOCKED = true;
+    window.__SEPET_SSO = !!viaSso;
+  }
+
+  function lockSepet() {
+    clearSessionKey();
+    DOCS = [];
+    window.__SEPET_UNLOCKED = false;
+    window.__SEPET_SSO = false;
+    document.title = 'Aile Arşivi  |  Arşiv Sepeti';
+    document.getElementById('groupsContainer').innerHTML = '';
+    document.getElementById('appRoot').classList.add('locked');
+    document.getElementById('gateWrap').style.display = 'flex';
+    var pw = document.getElementById('pwInput');
+    if (pw) { pw.value = ''; pw.focus(); }
+  }
+
+  async function tryAutoUnlockFromSession() {
+    var storedKey = '';
+    var storedSalt = '';
+    try {
+      storedKey = window.sessionStorage.getItem('tka_ses_aes') || '';
+      storedSalt = window.sessionStorage.getItem('tka_ses_salt') || '';
+    } catch (e) {}
+    if (!storedKey || !storedSalt) return false;
+    try {
+      var pkt = await fetchSepetPacket();
+      if (pkt.saltHex !== storedSalt) {
+        clearSessionKey();
+        return false;
+      }
+      var aesKey = await window.crypto.subtle.importKey(
+        'raw',
+        b64ToBytes(storedKey),
+        { name: 'AES-GCM' },
+        false,
+        ['decrypt']
+      );
+      var plainBuf = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: pkt.iv }, aesKey, pkt.ct);
+      var payload = JSON.parse(new TextDecoder().decode(plainBuf));
+      showUnlockedApp(payload, true);
+      return true;
+    } catch (err) {
+      clearSessionKey();
+      return false;
+    }
+  }
+
+  var pwInput = document.getElementById('pwInput');
+  var pwToggle = document.getElementById('pwToggle');
+  var gateForm = document.getElementById('gateForm');
+  var gateBtn = document.getElementById('gateBtn');
+  var gateErr = document.getElementById('gateErr');
+
+  pwToggle.addEventListener('click', function () {
+    var showing = pwInput.type === 'text';
+    pwInput.type = showing ? 'password' : 'text';
+    pwToggle.setAttribute('aria-pressed', showing ? 'false' : 'true');
+    pwToggle.setAttribute('aria-label', showing ? 'Şifreyi göster' : 'Şifreyi gizle');
+    document.getElementById('eyeIcon').innerHTML = showing
+      ? '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle>'
+      : '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 19C5.5 19 2 12 2 12a21.8 21.8 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 5c6.5 0 10 7 10 7a21.8 21.8 0 0 1-2.67 3.88M1 1l22 22"></path>';
+  });
+
+  gateForm.addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    gateErr.classList.remove('show');
+    gateErr.textContent = '';
+    var val = pwInput.value || '';
+    if (!val.trim()) return;
+    gateBtn.disabled = true;
+    gateBtn.textContent = 'Açılıyor...';
+    try {
+      var pkt = await fetchSepetPacket();
+      var aesKey = await deriveAesKey(normPw(val), pkt.salt, pkt.iterations);
+      var plainBuf;
+      try {
+        plainBuf = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: pkt.iv }, aesKey, pkt.ct);
+      } catch (e) {
+        throw new Error('Şifre doğrulanamadı. Lütfen büyük ve küçük harf ayrımı olmaksızın yeniden deneyin.');
+      }
+      var payload = JSON.parse(new TextDecoder().decode(plainBuf));
+      await saveSessionKey(aesKey, pkt.saltHex);
+      pwInput.value = '';
+      showUnlockedApp(payload, false);
+    } catch (err) {
+      gateErr.textContent = err && err.message ? err.message : 'Şifre doğrulanamadı.';
+      gateErr.classList.add('show');
+    } finally {
+      gateBtn.disabled = false;
+      gateBtn.textContent = 'Listeyi Aç';
+    }
+  });
+
+  var lockBtnEl = document.getElementById('lockBtn');
+  if (lockBtnEl) lockBtnEl.addEventListener('click', lockSepet);
+
+  tryAutoUnlockFromSession();
+
+})();
+</script>
+</body>
+</html>

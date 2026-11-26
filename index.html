@@ -255,6 +255,33 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   font-weight: 600;
   box-shadow: 0 1px 3px rgba(22, 26, 23, 0.09);
 }
+.nav-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+}
+.nav-sepet-link {
+  min-height: 38px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid #C8D6CD;
+  background: #F4F8F5;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #244F3A;
+  text-decoration: none;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.14s, border-color 0.14s, color 0.14s;
+}
+.nav-sepet-link:hover {
+  background: #2F5D46;
+  border-color: #2F5D46;
+  color: #FFFFFF;
+  text-decoration: none;
+}
 .lock-link {
   min-height: 44px;
   border: 0;
@@ -1212,6 +1239,84 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
   border-color: #1F4F3A;
   color: #FFFFFF;
   font-weight: 600;
+}
+.diff-trust-bar {
+  padding: 15px 24px;
+  background: #F4F1E8;
+  border-bottom: 1px solid #E4DEC9;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.diff-trust-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+.conf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  line-height: 18px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  flex: none;
+}
+.conf-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+.conf-badge.conf-yuksek {
+  background: #E9F2EC;
+  border: 1px solid #B7CEBF;
+  color: #1B4733;
+}
+.conf-badge.conf-yuksek .conf-dot { background: #1F4F3A; }
+.conf-badge.conf-orta {
+  background: #F6EFE0;
+  border: 1px solid #D8C59B;
+  color: #644A18;
+}
+.conf-badge.conf-orta .conf-dot { background: #967024; }
+.conf-badge.conf-dusuk {
+  background: #F5EAE6;
+  border: 1px solid #D7B3A7;
+  color: #7A3528;
+}
+.conf-badge.conf-dusuk .conf-dot { background: #9A4434; }
+.conf-note {
+  font-size: 13.5px;
+  line-height: 21px;
+  color: #2E342F;
+  min-width: 0;
+}
+.diff-trust-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 5px 18px;
+  font-size: 12.5px;
+  line-height: 20px;
+  color: #4D524A;
+}
+.tr-note {
+  color: #264A62;
+  background: rgba(38, 74, 98, 0.08);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-weight: 500;
+  text-decoration: underline dotted rgba(38, 74, 98, 0.48);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 .diff-overview {
   padding: 22px 30px;
@@ -2432,7 +2537,10 @@ dialog.doc-lightbox::backdrop {
   .app-shell { padding: 10px 10px 34px; }
   .app-inner { gap: 26px; }
   .top-nav { position: static; flex-wrap: wrap; padding: 10px 12px; gap: 8px; }
-  .brand-name { font-size: 19px; }
+  .brand-name { font-size: 17px; }
+  .nav-right { gap: 4px; }
+  .nav-sepet-link { min-height: 36px; padding: 0 9px; font-size: 12.5px; }
+  .lock-link { min-height: 36px; padding: 0 6px; font-size: 12.5px; }
   .nav-tabs { order: 3; width: 100%; justify-content: space-between; border-top: 1px solid #E4DEC9; padding-top: 8px; gap: 2px; }
   .nav-tab { flex: 1; padding: 0 5px; font-size: 13px; text-align: center; }
   .hero-h1 { font-size: 34px; line-height: 39px; }
@@ -2445,7 +2553,7 @@ dialog.doc-lightbox::backdrop {
   .essay-book { padding: 24px 16px 28px; border-radius: 14px; gap: 32px; }
   .essay-h2 { font-size: 24px; line-height: 31px; }
   .essay-p { font-size: 15.5px; line-height: 30px; }
-  .diff-head, .diff-overview, .diff-cell, .diff-legend { padding-left: 15px; padding-right: 15px; }
+  .diff-head, .diff-trust-bar, .diff-overview, .diff-cell, .diff-legend { padding-left: 15px; padding-right: 15px; }
   .diff-cell { padding-top: 22px; padding-bottom: 22px; }
   .diff-h2 { font-size: 21px; line-height: 26px; }
   .plate-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
@@ -2519,7 +2627,10 @@ dialog.doc-lightbox::backdrop {
         <button class="nav-tab" type="button" role="tab" data-tab="tarihce" aria-selected="false">Tarihçe</button>
         <button class="nav-tab" type="button" role="tab" data-tab="arastirma" aria-selected="false">Araştırma</button>
       </div>
-      <button id="lockBtn" class="lock-link" type="button">Kilitle</button>
+      <div class="nav-right">
+        <a id="sepetNavLink" class="nav-sepet-link" href="sepet.html">Arşiv Sepeti</a>
+        <button id="lockBtn" class="lock-link" type="button">Kilitle</button>
+      </div>
     </nav>
 
     <main id="viewRoot" class="view-stack"></main>
@@ -2905,6 +3016,116 @@ dialog.doc-lightbox::backdrop {
     return fmtInline(parts.join(''));
   }
 
+  function findBracketNoteSpans(str) {
+    var spans = [];
+    if (!str || str.indexOf('[') < 0 || str.indexOf(']') < 0) return spans;
+    var depth = 0;
+    var start = -1;
+    for (var i = 0; i < str.length; i += 1) {
+      var ch = str.charAt(i);
+      if (ch === '[') {
+        if (depth === 0) start = i;
+        depth += 1;
+      } else if (ch === ']') {
+        if (depth > 0) {
+          depth -= 1;
+          if (depth === 0 && start >= 0) {
+            spans.push([start, i + 1]);
+            start = -1;
+          }
+        }
+      }
+    }
+    return spans;
+  }
+
+  function renderNoteInlinePiece(piece) {
+    if (!piece) return '';
+    if (piece === '|') return '&nbsp;&nbsp;|&nbsp;&nbsp;<wbr>';
+    return decorateAbbrs(esc(hyphenateTRWord(piece)));
+  }
+
+  function fmtProseWithNotes(s) {
+    var raw = String(s == null ? '' : s).trim();
+    if (!raw) return '';
+    var spans = findBracketNoteSpans(raw);
+    if (!spans.length) return fmtProse(raw);
+
+    var parts = raw.split(/([ \t]+)/);
+    var wordIdx = [];
+    var i;
+    for (i = 0; i < parts.length; i += 1) {
+      if (parts[i] && !/^[ \t]+$/.test(parts[i])) wordIdx.push(i);
+    }
+    if (wordIdx.length >= 4) {
+      var iLast = wordIdx[wordIdx.length - 1];
+      var iPrev = wordIdx[wordIdx.length - 2];
+      var wLastClean = parts[iLast];
+      var wPrevClean = parts[iPrev];
+      if (wLastClean !== '|' && wPrevClean !== '|' && wLastClean.length <= 12 && (wPrevClean.length + wLastClean.length) <= 21 && iLast - iPrev === 2 && parts[iPrev + 1] === ' ') {
+        parts[iPrev + 1] = '\u00a0';
+      }
+    }
+
+    var out = [];
+    var openNote = false;
+    var spanIdx = 0;
+    var pos = 0;
+    for (i = 0; i < parts.length; i += 1) {
+      var p = parts[i];
+      if (!p) continue;
+      var pStart = pos;
+      var pEnd = pos + p.length;
+      pos = pEnd;
+
+      while (spanIdx < spans.length && spans[spanIdx][1] <= pStart) spanIdx += 1;
+
+      if (/^[ \t\u00a0]+$/.test(p)) {
+        out.push(p === '\u00a0' ? '&nbsp;' : p);
+        continue;
+      }
+      if (p === '|') {
+        if (out.length && /^[ \t]+$/.test(out[out.length - 1])) out.pop();
+        if (i + 1 < parts.length && /^[ \t]+$/.test(parts[i + 1])) {
+          pos += parts[i + 1].length;
+          i += 1;
+        }
+        out.push('&nbsp;&nbsp;|&nbsp;&nbsp;<wbr>');
+        continue;
+      }
+
+      var cur = pStart;
+      while (cur < pEnd) {
+        while (spanIdx < spans.length && spans[spanIdx][1] <= cur) spanIdx += 1;
+        var sp = spanIdx < spans.length ? spans[spanIdx] : null;
+        if (sp && cur >= sp[0] && cur < sp[1]) {
+          var segEnd = Math.min(pEnd, sp[1]);
+          if (!openNote) {
+            out.push('<span class="tr-note">');
+            openNote = true;
+          }
+          out.push(renderNoteInlinePiece(p.slice(cur - pStart, segEnd - pStart)));
+          if (segEnd === sp[1]) {
+            out.push('</span>');
+            openNote = false;
+            spanIdx += 1;
+          }
+          cur = segEnd;
+        } else {
+          var nextStop = (sp && sp[0] < pEnd) ? sp[0] : pEnd;
+          if (openNote) {
+            out.push('</span>');
+            openNote = false;
+          }
+          out.push(renderNoteInlinePiece(p.slice(cur - pStart, nextStop - pStart)));
+          cur = nextStop;
+        }
+      }
+    }
+    if (openNote) out.push('</span>');
+    return out.join('');
+  }
+
   function fmtProseParas(s) {
     var lines = String(s == null ? '' : s).split(/\r?\n+/);
     var out = [];
@@ -3016,8 +3237,9 @@ dialog.doc-lightbox::backdrop {
     return { leftKeep: leftKeep, rightKeep: rightKeep };
   }
 
-  function renderDiffMarkedText(rawText, keepMask, markCls) {
-    var parts = String(rawText || '').trim().split(/([ \t]+)/);
+  function renderDiffMarkedText(rawText, keepMask, markCls, highlightNotes) {
+    var trimmed = String(rawText || '').trim();
+    var parts = trimmed.split(/([ \t]+)/);
     var wordIdx = [];
     var i;
     for (i = 0; i < parts.length; i += 1) {
@@ -3034,19 +3256,36 @@ dialog.doc-lightbox::backdrop {
       var iPrev = wordIdx[wordIdx.length - 2];
       var wLastClean = parts[iLast];
       var wPrevClean = parts[iPrev];
-      if (wLastClean !== '|' && wPrevClean !== '|' && wLastClean.length <= 10 && (wPrevClean.length + wLastClean.length) <= 18 && iLast - iPrev === 2) {
+      if (wLastClean !== '|' && wPrevClean !== '|' && wLastClean.length <= 10 && (wPrevClean.length + wLastClean.length) <= 18 && iLast - iPrev === 2 && parts[iPrev + 1] === ' ') {
         parts[iPrev + 1] = '\u00a0';
       }
     }
+
+    var spans = highlightNotes ? findBracketNoteSpans(trimmed) : [];
     var out = [];
     var openMark = false;
+    var openNote = false;
+    var spanIdx = 0;
+    var pos = 0;
+
     for (i = 0; i < parts.length; i += 1) {
       var p = parts[i];
       if (!p) continue;
+      var pStart = pos;
+      var pEnd = pos + p.length;
+      pos = pEnd;
+
+      while (spanIdx < spans.length && spans[spanIdx][1] <= pStart) spanIdx += 1;
+
       var isWs = /^[ \t\u00a0]+$/.test(p);
       if (isWs) {
+        if (openNote) {
+          out.push(p === '\u00a0' ? '&nbsp;' : p);
+          continue;
+        }
         var nextIsMarked = (i + 1 < parts.length) && !!wIdxToMark[i + 1];
-        if (openMark && !nextIsMarked) {
+        var nextStartsNote = spanIdx < spans.length && spans[spanIdx][0] === pEnd;
+        if (openMark && (!nextIsMarked || nextStartsNote)) {
           out.push('</mark>');
           openMark = false;
         }
@@ -3056,31 +3295,71 @@ dialog.doc-lightbox::backdrop {
       if (p === '|') {
         if (openMark) { out.push('</mark>'); openMark = false; }
         if (out.length && /^[ \t]+$/.test(out[out.length - 1])) out.pop();
-        if (i + 1 < parts.length && /^[ \t]+$/.test(parts[i + 1])) i += 1;
+        if (i + 1 < parts.length && /^[ \t]+$/.test(parts[i + 1])) {
+          pos += parts[i + 1].length;
+          i += 1;
+        }
         out.push('&nbsp;&nbsp;|&nbsp;&nbsp;<wbr>');
         continue;
       }
-      var shouldMark = !!wIdxToMark[i];
-      if (shouldMark && !openMark) {
-        out.push('<mark class="' + markCls + '">');
-        openMark = true;
-      } else if (!shouldMark && openMark) {
-        out.push('</mark>');
-        openMark = false;
+
+      if (!spans.length) {
+        var shouldMarkFast = !!wIdxToMark[i];
+        if (shouldMarkFast && !openMark) {
+          out.push('<mark class="' + markCls + '">');
+          openMark = true;
+        } else if (!shouldMarkFast && openMark) {
+          out.push('</mark>');
+          openMark = false;
+        }
+        out.push(decorateAbbrs(esc(hyphenateTRWord(p))));
+        continue;
       }
-      out.push(decorateAbbrs(esc(hyphenateTRWord(p))));
+
+      var cur = pStart;
+      while (cur < pEnd) {
+        while (spanIdx < spans.length && spans[spanIdx][1] <= cur) spanIdx += 1;
+        var sp = spanIdx < spans.length ? spans[spanIdx] : null;
+        if (sp && cur >= sp[0] && cur < sp[1]) {
+          var segEnd = Math.min(pEnd, sp[1]);
+          if (openMark) { out.push('</mark>'); openMark = false; }
+          if (!openNote) { out.push('<span class="tr-note">'); openNote = true; }
+          out.push(renderNoteInlinePiece(p.slice(cur - pStart, segEnd - pStart)));
+          if (segEnd === sp[1]) {
+            out.push('</span>');
+            openNote = false;
+            spanIdx += 1;
+          }
+          cur = segEnd;
+        } else {
+          var nextStop = (sp && sp[0] < pEnd) ? sp[0] : pEnd;
+          if (openNote) { out.push('</span>'); openNote = false; }
+          var subPiece = p.slice(cur - pStart, nextStop - pStart);
+          var shouldMark = !!wIdxToMark[i] && /[A-Za-zÇĞİÖŞÜçğıöşüÂÎÛâîû0-9]/.test(subPiece);
+          if (shouldMark && !openMark) {
+            out.push('<mark class="' + markCls + '">');
+            openMark = true;
+          } else if (!shouldMark && openMark) {
+            out.push('</mark>');
+            openMark = false;
+          }
+          out.push(renderNoteInlinePiece(subPiece));
+          cur = nextStop;
+        }
+      }
     }
+    if (openNote) out.push('</span>');
     if (openMark) out.push('</mark>');
     return out.join('');
   }
 
-  function renderDiffPairBlock(leftText, rightText) {
+  function renderDiffPairBlock(leftText, rightText, highlightNotes) {
     var lWords = String(leftText || '').trim().split(/[ \t]+/).filter(Boolean);
     var rWords = String(rightText || '').trim().split(/[ \t]+/).filter(Boolean);
     var masks = computeSideDiffMasks(lWords, rWords);
     return {
-      leftHtml: renderDiffMarkedText(leftText, masks.leftKeep, 'diff-mod'),
-      rightHtml: renderDiffMarkedText(rightText, masks.rightKeep, 'diff-orig')
+      leftHtml: renderDiffMarkedText(leftText, masks.leftKeep, 'diff-mod', highlightNotes !== false),
+      rightHtml: renderDiffMarkedText(rightText, masks.rightKeep, 'diff-orig', false)
     };
   }
 
@@ -3329,19 +3608,19 @@ dialog.doc-lightbox::backdrop {
     });
   }
 
-  function renderAlignedRowsHtml(alignedRows, labelPrefix) {
+  function renderAlignedRowsHtml(alignedRows, labelPrefix, highlightNotes) {
     return alignedRows.map(function (row, idx) {
       var lParas = String(row.left || '').split(/\r?\n+/).filter(Boolean);
       var rText = String(row.right || '');
       var lBodyHtml = lParas.map(function (lp) {
-        var pr = renderDiffPairBlock(lp, rText);
+        var pr = renderDiffPairBlock(lp, rText, highlightNotes !== false);
         return '<p class="prose">' + pr.leftHtml + '</p>';
       }).join('');
-      var rPair = renderDiffPairBlock(lParas.join(' '), rText);
+      var rPair = renderDiffPairBlock(lParas.join(' '), rText, highlightNotes !== false);
       var serhHtml = (row.serhs || []).map(function (sh) {
         return '<div class="entry-serh prose" style="margin-top:10px;"><b>Şerh:</b> ' + fmtProse(sh) + '</div>';
       }).join('');
-      var kickerTxt = labelPrefix ? (esc(row.label || ((idx + 1) + '. ' + labelPrefix))) : '';
+      var kickerTxt = row.label ? esc(row.label) : (labelPrefix ? esc((idx + 1) + '. ' + labelPrefix) : '');
       return (
         '<div class="diff-row">' +
           '<div class="diff-cell mod">' +
@@ -3357,58 +3636,112 @@ dialog.doc-lightbox::backdrop {
     }).join('');
   }
 
-  function buildDiffSectionHtml(sadeMetin, kayitlar, multiPage, pageNum) {
-    var sadeParas = String(sadeMetin || '').split(/\r?\n+/).map(function (x) { return x.trim(); }).filter(Boolean);
-    var rawRecs = (kayitlar || []).filter(function (k) { return k && (k.latin || '').trim(); });
-    if (!sadeParas.length || !rawRecs.length) return '';
+  function buildConfidenceBadgeMeta(level) {
+    var lv = String(level || 'orta').toLowerCase();
+    if (lv === 'yuksek') return { cls: 'conf-yuksek', label: 'Çeviri Güveni: Yüksek' };
+    if (lv === 'dusuk') return { cls: 'conf-dusuk', label: 'Çeviri Güveni: Kısmi / Düşük' };
+    return { cls: 'conf-orta', label: 'Çeviri Güveni: Orta' };
+  }
 
-    var recs = filterDuplicateStubRecs(rawRecs);
-    var introParas = [];
-    var numberedParas = [];
-    for (var i = 0; i < sadeParas.length; i += 1) {
-      if (/^\d+\.\s+/.test(sadeParas[i])) {
-        numberedParas.push(sadeParas[i]);
-      } else if (!numberedParas.length) {
-        introParas.push(sadeParas[i]);
-      } else {
-        numberedParas[numberedParas.length - 1] += ' ' + sadeParas[i];
-      }
-    }
-
+  function buildDiffSectionHtml(sadeMetin, kayitlar, multiPage, pageNum, eslestirme) {
+    var hasEsl = !!(eslestirme && Array.isArray(eslestirme.parcalar) && eslestirme.parcalar.length > 0);
+    var trustBarHtml = '';
     var overviewHtml = '';
     var rowsHtml = '';
-    var avgRecLen = recs.reduce(function (acc, r) { return acc + (r.latin || '').length; }, 0) / recs.length;
+    var subDesc = 'Sadeleştirilmiş metin ile Osmanlıca birebir çeviriyazı cümle ve bölüm düzeyinde yan yana hizalanmıştır.';
 
-    if (numberedParas.length === recs.length && recs.length >= 2) {
-      if (introParas.length) {
+    if (hasEsl) {
+      var confMeta = buildConfidenceBadgeMeta(eslestirme.ceviri_guveni);
+      trustBarHtml =
+        '<div class="diff-trust-bar">' +
+          '<div class="diff-trust-top">' +
+            '<span class="conf-badge ' + confMeta.cls + '"><span class="conf-dot" aria-hidden="true"></span>' + esc(confMeta.label) + '</span>' +
+            (eslestirme.guven_notu ? '<span class="conf-note">' + fmtProseWithNotes(eslestirme.guven_notu) + '</span>' : '') +
+          '</div>' +
+          '<div class="diff-trust-meta">' +
+            '<span>Bağımsız yapay zekâ kör okumasından üretilen aday çeviridir; uzman paleograf teyidi yerine geçmez.</span>' +
+            '<span><span class="tr-note">[Köşeli parantez]</span> çeviri dışı not, takvim karşılığı veya okuma seçeneğidir.</span>' +
+          '</div>' +
+        '</div>';
+
+      if (eslestirme.ozet && String(eslestirme.ozet).trim()) {
+        var ozetParas = String(eslestirme.ozet).split(/\r?\n+/).map(function (x) { return x.trim(); }).filter(Boolean);
         overviewHtml =
           '<div class="diff-overview">' +
             '<div class="read-h">Sayfa Özeti</div>' +
-            '<div class="read-body">' + introParas.map(function (ip) { return '<p class="prose">' + fmtProse(ip) + '</p>'; }).join('') + '</div>' +
+            '<div class="read-body">' + ozetParas.map(function (ip) { return '<p class="prose">' + fmtProseWithNotes(ip) + '</p>'; }).join('') + '</div>' +
           '</div>';
       }
-      var numRows = recs.map(function (k, idx) {
+
+      var eslRows = eslestirme.parcalar.map(function (pc, idx) {
         return {
-          label: (k.no || (idx + 1)) + '. Kayıt',
-          left: numberedParas[idx],
-          right: k.latin || '',
-          serhs: k.serh ? [k.serh] : []
+          label: pc.etiket || ((idx + 1) + '. Bölüm'),
+          left: pc.gunumuz || '',
+          right: pc.orijinal || '',
+          serhs: pc.serh ? [pc.serh] : []
         };
       });
-      rowsHtml = renderAlignedRowsHtml(numRows, 'Kayıt');
-    } else if (recs.length >= 6 && avgRecLen < 130) {
-      // Name / signature roster (e.g., B08 p.3, B42): monotonically group short entries per sade paragraph & flow with '  |  '
-      var rosterObjs = recs.map(function (k) {
-        return { text: String(k.latin || '').trim(), serh: k.serh || '' };
-      });
-      var rosterAligned = alignUnitsMonotonic(sadeParas, rosterObjs, '  |  ');
-      rowsHtml = renderAlignedRowsHtml(rosterAligned, rosterAligned.length > 1 ? 'Bölüm' : '');
+      rowsHtml = renderAlignedRowsHtml(eslRows, 'Bölüm', true);
+      subDesc = 'Her satırda sol sütundaki Günümüz Türkçesi karşılığı, sağdaki Osmanlıca cümle veya bölümle birebir eşleştirilmiştir.';
     } else {
-      // Sentence / diplomatic clause alignment for continuous documents (B40, B45, B08 p.2, B31, B09...)
-      var leftSents = splitTurkishSentences(sadeParas);
-      var rightClauses = splitOttomanClauses(recs);
-      var sentAligned = alignUnitsMonotonic(leftSents, rightClauses, '  |  ');
-      rowsHtml = renderAlignedRowsHtml(sentAligned, sentAligned.length > 1 ? 'Kısım' : '');
+      var sadeParas = String(sadeMetin || '').split(/\r?\n+/).map(function (x) { return x.trim(); }).filter(Boolean);
+      var rawRecs = (kayitlar || []).filter(function (k) { return k && (k.latin || '').trim(); });
+      if (!sadeParas.length || !rawRecs.length) return '';
+
+      var recs = filterDuplicateStubRecs(rawRecs);
+      var introParas = [];
+      var numberedParas = [];
+      for (var i = 0; i < sadeParas.length; i += 1) {
+        if (/^\d+\.\s+/.test(sadeParas[i])) {
+          numberedParas.push(sadeParas[i]);
+        } else if (!numberedParas.length) {
+          introParas.push(sadeParas[i]);
+        } else {
+          numberedParas[numberedParas.length - 1] += ' ' + sadeParas[i];
+        }
+      }
+
+      var avgRecLen = recs.reduce(function (acc, r) { return acc + (r.latin || '').length; }, 0) / recs.length;
+
+      if (numberedParas.length === recs.length && recs.length >= 2) {
+        if (introParas.length) {
+          overviewHtml =
+            '<div class="diff-overview">' +
+              '<div class="read-h">Sayfa Özeti</div>' +
+              '<div class="read-body">' + introParas.map(function (ip) { return '<p class="prose">' + fmtProseWithNotes(ip) + '</p>'; }).join('') + '</div>' +
+            '</div>';
+        }
+        var numRows = recs.map(function (k, idx) {
+          return {
+            label: (k.no || (idx + 1)) + '. Kayıt',
+            left: numberedParas[idx],
+            right: k.latin || '',
+            serhs: k.serh ? [k.serh] : []
+          };
+        });
+        rowsHtml = renderAlignedRowsHtml(numRows, 'Kayıt', true);
+      } else if (recs.length >= 6 && avgRecLen < 130) {
+        // Name / signature roster (e.g., B08 p.3, B42): monotonically group short entries per sade paragraph & flow with '  |  '
+        var rosterObjs = recs.map(function (k) {
+          return { text: String(k.latin || '').trim(), serh: k.serh || '' };
+        });
+        var rosterAligned = alignUnitsMonotonic(sadeParas, rosterObjs, '  |  ');
+        rowsHtml = renderAlignedRowsHtml(rosterAligned, rosterAligned.length > 1 ? 'Bölüm' : '', true);
+      } else {
+        // Sentence / diplomatic clause alignment for continuous documents (B40, B45, B08 p.2, B31, B09...)
+        var leftSents = splitTurkishSentences(sadeParas);
+        var rightClauses = splitOttomanClauses(recs);
+        var sentAligned = alignUnitsMonotonic(leftSents, rightClauses, '  |  ');
+        rowsHtml = renderAlignedRowsHtml(sentAligned, sentAligned.length > 1 ? 'Kısım' : '', true);
+      }
+
+      trustBarHtml =
+        '<div class="diff-trust-bar">' +
+          '<div class="diff-trust-meta">' +
+            '<span>Bağımsız yapay zekâ kör okumasından üretilen aday çeviridir; uzman paleograf teyidi yerine geçmez.</span>' +
+            '<span><span class="tr-note">[Köşeli parantez]</span> çeviri dışı not, takvim karşılığı veya okuma seçeneğidir.</span>' +
+          '</div>' +
+        '</div>';
     }
 
     var shellCls = 'diff-shell' + (!STATE.diffHighlight ? ' diff-plain' : '') + (STATE.diffLayout === 'stack' ? ' diff-stacked' : '');
@@ -3417,7 +3750,7 @@ dialog.doc-lightbox::backdrop {
         '<div class="diff-head">' +
           '<div class="diff-title-group">' +
             '<h2 class="diff-h2 serif">Günümüz Türkçesiyle Anlamı ve Orijinal Çeviriyazı' + (multiPage ? ' (Sayfa ' + pageNum + ')' : '') + '</h2>' +
-            '<span class="diff-sub">Sadeleştirilmiş metin ile Osmanlıca birebir çeviriyazı cümle ve bölüm düzeyinde yan yana hizalanmıştır.</span>' +
+            '<span class="diff-sub">' + esc(subDesc) + '</span>' +
           '</div>' +
           '<div class="diff-controls">' +
             '<button type="button" id="diffHighlightBtn" class="diff-ctrl-btn' + (STATE.diffHighlight ? ' active' : '') + '" aria-pressed="' + (STATE.diffHighlight ? 'true' : 'false') + '">Farkları Vurgula</button>' +
@@ -3425,6 +3758,7 @@ dialog.doc-lightbox::backdrop {
             '<button type="button" id="diffLayoutStack" class="diff-ctrl-btn diff-layout-btn' + (STATE.diffLayout === 'stack' ? ' active' : '') + '">Tek Sütun</button>' +
           '</div>' +
         '</div>' +
+        trustBarHtml +
         overviewHtml +
         '<div class="diff-col-heads" aria-hidden="true">' +
           '<div class="diff-col-head mod"><span>Günümüz Türkçesiyle Anlamı</span></div>' +
@@ -3527,6 +3861,34 @@ dialog.doc-lightbox::backdrop {
     DOC_BLOB_ORDER = [];
   }
 
+  function bytesToB64(u8) {
+    var bin = '';
+    for (var i = 0; i < u8.length; i += 1) bin += String.fromCharCode(u8[i]);
+    return window.btoa(bin);
+  }
+
+  function b64ToBytes(b64) {
+    var bin = window.atob(b64);
+    var out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i += 1) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  async function saveSessionKey(aesKey, saltHex) {
+    try {
+      var raw = new Uint8Array(await window.crypto.subtle.exportKey('raw', aesKey));
+      window.sessionStorage.setItem('tka_ses_aes', bytesToB64(raw));
+      window.sessionStorage.setItem('tka_ses_salt', saltHex);
+    } catch (e) {}
+  }
+
+  function clearSessionKey() {
+    try {
+      window.sessionStorage.removeItem('tka_ses_aes');
+      window.sessionStorage.removeItem('tka_ses_salt');
+    } catch (e) {}
+  }
+
   async function deriveAesKey(pwNormalized, saltBytes, iterations) {
     var enc = new TextEncoder();
     var baseKey = await window.crypto.subtle.importKey(
@@ -3545,12 +3907,12 @@ dialog.doc-lightbox::backdrop {
       },
       baseKey,
       { name: 'AES-GCM', length: 256 },
-      false,
+      true,
       ['decrypt']
     );
   }
 
-  async function unlockArchive(rawPassword) {
+  async function unlockArchive(rawPassword, preDerivedKey, expectedSaltHex) {
     var resArr = await Promise.all([
       window.fetch('assets/atlas.enc', { cache: 'no-store' }),
       window.fetch('assets/thumbs.enc', { cache: 'no-store' })
@@ -3579,8 +3941,11 @@ dialog.doc-lightbox::backdrop {
     if (bytesToHex(tBytes.slice(4, 20)) !== saltHex) {
       throw new Error('Arşiv anahtar tuzu eşleşmedi.');
     }
+    if (expectedSaltHex && expectedSaltHex !== saltHex) {
+      throw new Error('Oturum anahtar tuzu eşleşmedi.');
+    }
 
-    var key = await deriveAesKey(normPw(rawPassword), salt, iterations);
+    var key = preDerivedKey || await deriveAesKey(normPw(rawPassword), salt, iterations);
 
     var decArr;
     try {
@@ -3604,6 +3969,9 @@ dialog.doc-lightbox::backdrop {
     ATLAS = atlasObj;
     SESSION_KEY = key;
     SESSION_SALT_HEX = saltHex;
+    if (!preDerivedKey) {
+      await saveSessionKey(key, saltHex);
+    }
     window.__ATLAS_UNLOCKED = true;
     window.__THUMBS_COUNT = Object.keys(THUMB_URLS).length;
   }
@@ -4344,12 +4712,14 @@ dialog.doc-lightbox::backdrop {
       }
 
       var sadePg = pageObj ? pageObj.sade : null;
+      var eslPg = pageObj ? pageObj.eslestirme : null;
       var locText = (sadePg && sadePg.isaret) ? sadePg.isaret : ((ATLAS.v15.docLocators || {})[doc.id] || '');
-      var hasBothPair = !!(sadePg && sadePg.metin && rd && rd.kayitlar && rd.kayitlar.length);
+      var hasEslPair = !!(eslPg && Array.isArray(eslPg.parcalar) && eslPg.parcalar.length);
+      var hasBothPair = hasEslPair || !!(sadePg && sadePg.metin && rd && rd.kayitlar && rd.kayitlar.length);
       var primaryReadHtml = '';
       var extraTransDet = '';
       if (hasBothPair) {
-        diffSectionHtml = buildDiffSectionHtml(sadePg.metin, rd.kayitlar, multiPage, pageObj.num);
+        diffSectionHtml = buildDiffSectionHtml(sadePg ? sadePg.metin : '', rd ? rd.kayitlar : [], multiPage, pageObj.num, eslPg);
         primaryReadHtml =
           '<div class="diff-jump-bar">' +
             '<span class="diff-jump-text">Günümüz Türkçesi ile orijinal Osmanlıca çeviriyazıyı aşağıda yan yana (diff görünümünde) karşılaştırabilirsiniz.</span>' +
@@ -6152,6 +6522,7 @@ dialog.doc-lightbox::backdrop {
   }
 
   function lockApp() {
+    clearSessionKey();
     ATLAS = null;
     SESSION_KEY = null;
     SESSION_SALT_HEX = '';
@@ -6361,6 +6732,29 @@ dialog.doc-lightbox::backdrop {
       e.preventDefault();
     }
   });
+
+  (async function tryAutoUnlockFromSession() {
+    var storedKey = '';
+    var storedSalt = '';
+    try {
+      storedKey = window.sessionStorage.getItem('tka_ses_aes') || '';
+      storedSalt = window.sessionStorage.getItem('tka_ses_salt') || '';
+    } catch (e) {}
+    if (!storedKey || !storedSalt) return;
+    try {
+      var imported = await window.crypto.subtle.importKey(
+        'raw',
+        b64ToBytes(storedKey),
+        { name: 'AES-GCM' },
+        false,
+        ['decrypt']
+      );
+      await unlockArchive('', imported, storedSalt);
+      mountApp();
+    } catch (err) {
+      clearSessionKey();
+    }
+  })();
 })();
 </script>
 </body>
